@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <style type="text/css">
+            .partida {
+                border: solid 1px;
+                padding: 5px;
+                margin: 5px;
+                float: left;
+                width: 200px;
+                cursor: pointer;
+                text-align: center;
+            }
+            #usuarios_partida {
+                clear: both;
+            }
+            .usuario {
+                border: solid 1px;
+                padding: 5px;
+                margin: 5px;
+                float: left;
+                width: 200px;
+                cursor: pointer;
+                text-align: center;
+            }
+        </style>
+        <script type="text/javascript" src="js/libs/jquery/jquery.js"></script>
+        <script type="text/javascript" >
+            
+            var host = "http://localhost/";
+            var service = "MonopolyServer/web/app_dev.php/";
+            
+            $(document).ready(function() {
+
+                $.ajax({
+                    url: host + service + "usuario/",
+                    method: "post",
+                    dataType: "json",
+                    success: function(usuarios) {
+                        var selects = $("select[name='usuarios']");
+                        for (var i = 0; i < usuarios.length; i++) {
+                            selects.append("<option value='" + usuarios[i].id + "'>" + usuarios[i].nombre + "</option>");
+                        }
+                    }
+                });
+
+                $("select[name='usuarios']").off().on("change", function(e) {
+                    var usuario = $(this).val();
+                    cargarPartidas(usuario);
+                });
+
+                function cargarPartidas(id) {
+                    $.ajax({
+                        url: host + service + "jugador/" + id + "/show_usuario",
+                        method: "post",
+                        dataType: "json",
+                        success: function(partidas) {
+                            $("#partidas").html("");
+                            $("#usuarios_partida").html("");
+                            $.each(partidas, function(i, e) {
+                                var partida = $("<div class='partida' id='" + e.partida.id + "'>" + e.partida.fecha + "</div>");
+                                $("#partidas").append(partida);
+                                partida.off().on("click", function(e) {
+                                    cargarUsuarios($(this).attr("id"));
+                                });
+                            });
+                        }
+                    });
+                }
+
+                function cargarUsuarios(id) {
+                    $.ajax({
+                        url: host + service + "jugador/" + id + "/show_partida",
+                        method: "post",
+                        dataType: "json",
+                        success: function(usuarios) {
+                            $("#usuarios_partida").html("");
+                            $.each(usuarios, function(i, e) {
+                                var usuario = $("<div class='usuario'>" + e.usuario + "</div>");
+                                $("#usuarios_partida").append(usuario);
+                            });
+                        }
+                    });
+                }
+
+            });
+        </script>
+    </head>
+    <body>
+        <div class="cuerpo">
+            <h1>Lista de usuarios</h1>
+            <form id="form_usuarios">
+                <select name="usuarios"></select>
+            </form>
+            <div id="partidas"></div>
+            <div id="usuarios_partida"></div>
+        </div>
+    </body>
+</html>
