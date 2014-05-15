@@ -7,8 +7,9 @@ var contenido = "";
 
 $(document).ready(function() {
 
-    contenido = $("#contenido");
+    contenido = $("#contenido"); 
     modulo = "inicio";
+
 
     cargarModulo();
 
