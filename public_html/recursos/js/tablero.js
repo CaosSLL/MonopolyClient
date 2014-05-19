@@ -1,5 +1,8 @@
 function cargarEventos(){
     hacerTablero();
+//    $( "#casilla1" ).mouseover(
+//            $("#tablero").html("<img src='recursos/images/casillas/es/casilla1.jpg' style='height: 5em; width: 4em;'>"));
+
 }
 
 function hacerTablero(){
