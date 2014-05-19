@@ -27,6 +27,7 @@ $(document).ready(function() {
     });
 
     function cargarModulo() {
+        contenido.hide("bind");
         contenido.load(host + app + modulo + ".html", function() {
             cargarEventos();
             $(".ir").off().on("click", function(e) {
@@ -34,6 +35,7 @@ $(document).ready(function() {
                 modulo = $(this).attr("href");
                 cargarModulo();
             });
+            contenido.show("bind");
         });
     }
 

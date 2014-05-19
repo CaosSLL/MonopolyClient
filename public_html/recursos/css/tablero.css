@@ -1,12 +1,47 @@
-/* 
-    Document   : tablero
-    Created on : 12-may-2014, 19:05:45
-    Author     : HP-Equipo
-    Description:
-        Purpose of the stylesheet follows.
-*/
-
-root { 
-    display: block;
+#container {
+    width: 100%;
+    height: 100%;
 }
 
+#tablerohtml {
+/*    margin: 50px;*/
+    padding: 5px;
+}
+
+#tablero table {
+    border-collapse: collapse;
+}
+#tablero table td {
+    padding: 0px;
+    border: solid 1px;
+}
+
+#casilla20, #casilla30 {
+    height: 4.5em;
+    width: 4.5em;
+}
+
+.casilla img{
+    height: 100%;
+    width: 100%;
+    margin-bottom: -5px;
+}
+.casilla{
+    height: 4.5em;
+    width: 3.5em;
+}
+
+.izquierda{
+/*    -webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	rotation: 90deg;*/
+}
+
+.derecha {
+/*    -webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	rotation: 90deg;*/
+}
+.casilla.lateral {
+    height: 3.5em;
+}
