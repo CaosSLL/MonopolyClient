@@ -1,12 +1,13 @@
-/* 
-    Document   : registro
-    Created on : 12-may-2014, 19:05:37
-    Author     : HP-Equipo
-    Description:
-        Purpose of the stylesheet follows.
-*/
-
-root { 
-    display: block;
+#registro {
+    font-family: esdla;
+}
+.h1 {
+    font-family: tolkien;
+}
+#contenido {;
+    background-image: url("http://localhost/MonopolyClient/public_html/recursos/images/fondos/registro1.jpg"); 
 }
 
+#registro form {
+    border: 2px solid goldenrod;
+}
