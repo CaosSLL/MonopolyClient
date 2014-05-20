@@ -11,7 +11,7 @@ $(document).ready(function() {
     modulo = "inicio";
 
 
-    cargarModulo();
+    cargarModulo(modulo);
 
     $.ajax({
         url: host + server + "usuario/autenticado",
@@ -25,18 +25,27 @@ $(document).ready(function() {
             }
         }
     });
-
-    function cargarModulo() {
-        contenido.hide("bind");
-        contenido.load(host + app + modulo + ".html", function() {
-            cargarEventos();
-            $(".ir").off().on("click", function(e) {
-                e.preventDefault();
-                modulo = $(this).attr("href");
-                cargarModulo();
-            });
-            contenido.show("bind");
-        });
-    }
+    
+    $(".ir").off().on("click", function(e) {
+        e.preventDefault();
+        if(modulo != $(this).attr("href")) {
+            modulo = $(this).attr("href");
+            cargarModulo(modulo);
+        }
+    }); 
 
 });
+
+function cargarModulo(modulo) {
+    contenido.slideUp("slow", function() {
+        $("#js").remove();
+        $("#css").remove();
+        $("head").append('<script type="text/javascript" src="recursos/js/' + modulo + '.js" id="js"></script>');
+        $("head").append('<link type="text/css" rel="stylesheet" href="recursos/css/' + modulo + '.css" id="css"/>');
+        contenido.load(host + app + modulo + ".html", function() {
+            cargarEventos();
+        })
+        
+    });
+    contenido.slideDown("slow");        
+}

@@ -45,8 +45,12 @@
 .casilla.lateral {
     height: 3.5em;
 }
-
-.casillagrande {
-    height: 5em;
-    width: 4em;
+#casilla_central {
+    height: 32em;
+    width: 32em;
+}
+#casilla_central img{
+    height: 100%;
+    width: 100%;
+    margin-bottom: -5px;
 }

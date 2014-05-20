@@ -33,7 +33,7 @@ function hacerTablero(){
         }
         
         if(i==19){
-            tabla += " <td id='casilla_central' colspan='9' rowspan='9' > </td>";
+            tabla += " <td id='casilla_central' colspan='9' rowspan='9' > <img class='central' src='recursos/images/casillas/es/central.jpg'> </td>";
         }
         
         if(j==33) {
