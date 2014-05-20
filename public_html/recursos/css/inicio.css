@@ -6,6 +6,19 @@
         Purpose of the stylesheet follows.
 */
 
+.imagen1{
+    height: 5em;
+    width: 6em;
+}
+
+#imagen2{
+    height: 6em;
+    width: 7em;
+    display: none;
+}
+
+
+
 root { 
     display: block;
 }

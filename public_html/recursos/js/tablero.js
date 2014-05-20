@@ -2,6 +2,9 @@ function cargarEventos(){
     hacerTablero();
 //    $( "#casilla1" ).mouseover(
 //            $("#tablero").html("<img src='recursos/images/casillas/es/casilla1.jpg' style='height: 5em; width: 4em;'>"));
+    $("#casilla1").mouseover(function(){
+        $(this).addClass("casillagrande");
+    })
 
 }
 
@@ -23,6 +26,7 @@ function hacerTablero(){
     for(var i =19; i>= 11; i--){
         tabla += "<tr>";
         if(i==17) {
+            
             tabla += " <td class='casilla lateral' id='casilla" + i + "'> <img class='izquierda' src='recursos/images/casillas/es/eventoi.jpg'> </td>";            
         } else {
             tabla += " <td class='casilla lateral' id='casilla" + i + "'> <img class='izquierda' src='recursos/images/casillas/es/casilla"+i+".jpg'> </td>";            
