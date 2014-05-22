@@ -1,3 +1,4 @@
+inicio.css
 /* 
     Document   : inicio
     Created on : 12-may-2014, 19:05:24
@@ -12,9 +13,10 @@
 }
 
 #imagen2{
-    height: 6em;
-    width: 7em;
+    height: 5em;
+    width: 6em;
     display: none;
+    position: absolute;
 }
 
 

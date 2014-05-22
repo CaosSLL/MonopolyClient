@@ -1,10 +1,12 @@
+registro.css
+
 #registro {
     font-family: esdla;
 }
 .h1 {
     font-family: tolkien;
 }
-#contenido {;
+#contenido {
     background-image: url("http://localhost/MonopolyClient/public_html/recursos/images/fondos/registro1.jpg"); 
 }
 

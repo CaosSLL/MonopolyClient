@@ -1,65 +1,104 @@
-function cargarEventos(){
+function cargarEventos() {
     hacerTablero();
 //    $( "#casilla1" ).mouseover(
 //            $("#tablero").html("<img src='recursos/images/casillas/es/casilla1.jpg' style='height: 5em; width: 4em;'>"));
-    $("#casilla1").mouseover(function(){
-        $(this).addClass("casillagrande");
-    })
+//    $("#casilla1").mouseover(function(){
+//        $(this).addClass("casillagrande");
+//    })
+    agrandarImagen();
 
 }
 
-function hacerTablero(){
+function hacerTablero() {
     var tablero = $("#tablero"); //Obtener el tablero como objeto JQuery
     var tabla;
     tabla = "<table> <tr> ";
-    for (var i = 20; i<=30; i++){
-        if(i==22){
+    for (var i = 20; i <= 30; i++) {
+        if (i == 22) {
             tabla += " <td class='casilla' id='casilla" + i + "'> <img src='recursos/images/casillas/es/prueba.jpg'> </td>";
-        }else{
-            tabla += " <td class='casilla' id='casilla" + i + "'> <img src='recursos/images/casillas/es/casilla"+i+".jpg'> </td>";
+        } else {
+            tabla += " <td class='casilla' id='casilla" + i + "'> <img src='recursos/images/casillas/es/casilla" + i + ".jpg'> </td>";
         }
     }
-    tabla += " </tr>"; 
-    
-    
+    tabla += " </tr>";
+
+
     var j = 31;
-    for(var i =19; i>= 11; i--){
+    for (var i = 19; i >= 11; i--) {
         tabla += "<tr>";
-        if(i==17) {
-            
-            tabla += " <td class='casilla lateral' id='casilla" + i + "'> <img class='izquierda' src='recursos/images/casillas/es/eventoi.jpg'> </td>";            
+        if (i == 17) {
+
+            tabla += " <td class='casilla lateral' id='casilla" + i + "'> <img class='izquierda' src='recursos/images/casillas/es/eventoi.jpg'> </td>";
         } else {
-            tabla += " <td class='casilla lateral' id='casilla" + i + "'> <img class='izquierda' src='recursos/images/casillas/es/casilla"+i+".jpg'> </td>";            
+            tabla += " <td class='casilla lateral' id='casilla" + i + "'> <img class='izquierda' src='recursos/images/casillas/es/casilla" + i + ".jpg'> </td>";
         }
-        
-        if(i==19){
+
+        if (i == 19) {
             tabla += " <td id='casilla_central' colspan='9' rowspan='9' > <img class='central' src='recursos/images/casillas/es/central.jpg'> </td>";
         }
-        
-        if(j==33) {
+
+        if (j == 33) {
             tabla += " <td class='casilla lateral' id='casilla" + j + "'> <img class='derecha' src='recursos/images/casillas/es/eventod.jpg'> </td>";
-        } else if(j==36) {
-            tabla += " <td class='casilla lateral' id='casilla" + j + "'> <img class='derecha' src='recursos/images/casillas/es/pruebad.jpg'> </td>";            
+        } else if (j == 36) {
+            tabla += " <td class='casilla lateral' id='casilla" + j + "'> <img class='derecha' src='recursos/images/casillas/es/pruebad.jpg'> </td>";
         } else {
-            tabla += " <td class='casilla lateral' id='casilla" + j + "'> <img class='derecha' src='recursos/images/casillas/es/casilla"+j+".jpg'> </td>";
+            tabla += " <td class='casilla lateral' id='casilla" + j + "'> <img class='derecha' src='recursos/images/casillas/es/casilla" + j + ".jpg'> </td>";
         }
         j++;
         tabla += "</tr>";
     }
-    
+
     tabla += " <tr>";
-    
-    for (var i = 10; i>=0; i--){
-        if(i==2){
+
+    for (var i = 10; i >= 0; i--) {
+        if (i == 2) {
             tabla += " <td class='casilla' id='casilla" + i + "'> <img src='recursos/images/casillas/es/evento.jpg'> </td>";
-        }else if(i==7){
+        } else if (i == 7) {
             tabla += " <td class='casilla' id='casilla" + i + "'> <img src='recursos/images/casillas/es/prueba.jpg'> </td>";
         } else {
-            tabla += " <td class='casilla' id='casilla" + i + "'> <img src='recursos/images/casillas/es/casilla"+i+".jpg'> </td>";            
+            tabla += " <td class='casilla' id='casilla" + i + "'> <img src='recursos/images/casillas/es/casilla" + i + ".jpg'> </td>";
         }
     }
-    
+
     tabla += "</tr> </table>";
-    
+
     tablero.html(tabla);
+}
+
+function agrandarImagen() {
+    $(".casilla").mouseenter(function() {
+        //Cogemos el tamanio de la imagen inicial
+        var alto = $(this).children().css("height");
+        var ancho = $(this).children().css("width");
+        //Sacamos top y left
+        var topi = $(this).children().position().top;
+        var lefti = $(this).children().position().left;
+        
+        //Se calcula para que quede centrada
+        var ancho2 = ancho.substring(0, 2);
+        var alto2 = alto.substring(0, 2);        
+        var tope = parseInt(topi) - parseInt(ancho2) / 5;        
+        var lefte = parseInt(lefti) - parseInt(alto2) / 5;        
+        
+        //Creamos la etiqueta imagen
+        var imagen = "<img id='imagenGrande2' src='" + $(this).children().attr("src") + "' style='height: "+ alto+"; width: "+ancho+" '> </img>";
+        
+        //Aniadimos la imagen al div común
+        $("#imagenGrande").html(imagen).show();
+        
+        //Colocamos la imagen en su sitio
+        $("#imagenGrande").css({
+            top : tope,
+            left : lefte
+        });
+        
+        //Agrandamos la imagen para que sea visible
+        $("#imagenGrande2").animate({
+            width: "+=20",
+            height: "+=20"
+        }
+        );
+
+//        alert("entra " + $(this).children().attr("src"));
+    });
 }
