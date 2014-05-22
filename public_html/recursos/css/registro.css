@@ -1,13 +1,40 @@
+#contenido {
+    background-image: url("http://localhost/MonopolyClient/public_html/recursos/images/fondos/registro1.jpg"); 
+}
 #registro {
     font-family: esdla;
+    font-size: 18px;
 }
 .h1 {
     font-family: tolkien;
+    font-size: 40px;
+    text-shadow: 2px 2px whitesmoke;
+    margin: 10% 0% 0% 55%;
 }
-#contenido {;
-    background-image: url("http://localhost/MonopolyClient/public_html/recursos/images/fondos/registro1.jpg"); 
+#div-form-registro {
+    border: 2px solid #DAA520;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 1);
+    margin: 0% 10% 0% 50%;
+    padding: 2%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #F5F5F5;
+    text-shadow: 1px 1px black;
 }
-
-#registro form {
-    border: 2px solid goldenrod;
+#form-registro {
+}
+#form-registro input {
+    margin: 0% 0% 4% 2%;
+    font-family: esdla;
+    padding: 0% 3%;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #DAA520;
+    font-size: 16px;
+    background-color: rgba(246, 241, 221, 0);
+    color: whitesmoke;
+    text-shadow: 1px 1px black;
+}
+.label-form-registro {
 }

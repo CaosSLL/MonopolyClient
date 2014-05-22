@@ -42,10 +42,7 @@ function cargarModulo(modulo) {
         $("#css").remove();
         $("head").append('<script type="text/javascript" src="recursos/js/' + modulo + '.js" id="js"></script>');
         $("head").append('<link type="text/css" rel="stylesheet" href="recursos/css/' + modulo + '.css" id="css"/>');
-        contenido.load(host + app + modulo + ".html", function() {
-            cargarEventos();
-        })
-        
+        contenido.load(host + app + modulo + ".html");        
     });
     contenido.slideDown("slow");        
 }
