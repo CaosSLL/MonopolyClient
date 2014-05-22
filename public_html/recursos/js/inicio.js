@@ -1,6 +1,3 @@
-inicio.js
-
-
 function cargarEventos() {
 
 //    imagenFondo

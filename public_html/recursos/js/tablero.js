@@ -77,8 +77,8 @@ function agrandarImagen() {
         //Se calcula para que quede centrada
         var ancho2 = ancho.substring(0, 2);
         var alto2 = alto.substring(0, 2);        
-        var tope = parseInt(topi) - parseInt(ancho2) / 5;        
-        var lefte = parseInt(lefti) - parseInt(alto2) / 5;        
+        var tope = parseInt(topi) - parseInt(ancho2) / 8;        
+        var lefte = parseInt(lefti) - parseInt(alto2) / 8;        
         
         //Creamos la etiqueta imagen
         var imagen = "<img id='imagenGrande2' src='" + $(this).children().attr("src") + "' style='height: "+ alto+"; width: "+ancho+" '> </img>";
