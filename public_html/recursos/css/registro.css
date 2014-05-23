@@ -1,6 +1,3 @@
-#contenido {
-    background-image: url("http://localhost/MonopolyClient/public_html/recursos/images/fondos/registro1.jpg"); 
-}
 #registro {
     font-family: esdla;
     font-size: 18px;
@@ -36,5 +33,19 @@
     color: whitesmoke;
     text-shadow: 1px 1px black;
 }
-.label-form-registro {
+#form-registro input:focus {
+    outline: none !important;
 }
+.label-form-registro {
+    
+}
+input[name=usuario] {
+    width: 39.2%;
+}
+input[name=contraseña] {
+    width: 37%;    
+}
+input[name=contraseña2] {
+    width: 38%;        
+}
+
