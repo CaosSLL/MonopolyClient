@@ -31,7 +31,7 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    
+    font-family: Helvetica;
 }
 
 .items {
@@ -42,4 +42,41 @@ body {
     list-style: none;
     float: left;
     padding-left: 10px;
+}
+
+#container {
+    /*padding-top: 50px;*/
+    /*position: fixed;*/
+    width: 100%;
+    height: 100%;
+    /*background: url("http://localhost/MonopolyClient/public_html/recursos/images/fondos/fondo1.jpg") no-repeat;*/ 
+/*    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    */
+    
+}
+
+.boton {
+    background-color: black;
+    color: gold;
+    border: solid 1px #333;
+    border-radius: 5px;
+    padding: 12px;
+    background: linear-gradient(bottom, #111, #444);
+    background: -webkit-linear-gradient(bottom, #111, #444);
+    box-shadow: 0px 0px 9px 6px #000;
+    text-decoration: none;
+    font-size: 1.2em;
+}
+
+.boton a {
+    text-decoration: none;
+    color: gold;
+}
+
+.boton:hover {
+    background: linear-gradient(top, #111, #444);
+    background: -webkit-linear-gradient(top, #111, #444);
 }
