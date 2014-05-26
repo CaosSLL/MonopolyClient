@@ -95,7 +95,9 @@ function agrandarImagen() {
         //Agrandamos la imagen para que sea visible
         $("#imagenGrande2").animate({
             width: "+=20",
-            height: "+=20"
+            height: "+=20",
+            top : "-=5",
+            left : "-=5"
         }
         );
 
