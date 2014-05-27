@@ -1,3 +1,6 @@
+#contenido {
+    background-image: url("../images/fondos/registro1.jpg");
+}
 #registro {
     font-family: esdla;
     font-size: 18px;
@@ -6,21 +9,21 @@
     font-family: tolkien;
     font-size: 40px;
     text-shadow: 2px 2px whitesmoke;
-    margin: 10% 0% 0% 55%;
+    margin: 8% 0% 0% 55%;
 }
-#div-form-registro {
+#divFormRegistro {
     border: 2px solid #DAA520;
     border-radius: 20px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 1);
     margin: 0% 10% 0% 50%;
-    padding: 2%;
+    padding: 2% 2% 0% 2%;
     background-color: rgba(0, 0, 0, 0.5);
     color: #F5F5F5;
     text-shadow: 1px 1px black;
 }
-#form-registro {
+#formRegistro {
 }
-#form-registro input {
+#formRegistro input {
     margin: 0% 0% 4% 2%;
     font-family: esdla;
     padding: 0% 3%;
@@ -33,19 +36,26 @@
     color: whitesmoke;
     text-shadow: 1px 1px black;
 }
-#form-registro input:focus {
+#formRegistro input:focus {
     outline: none !important;
 }
-.label-form-registro {
+.labelFormRegistro {
     
 }
 input[name=usuario] {
-    width: 39.2%;
+    width: 50%;
 }
 input[name=contraseña] {
-    width: 37%;    
+    width: 48%;    
 }
 input[name=contraseña2] {
-    width: 38%;        
+    width: 45.5%;        
 }
-
+input[name=email] {
+    width: 49%;        
+}
+input[name=submit] {
+    border: medium none !important;
+    margin-left: 57% !important;
+    margin-top: 3% !important;
+}

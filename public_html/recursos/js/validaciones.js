@@ -1,8 +1,3 @@
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 function campoVacio(input){
     
     var datos = input.val();
@@ -17,5 +12,4 @@ function campoVacio(input){
         return true;
     }
 }
-
 

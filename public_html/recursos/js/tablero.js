@@ -1,8 +1,4 @@
-function cargarEventos(){
-    hacerTablero();
-}
-
-function hacerTablero(){
+$(document).ready(function() {
     var tablero = $("#tablero"); //Obtener el tablero como objeto JQuery
     var tabla;
     tabla = "<table> <tr> ";
@@ -55,4 +51,4 @@ function hacerTablero(){
     tabla += "</tr> </table>";
     
     tablero.html(tabla);
-}
+});
