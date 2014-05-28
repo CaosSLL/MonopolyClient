@@ -7,12 +7,18 @@ $(document).ready(function() {
         e.preventDefault();
         alert("SUBMIT");
 //        if(validaciones()) {
-            var datosForm = new FormData(this);
+            var datosForm = $(this).serialize();
             $.ajax({
                 url: "http://localhost/MonopolyServer/web/app_dev.php/usuario/crear",
                 type: "post",
+                dataType: "json",
                 data: datosForm,
-                success: funcionSuccess
+                success: function(datos) {
+                    alert(datos.usuario);
+                },
+                error: function(datos) {
+                    alert("error en el server");
+                }
             });
 //        }
         return false;
