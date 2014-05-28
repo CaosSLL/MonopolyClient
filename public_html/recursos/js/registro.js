@@ -1,28 +1,43 @@
 $(document).ready(function() {
-    alert("Hola desde " + modulo);
     /*
      * Método que se encarga de gestionar el submit del formulario
      */
     $("#formRegistro").submit(function(e) {
         e.preventDefault();
-        alert("SUBMIT");
 //        if(validaciones()) {
             var datosForm = $(this).serialize();
             $.ajax({
-                url: "http://localhost/MonopolyServer/web/app_dev.php/usuario/crear",
-                type: "post",
+                url: host + server + "usuario/crear",
+                method: "post",
                 dataType: "json",
                 data: datosForm,
                 success: function(datos) {
-                    alert(datos.usuario);
+                    alert(datos.msg);
                 },
                 error: function(datos) {
-                    alert("error en el server");
+                    alert(datos.error);
                 }
             });
 //        }
         return false;
     });
+    
+    /**
+     * Método que gestiona el cambio de la imagen del botón cuando el cursor está encima
+     * 
+     */
+    $("input[name=submit]").mouseenter(function() {
+        $(this).attr("src", "recursos/images/otras/hoja-lorien-marron.png");
+    });
+    
+    /**
+     * Método que gestiona el cambio de la imagen del botón cuando el cursor sale del botón
+     * 
+     */
+    $("input[name=submit]").mouseleave(function() {
+        $(this).attr("src", "recursos/images/otras/hoja-lorien-verde.png");
+    });
+    
 });
 
 
