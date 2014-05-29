@@ -9,7 +9,7 @@ $(document).ready(function() {
 
     contenido = $("#contenido");
     modulo = "inicio";
-    cargarModulo();
+    cargarModulo(modulo);
     $.ajax({
         url: host + server + "usuario/autenticado",
         method: "post",
