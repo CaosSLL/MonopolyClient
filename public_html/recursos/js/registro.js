@@ -12,14 +12,17 @@ $(document).ready(function() {
                 dataType: "json",
                 data: datosForm,
                 success: function(datos) {
-                    alert(datos.msg);
+                    if(datos.tipo == "error") {
+                        alert(datos.error);
+                    } else {
+                        alert(datos.msg);
+                    }
                 },
-                error: function(datos) {
-                    alert(datos.error);
+                error: function() {
+                    alert("Lo sentimos mucho.\r\nNo se ha podido establecer conexión con el servidor.");
                 }
             });
 //        }
-        return false;
     });
     
     /**
