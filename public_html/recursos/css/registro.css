@@ -1,13 +1,72 @@
+#contenido {
+    background-image: url("../images/fondos/registro1.jpg");
+}
 #registro {
     font-family: esdla;
+    font-size: 18px;
 }
 .h1 {
     font-family: tolkien;
+    font-size: 40px;
+    text-shadow: 2px 2px whitesmoke;
+    margin: 8% 0% 0% 55%;
 }
-#contenido {
-    background-image: url("http://localhost/MonopolyClient/public_html/recursos/images/fondos/registro1.jpg"); 
+#divFormRegistro {
+    border: 2px solid #DAA520;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 1);
+    margin: 0% 10% 0% 50%;
+    padding: 2% 2% 0% 2%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #F5F5F5;
+    text-shadow: 1px 1px black;
 }
-
-#registro form {
-    border: 2px solid goldenrod;
+#formRegistro {
+}
+#formRegistro input {
+    margin: 0% 0% 4% 2%;
+    font-family: esdla;
+    padding: 0% 3%;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #DAA520;
+    font-size: 16px;
+    background-color: rgba(246, 241, 221, 0);
+    color: whitesmoke;
+    text-shadow: 1px 1px black;
+}
+#formRegistro input:focus {
+    outline: none !important;
+}
+.labelFormRegistro {
+    
+}
+input[name=usuario] {
+    width: 50%;
+}
+input[name=contraseña] {
+    width: 48%;    
+}
+input[name=contraseña2] {
+    width: 45.5%;        
+}
+input[name=email] {
+    width: 49%;        
+}
+input[name=enviar] {
+    border: medium none !important;
+    margin-left: 57% !important;
+    margin-top: 3% !important;
+    width: 150px;
+    height: 75px;
+    background-image: url(../images/otras/hoja-lorien-verde.png);
+    transition: background-image 0.75s;
+    -webkit-transition: background-image 0.75s;
+}
+input[name=enviar]:hover {
+    cursor: pointer;
+    transition: background-image 0.75s;
+    -webkit-transition: background-image 0.75s;
+    background-image: url(../images/otras/hoja-lorien-marron.png);
 }
