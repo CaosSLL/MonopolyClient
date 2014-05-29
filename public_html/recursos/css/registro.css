@@ -45,10 +45,10 @@
 input[name=usuario] {
     width: 50%;
 }
-input[name=contraseña] {
+input[name=password] {
     width: 48%;    
 }
-input[name=contraseña2] {
+input[name=password2] {
     width: 45.5%;        
 }
 input[name=email] {
