@@ -6,7 +6,21 @@
         Purpose of the stylesheet follows.
 */
 
-root { 
-    display: block;
+#contenido {
+    /*padding-top: 50px;*/
+    /*position: fixed;*/
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    background-image: url("http://localhost/MonopolyClient/public_html/recursos/images/fondos/kbwy7m.jpg"); /*
+    background-position-y: 10px;    
+*/    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-repeat: no-repeat;
+    -webkit-background-repeat: cover;
+    -moz-background-repeat: cover;
+    -o-background-repeat: cover;
+    
 }
-

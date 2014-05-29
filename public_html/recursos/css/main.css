@@ -1,13 +1,19 @@
-/* 
-    Document   : main
-    Created on : 12-may-2014, 19:05:04
-    Author     : HP-Equipo
-    Description:
-        Purpose of the stylesheet follows.
-*/
-
-root { 
-    display: block;
+@font-face {
+    font-family: tolkien;
+    src: url(../fuentes/tolkien.ttf);
+}
+@font-face {
+    font-family: esdla;
+    src: url(../fuentes/vinertic.ttf);
+}
+@font-face {
+    font-family: anir;
+    src: url(../fuentes/anirm.ttf);
+}
+@font-face {
+    font-family: anir;
+    src: url(../fuentes/anirb.ttf);
+    font-weight:bold;
 }
 
 body {
@@ -30,8 +36,12 @@ body {
     top: 40px;
     position: absolute;
     width: 100%;
-    height: 100%;
-    font-family: Helvetica;
+    height: 100%;   
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 .items {

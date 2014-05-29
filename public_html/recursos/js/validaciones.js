@@ -18,4 +18,27 @@ function campoVacio(input){
     }
 }
 
+function validarEmail(input){
+    var datos = input.val();
+    
+    if( !(/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)/.test(datos))){
+        return false;
+    } else{
+        return true;
+    }    
+}
+
+function validarNombre(input, longitud){
+    var datos = input.val();
+    
+    campoVacio(input);
+    validarLongitud(input, longitud);
+    
+    if(/\w+([-+.]\w+)*/.test(datos)){
+        return true;
+    }else{
+        return false;
+    }   
+}
+
 
