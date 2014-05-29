@@ -1,12 +1,39 @@
-/* 
-    Document   : partida
-    Created on : 12-may-2014, 19:05:29
-    Author     : HP-Equipo
-    Description:
-        Purpose of the stylesheet follows.
-*/
+#opciones {
 
-root { 
-    display: block;
 }
 
+#opciones ul {
+    list-style: none;
+}
+
+#partidas {
+    background: url("http://localhost/MonopolyClient/public_html/recursos/images/fondos/fondo1.jpg") no-repeat; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding: 40px;
+    height: 100%;
+    color: white;
+}
+
+
+#listaUsuariosConectados ul {
+    list-style: none;
+}
+
+.usuario {
+    width: 150px;
+}
+
+.usuario:hover {
+    cursor: pointer;
+}
+
+.usuario .ui-icon {
+    float: left;
+}
+
+.nombre_usuario {
+    
+}

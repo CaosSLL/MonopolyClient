@@ -1,6 +1,7 @@
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+function cargarEventos() {
+    
+    $(".boton").off().on("click", function(e) {
+        alert("holaaaaaa"); 
+    });
 
-
+}
