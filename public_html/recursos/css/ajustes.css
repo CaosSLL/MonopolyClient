@@ -14,14 +14,14 @@
     height: 100%;
     background-image: url("http://localhost/MonopolyClient/public_html/recursos/images/fondos/kbwy7m.jpg"); /*
     background-position-y: 10px;    
-*/    -webkit-background-size: auto;
-    -moz-background-size: auto;
-    -o-background-size: auto;
+*/    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
     background-size: cover;
     background-repeat: no-repeat;
-    -webkit-background-repeat: auto;
-    -moz-background-repeat: auto;
-    -o-background-repeat: auto;
+    -webkit-background-repeat: cover;
+    -moz-background-repeat: cover;
+    -o-background-repeat: cover;
     
 }
 
