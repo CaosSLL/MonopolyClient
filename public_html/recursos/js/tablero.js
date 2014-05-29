@@ -1,15 +1,15 @@
-function cargarEventos() {
-    hacerTablero();
-//    $( "#casilla1" ).mouseover(
-//            $("#tablero").html("<img src='recursos/images/casillas/es/casilla1.jpg' style='height: 5em; width: 4em;'>"));
-//    $("#casilla1").mouseover(function(){
-//        $(this).addClass("casillagrande");
-//    })
-    agrandarImagen();
+//function cargarEventos() {
+//    hacerTablero();
+////    $( "#casilla1" ).mouseover(
+////            $("#tablero").html("<img src='recursos/images/casillas/es/casilla1.jpg' style='height: 5em; width: 4em;'>"));
+////    $("#casilla1").mouseover(function(){
+////        $(this).addClass("casillagrande");
+////    })
+//    agrandarImagen();
+//
+//}
+$(document).ready(function(){
 
-}
-
-function hacerTablero() {
     var tablero = $("#tablero"); //Obtener el tablero como objeto JQuery
     var tabla;
     tabla = "<table> <tr> ";
@@ -63,9 +63,8 @@ function hacerTablero() {
     tabla += "</tr> </table>";
 
     tablero.html(tabla);
-}
 
-function agrandarImagen() {
+
     $(".casilla").mouseenter(function() {
         //Cogemos el tamanio de la imagen inicial
         var alto = $(this).children().css("height");
@@ -77,8 +76,8 @@ function agrandarImagen() {
         //Se calcula para que quede centrada
         var ancho2 = ancho.substring(0, 2);
         var alto2 = alto.substring(0, 2);        
-        var tope = parseInt(topi) - parseInt(ancho2) / 8;        
-        var lefte = parseInt(lefti) - parseInt(alto2) / 8;        
+        var tope = parseInt(topi) - parseInt(ancho2) / 3;        
+        var lefte = parseInt(lefti) - parseInt(alto2) / 3;        
         
         //Creamos la etiqueta imagen
         var imagen = "<img id='imagenGrande2' src='" + $(this).children().attr("src") + "' style='height: "+ alto+"; width: "+ancho+" '> </img>";
@@ -94,8 +93,8 @@ function agrandarImagen() {
         
         //Agrandamos la imagen para que sea visible
         $("#imagenGrande2").animate({
-            width: "+=20",
-            height: "+=20",
+            width: "+=50",
+            height: "+=50",
             top : "-=5",
             left : "-=5"
         }
@@ -103,4 +102,6 @@ function agrandarImagen() {
 
 //        alert("entra " + $(this).children().attr("src"));
     });
-}
+
+
+});

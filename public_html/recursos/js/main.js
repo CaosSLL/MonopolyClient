@@ -40,11 +40,10 @@ function cargarModulo(modulo) {
     contenido.slideUp("slow", function() {
         $("#js").remove();
         $("#css").remove();
-        $("head").append('<script type="text/javascript" src="recursos/js/' + modulo + '.js" id="js"></script>');
-        $("head").append('<link type="text/css" rel="stylesheet" href="recursos/css/' + modulo + '.css" id="css"/>');
         contenido.load(host + app + modulo + ".html", function() {
-            cargarEventos();
-        })
+            $("head").append('<script type="text/javascript" src="recursos/js/' + modulo + '.js" id="js"></script>');
+            $("head").append('<link type="text/css" rel="stylesheet" href="recursos/css/' + modulo + '.css" id="css"/>');
+        });
         
     });
     contenido.slideDown("slow");        
