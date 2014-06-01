@@ -1,24 +1,29 @@
 <div id="registro">
     <h1 class="h1">Formulario de Registro:</h1>
     <br/>
-    <div id="divFormRegistro">
+    <div id="div-form-registro">
         <form id="formRegistro" name="formRegistro" method="post" action="">
             <label class="labelFormRegistro">
                 Nombre de usuario:
                 <input type="text" name="usuario" />
+                <span class="error"></span>
             </label><br/>
             <label class="labelFormRegistro">
                 Elija la contraseña:
                 <input type="password" name="password" />
+                <span class="error"></span>
             </label><br/>
             <label class="labelFormRegistro">
                 Repita la contraseña:
                 <input type="password" name="password2" />
+                <span class="error"></span>
             </label><br/>
             <label class="labelFormRegistro">
                 Dirección de e-mail:
                 <input type="text" name="email" />
+                <span class="error"></span>
             </label><br/>
+            <span id="error-registro"></span><br/>
             <!--<input type="image" name="submit" src="recursos/images/otras/hoja-lorien-verde.png" />-->
             <input type="submit" name="enviar" value=""/>
         </form>

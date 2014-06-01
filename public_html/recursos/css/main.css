@@ -18,6 +18,7 @@
 
 body {
     margin: 0px;
+    font-family: esdla;
 }
 
 #barraUusuarios {
@@ -89,4 +90,17 @@ body {
 .boton:hover {
     background: linear-gradient(top, #111, #444);
     background: -webkit-linear-gradient(top, #111, #444);
+}
+
+.ir {
+    text-decoration: none;    
+    color: white;
+}
+
+.ir:visited {
+    color: white;
+}
+
+.ir:active {
+    color: lightgray;
 }
