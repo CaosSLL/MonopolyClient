@@ -7,17 +7,18 @@
  *      false -> si el campo a validar está vacío
  *      true -> si el campo contiene algo
  */
-function campoVacio(input){
-    
+
+function campoVacio(input) {
+
     var datos = input.val();
-    
-    if(datos.lenght <= 0) {
-        input.parent().css({color: "red"});        
+//    if (datos.length <= 0) {
+    if (datos == null || datos.length == 0 || /^\s+$/.test(datos)) {
+        input.parent().css({color: "red"});
         input.siblings(".error").text("No puede estar vacio");
         return false;
-    } else{
-        input.parent().css({color: "inherit"});        
-        input.siblings(".error").text("");        
+    } else {
+        input.parent().css({color: "inherit"});
+        input.siblings(".error").text("");
         return true;
     }
 }
@@ -37,7 +38,7 @@ function campoVacio(input){
  */
 function validarLongitud(input, longMin, longMax) {
     var datos = input.val();
-    if (datos.lenght < longMin || datos.lenght > longMax) {
+    if (datos.length < longMin || datos.length > longMax) {
         input.parent().css({color: "red"});
         input.siblings(".error").text("Debe tener entre " + longMin + " y " + longMax + " caracteres");
         return false;
@@ -50,7 +51,62 @@ function validarLongitud(input, longMin, longMax) {
 
 function validarEmail(input) {
     var datos = input.val();
-    if(/(a-zA-Z)+(a-zA-Z0-9\.\_\-)*(a-zA-Z0-9)+(\@)(a-zA-Z)+(\.)(a-zA-Z){2,4}/.test()){
-        
+    alert(datos);
+    if (!(/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)/.test(datos))) {
+        input.parent().css({color: "red"});
+        input.siblings(".error").text("No es un email correcto");
+        return false;
+    } else {
+        input.parent().css({color: "inherit"});
+        input.siblings(".error").text("");
+        return true;
+    }
+}
+
+function validarNombre(input) {
+    if (campoVacio(input)) {
+        if (validarLongitud(input, "4", "20")) {
+            var datos = input.val();
+            if (!/^[A-Za-z]+([-_.]\w+)*/.test(datos)) {
+                alert("mal");
+                input.parent().css({color: "red"});
+                input.siblings(".error").text("Debe contener caracteres alfanumericos, -, _ o .");
+                return false;
+            } else {
+                alert("bien");
+                input.parent().css({color: "inherit"});
+                input.siblings(".error").text("");
+                return true;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+
+function validarContrasenia(input) {
+    var datos = input.val();
+    if (campoVacio(input)) {
+        if (validarLongitud(input, "6", "10")) {
+            if (/\w/.text(datos)) {
+                alert("bien");
+                input.parent().css({color: "inherit"});
+                input.siblings(".error").text("");
+                return true;
+
+            } else {
+                alert("bien");
+                input.parent().css({color: "inherit"});
+                input.siblings(".error").text("");
+                return true;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
     }
 }

@@ -5,6 +5,9 @@ var modulo = "";
 
 var contenido = "";
 
+var USUARIO = "";
+var CONTRASENIA = "";
+
 $(document).ready(function() {
 
     contenido = $("#contenido"); 
