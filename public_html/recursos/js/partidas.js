@@ -1,19 +1,32 @@
-var usuario = "";
-var sala = "";
+var listaUsuarios = new Array();
+var listaUsuariosAceptados = new Array();
+var datosPartida;
+var numJugadores = 0;
+var idPartida = 0;
 
 $(document).ready(function() {
 
-    $("#tUsuario").on("keydown", function(e){
-        if(e.keyCode == 13){
-            usuario = $("#tUsuario").val();
-            $("#divUsuario").text(usuario);
+    if (unirse) {
+        $(".crearPartida").hide();
+        $(".unirsePartida").show();
+    } else {
+        $(".unirsePartida").hide();
+        $(".crearPartida").show();
+    }
+    
+    $("#tUsuario").on("keydown", function(e) {
+        if (e.keyCode == 13) {
+            var texto = $("#tUsuario").val().split("-");
+            usuario.id = texto[0];
+            usuario.nombre = texto[1];
+            $("#divUsuario").text(usuario.nombre);
         }
     });
-    
-    $("#tEnviar").on("keydown", function(e){
-        if(e.keyCode == 13){
-            $("#tRecibido").append($(this).val()+"\n");
-            socket.emit("mensaje_sala", { sala: sala, usuario: usuario, mensaje: $(this).val() });
+
+    $("#tEnviar").on("keydown", function(e) {
+        if (e.keyCode == 13) {
+            $("#tRecibido").append($(this).val() + "\n");
+            socket.emit("mensaje_sala", {sala: sala, usuario: usuario, mensaje: $(this).val()});
             $("#tEnviar").val("");
         }
     });
@@ -24,20 +37,19 @@ $(document).ready(function() {
         dataType: "json",
         success: function(datos) {
             $.each(datos, function(i, personaje) {
-                $("#personaje").append("<option value=" + personaje.id + ">" + personaje.nombre + "</option>");
+                $("#personajes1").append("<option value=" + personaje.id + ">" + personaje.nombre + "</option>");
+                $("#personajes2").append("<option value=" + personaje.id + ">" + personaje.nombre + "</option>");
             });
         }
     });
 
     $.ajax({
-        url: host + server + "usuario/conectados",
+        url: host + server + "partida/partidasEnEspera",
         method: "post",
         dataType: "json",
         success: function(datos) {
-            $.each(datos, function(i, usuario) {
-                if (usuario.id !== 3) {
-                    $("#usuarios").append("<option value=" + usuario.id + ">" + usuario.nombre + "</option>");
-                }
+            $.each(datos, function(i, partida) {
+                $(".partidas").append("<option value=" + partida.token + ">" + partida.token + " creado el " + partida.fechaInicio.date + "</option>");
             });
         }
     });
@@ -46,49 +58,79 @@ $(document).ready(function() {
         e.preventDefault();
 
         var num = Math.floor(Math.random() * (100000 - 1 + 1)) + 1
-        var personaje = $("#personaje").val();
-        var listaUsuarios = $("#usuarios").val();
-        var idUsuario = 3;
-//        listaUsuarios.push({usuario: idUsuario, personaje: personaje });
-        var datosPartida = {token: num, fecha: new Date(), usuarios: listaUsuarios};
-        console.log(datosPartida);
+        var personaje = $("#personajes1").val();
+        usuario.personaje = personaje;
+        listaUsuariosAceptados.push(usuario);
 
-        sala = num;
-        socket.emit("solicitud", { sala: num, usuario: usuario });
+        numJugadores = parseInt($("#numJugadores").val());
+        sala = usuario.nombre + "-" + num;
 
-//        $.ajax({
-//            url: host + server + "partida/crearPartida",
-//            method: "post",
-//            dataType: "json",
-//            data: datosPartida,
-//            success: function(datos) {
-//                if (datos.exito) {
-//                    alert("Se ha creado con exito!");
-//                }
-//            },
-//            error: function(e) {
-//                alert("erroooorrr!");
-//            }
-//        });
 
+        $.ajax({
+            url: host + server + "partida/crear",
+            method: "post",
+            dataType: "json",
+            data: {token: sala},
+            success: function(datos) {
+                idPartida = datos.id;
+                socket.emit("solicitud", {sala: sala, usuario: usuario, listaUsuarios: listaUsuarios});
+                $(".confirmacion").append("Se ha creado una partida en la sala " + sala + " espera a que se unan los jugadores...");
+                $("#bCrearPartida").attr("disabled", true);
+            },
+            error: function(e) {
+                console.log("Error en el servidor al crear la partida");
+            }
+        });
+
+    });
+
+    $("#formularioUnirsePartida").on("submit", function(e) {
+        e.preventDefault();
+//        sala = parseInt($(this).siblings(".sala").text());
+        sala = $(".partidas").val();
+        usuario.personaje = $("#personajes2").val();
+        socket.emit("confirmacion_solicitud", {sala: sala, usuario: usuario});
+        $(".confirmacion").append("Espera a que se unan suficientes jugadores...");
+        $("#bUnirsePartida").attr("disabled",true);
     });
 
 });
 
-socket.on("solicitud", function(datos){
-//    sala = datos.sala;
-    $(".mensaje").append("<p>"+datos.usuario+" ha creado una partida en la sala <span class='sala'>"+datos.sala+"</span>, deseas unirte?<input type='button' class='bSi' value='Si'></p>");
-    $(".bSi").on("click", function(){
-        sala = parseInt($(this).siblings(".sala").text());
-        socket.emit("confirmacion_solicitud", { sala: sala, usuario: usuario });
-        $(this).parent().remove();
+function empezarPartida() {
+    $.ajax({
+        url: host + server + "partida/empezar/" + idPartida,
+        method: "post",
+        dataType: "json",
+        data: {usuarios: listaUsuariosAceptados},
+        success: function(datos) {
+            if (datos.id) {
+//                alert("Se ha creado con exito!");
+                alert("Ya se han unido " + numJugadores + " jugadores, la partida empezara en breve...");
+                socket.emit("empezar_partida", {sala: sala});
+                modulo = "tablero";
+                cargarModulo(modulo);
+            }
+        },
+        error: function(e) {
+            alert("erroooorrr!");
+        }
     });
+}
+
+socket.on("confirmacion_solicitud", function(datos) {
+    $(".confirmacion").append("<p>" + datos.usuario.nombre + " ha confirmado su solicitud</p>");
+    listaUsuariosAceptados.push(datos.usuario);
+    if (listaUsuariosAceptados.length === numJugadores) {
+        empezarPartida();
+    }
 });
 
-socket.on("confirmacion_solicitud", function(datos){
-    $(".mensaje").append("<p>"+datos.usuario+" ha confirmado su solicitud</p>");
+socket.on("mensaje_sala", function(datos) {
+    $("#tRecibido").append(datos.usuario.nombre + " ha dicho: " + datos.mensaje + "\n");
 });
 
-socket.on("mensaje_sala", function(datos){
-    $("#tRecibido").append(datos.usuario+" ha dicho: "+datos.mensaje+"\n");
+socket.on("empezar_partida", function(datos) {
+    alert("La partida esta lista para empezar!");
+    modulo = "tablero";
+    cargarModulo(modulo);
 });
