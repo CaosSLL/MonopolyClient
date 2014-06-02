@@ -99,8 +99,30 @@ $(document).ready(function(){
             left : "-=5"
         }
         );
-
-//        alert("entra " + $(this).children().attr("src"));
+    });
+    
+    $(".casilla").mouseleave(function() {   
+        
+        //Sacamos top y left
+//        var topi = $("#imagenGrande").position().top;
+//        var lefti = $("#imagenGrande").position().left;
+//        
+////        Colocamos la imagen en su sitio
+//        $("#imagenGrande").css({
+//            top : tope,
+//            left : lefte
+//        });
+//        
+        //Agrandamos la imagen para que sea visible
+        $("#imagenGrande2").animate({
+            width: "-=50",
+            height: "-=50",
+            top : "+=5",
+            left : "+=5"
+        }
+        );
+        //Aniadimos la imagen al div común
+        $("#imagenGrande").hide();
     });
 
 

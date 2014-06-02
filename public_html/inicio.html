@@ -1,18 +1,24 @@
-<div id="container">
-    <h1 class="h1" id="titulo1">El Monopoly de la <br>Tierra Media</h1>
-    <div id="inicio">
-        <!--<h1 class="h1" id="titulo2">Logueate</h1>-->
-        <form name="logueo" id="form_log">
-            <label id="lusuario">Usuario</label>
-            <input type="text" id="usuario" min="" maxlength="">
-            <!--<label id="usuario"></label>-->
+<div id="inicio">
+    <h1 class="h1" id="titulo1">El Monopoly de la Tierra Media</h1>
+    <br>
+    <div id="divFormInicio">
+        <form id="formLogueo" name="formLogueo" method="post" action="">
+            <label id="lusuario" class="labelFormLoqueo">
+                Usuario
+                <input type="text" id="usuarioLogueo" name="usuario" maxlength="">
+            </label>
             <br>
-            <label id="lcontrasenia">Contraseña</label>
-            <input type="password" id="contrasenia" min="" maxlength="">
+            <label id="lcontrasenia" class="labelFormLoqueo">
+                Contraseña
+                <input type="password" id="contraseniaLogueo" name="password" maxlength="">
+            </label>
             <br>
-            <button name="enviar" class="boton">Enviar</button>
+            <label id="irRegistro" class="labelFormLoqueo">
+                <a class="ir" href="registro">Registrate</a>
+            </label>
+            <input type="submit" name="enviar" class="boton" value="">
         </form>
     </div>
-    <div><a class="ir boton" href="partidas">Ir a las partidas</a></div>
+    <!--<div><a class="ir boton" href="partidas">Ir a las partidas</a></div>-->
 </div>
 
