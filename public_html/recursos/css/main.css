@@ -18,6 +18,7 @@
 
 body {
     margin: 0px;
+    font-family: esdla;
 }
 
 #barraUusuarios {
@@ -91,11 +92,15 @@ body {
     background: -webkit-linear-gradient(top, #111, #444);
 }
 
-.mensaje {
-    position: absolute;
-    top: 19px;
-    left: 0px;
-    color: #ff9900;
-    z-index: 100;
-    padding: 13px;
+.ir {
+    text-decoration: none;    
+    color: white;
+}
+
+.ir:visited {
+    color: white;
+}
+
+.ir:active {
+    color: lightgray;
 }

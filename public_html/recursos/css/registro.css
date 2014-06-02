@@ -11,7 +11,7 @@
     text-shadow: 2px 2px whitesmoke;
     margin: 8% 0% 0% 55%;
 }
-#divFormRegistro {
+#div-form-registro {
     border: 2px solid #DAA520;
     border-radius: 20px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 1);
@@ -45,10 +45,10 @@
 input[name=usuario] {
     width: 50%;
 }
-input[name=contraseña] {
+input[name=password] {
     width: 48%;    
 }
-input[name=contraseña2] {
+input[name=password2] {
     width: 45.5%;        
 }
 input[name=email] {

@@ -13,7 +13,11 @@ $(document).ready(function() {
                 data: datosForm,
                 success: function(datos) {
                     if(datos.tipo == "error") {
-                        alert(datos.error);
+                        $("#error-registro").text(datos.error);
+                        $("#error-registro").dialog({
+                            dialogClass: "dialogo"
+                        });
+//                        alert(datos.error);
                     } else {
                         alert(datos.msg);
                     }
@@ -45,9 +49,5 @@ $(document).ready(function() {
 
 
 function validaciones() {
-    
-}
-
-function funcionSuccess(datosServer) {
-    alert(datosServer);
+    if (vali)
 }
