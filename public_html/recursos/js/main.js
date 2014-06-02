@@ -20,18 +20,18 @@ $(document).ready(function() {
 
     cargarModulo(modulo);
 
-    $.ajax({
-        url: host + server + "usuario/autenticado",
-        method: "post",
-        dataType: "json",
-        success: function(datos) {
-            if (datos.autenticado) {
-                $("#usuario").text("Hola amo");
-            } else {
-                $("#usuario").text("Logueate");
-            }
-        }
-    });
+//    $.ajax({
+//        url: host + server + "usuario/autenticado",
+//        method: "post",
+//        dataType: "json",
+//        success: function(datos) {
+//            if (datos.autenticado) {
+//                $("#usuario").text("Hola amo");
+//            } else {
+//                $("#usuario").text("Logueate");
+//            }
+//        }
+//    });
 
     $(".ir").off().on("click", function(e) {
         e.preventDefault();
@@ -49,6 +49,24 @@ $(document).ready(function() {
                 cargarModulo(modulo);
             }
         }
+    });
+
+    $("#logout").off().on("click", function(e) {
+        $.ajax({
+            url: host + server + "usuario/logout",
+            method: "post",
+            dataType: "json",
+            success : function(datos){
+                if(!datos.autenticado){
+                    $("#usuario").text("Logueatee!!");
+                    usuario.id = "";
+                    usuario.nombre = "";
+                    usuario.personaje = "";
+                    modulo = "inicio";
+                    cargarModulo(modulo);
+                }
+            }
+        });
     });
 
 });
