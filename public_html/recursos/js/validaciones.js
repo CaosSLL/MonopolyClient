@@ -51,8 +51,9 @@ function validarLongitud(input, longMin, longMax) {
 
 function validarEmail(input) {
     var datos = input.val();
-    alert(datos);
-    if (!(/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)/.test(datos))) {
+    var expresion =  /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)/;
+    alert(!expresion.test(datos));
+    if (!expresion.test(datos)) {
         input.parent().css({color: "red"});
         input.siblings(".error").text("No es un email correcto");
         return false;
@@ -67,7 +68,8 @@ function validarNombre(input) {
     if (campoVacio(input)) {
         if (validarLongitud(input, "4", "20")) {
             var datos = input.val();
-            if (!/^[A-Za-z]+([-_.]\w+)*/.test(datos)) {
+//            if (!/^[A-Za-z]+([-_.]\w+)*/.test(datos)) {
+            if(!/[A-Za-b]/.test(datos)){
                 alert("mal");
                 input.parent().css({color: "red"});
                 input.siblings(".error").text("Debe contener caracteres alfanumericos, -, _ o .");

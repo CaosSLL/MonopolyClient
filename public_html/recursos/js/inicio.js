@@ -13,17 +13,22 @@ $(document).ready(function() {
     /*Método para gestionar el boton*/
     
     $("#formLogueo").submit(function(e) {
-        e.preventDefault();        
+        e.preventDefault();   
         if(validarNombre($("#usuarioLogueo"))){
-            USUARIO = $("#usuarioLogueo").val();
-            alert("usuario correcto" + USUARIO);
-        }else{
-            alert("El usuario no es correcto");
+            alert("correcto");
+        }else {
+            alert("mal");
         }
-        if(validarContrasenia($("#contraseniaLogueo"))){
-            CONTRASENIA = $("#contraseniaLogueo").val();
-            
-        }
+//        if(validarNombre($("#usuarioLogueo"))){
+//            USUARIO = $("#usuarioLogueo").val();
+//            alert("usuario correcto" + USUARIO);
+//        }else{
+//            alert("El usuario no es correcto");
+//        }
+//        if(validarContrasenia($("#contraseniaLogueo"))){
+//            CONTRASENIA = $("#contraseniaLogueo").val();
+//            
+//        }
         
 //        if(validarLongitud($("#usuario"), 4, 10)){
 //        if(campoVacio($("#usuarioLogueo"))){
