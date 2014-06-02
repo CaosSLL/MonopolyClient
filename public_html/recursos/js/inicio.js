@@ -55,16 +55,6 @@ $(document).ready(function() {
             });
         }
         
-//        if(validarLongitud($("#usuario"), 4, 10)){
-//        if(campoVacio($("#usuarioLogueo"))){
-//            if(validarLongitud($("#usuarioLogueo"), "4", "20")){
-//                alert("correto");                
-//            }else{
-//                alert("no es correcto");                
-//            }
-//        }else{
-//            alert("no es correcto");
-//        }
     });
 
 });
