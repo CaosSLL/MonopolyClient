@@ -54,10 +54,12 @@ $(document).ready(function() {
 });
 
 function cargarModulo(modulo) {
+    console.log(modulo);
     contenido.slideUp("slow", function() {
         $("#js").remove();
         $("#css").remove();
         contenido.load(host + app + modulo + ".html", function() {
+            console.log(modulo);
             $("head").append('<script type="text/javascript" src="recursos/js/' + modulo + '.js" id="js"></script>');
             $("head").append('<link type="text/css" rel="stylesheet" href="recursos/css/' + modulo + '.css" id="css"/>');
         });

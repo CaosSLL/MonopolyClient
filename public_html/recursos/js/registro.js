@@ -49,5 +49,5 @@ $(document).ready(function() {
 
 
 function validaciones() {
-    if (vali)
+//    if (vali)
 }
