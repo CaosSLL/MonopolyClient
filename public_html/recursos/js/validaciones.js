@@ -1,3 +1,7 @@
+/******************************************************************************/
+/*                 MÉTODOS DE VALIDACIÓN GENERALES                            */
+/******************************************************************************/
+
 /**
  * Este método se encarga de validar que el input recibido no esté vacío
  * 
@@ -8,14 +12,19 @@
  *      true -> si el campo contiene algo
  */
 
-function campoVacio(input) {
-
+function validarCampoVacio(input) {
     var datos = input.val();
-//    if (datos.length <= 0) {
-    if (datos == null || datos.length == 0 || /^\s+$/.test(datos)) {
+
+    if (datos === null || datos.length === 0 || /^\s+$/.test(datos)) {
         input.parent().css({color: "red"});
-        input.siblings(".error").text("No puede estar vacio");
+//        input.siblings(".error").text("No puede estar vacio");
+        input.attr("title", "No puede estar vacio");
+        input.tooltip({
+            content: "No puede estar vacío"
+        });
+        input.tooltip("open");
         return false;
+
     } else {
         input.parent().css({color: "inherit"});
         input.siblings(".error").text("");
@@ -38,10 +47,12 @@ function campoVacio(input) {
  */
 function validarLongitud(input, longMin, longMax) {
     var datos = input.val();
+
     if (datos.length < longMin || datos.length > longMax) {
         input.parent().css({color: "red"});
         input.siblings(".error").text("Debe tener entre " + longMin + " y " + longMax + " caracteres");
         return false;
+
     } else {
         $(input).parent().css({color: "inherit"});
         $(input).siblings(".error").text("");
@@ -50,8 +61,36 @@ function validarLongitud(input, longMin, longMax) {
 }
 
 
+/******************************************************************************/
+/*                 MÉTODOS DE VALIDACIÓN ESPECÍFICOS                          */
+/******************************************************************************/
+
+/**
+ * Este método se encarga de validar que la contraseña introducida sólo contenga
+ * carácteres alfanuméricos, ".", "-", "_" y una longitud de entre 8 y 20 caracteres.
+ *      
+ * @param {type} input
+ *      es el input HTML que contendrá el calor que se debe validar
+ * @returns {Boolean}
+ *      true -> si el nombre de usuario es válido
+ *      false -> si el nombre de usuario no es válido
+ */
 function validarUsuario(input) {
-    var dato = $(input).val
+    var datos = input.val();
+    
+    if (!validarCampoVacio(input) || !validarLongitud(input, 4, 20)) {
+        return false;
+        
+    } else if (!/^(([a-zA-Z0-9\.\-\_])*)*$/.test(datos) || !/([a-zA-Z]+)/.test(datos)) {
+        input.parent().css({color: "red"});
+        input.siblings(".error").text("Debe contener caracteres alfanuméricos, '-', '_' o '.'");
+        return false;
+        
+    } else {
+        input.parent().css({color: "inherit"});
+        input.siblings(".error").text("");
+        return true;
+    }
 }
 
 /**
@@ -65,14 +104,19 @@ function validarUsuario(input) {
  *      false -> si la contraseña es incorrecta
  */
 function validarPassword(input) {
-    var datos = $(input).val();
-    if (!validarCampoVacio(input) || !validarLongitud(input, 8, 20)) {
+    var datos = input.val();
+    
+    if (!validarCampoVacio(input) || !validarLongitud(input, 6, 10)) {
         return false;
-    } else if (!(/[a-zA-Z0-9]{8,22}/.test(datos))) {
-        $(input).parent().css({color: "red"});
-        $(input).siblings(".error").text("La contraseña sólo puede contener letras y números");
+        
+    } else if (!(/^([a-zA-Z0-9]*)*$/.test(datos))) {
+        input.parent().css({color: "red"});
+        input.siblings(".error").text("La contraseña sólo puede contener letras y números");
         return false;
+        
     } else {
+        input.parent().css({color: "inherit"});
+        input.siblings(".error").text("");
         return true;
     }
 }
@@ -91,76 +135,41 @@ function validarPassword(input) {
 function validarPassword2(inputOriginal, inputRevisar) {
     var original = $(inputOriginal).val();
     var revisar = $(inputRevisar).val();
+    
     if (revisar != original) {
-        $(input).parent().css({color: "red"});
-        $(input).siblings(".error").text("Las contraseñas no coinciden");
+        inputRevisar.parent().css({color: "red"});
+        inputRevisar.siblings(".error").text("Las contraseñas no coinciden");
         return false;
+        
     } else {
-        $(input).parent().css({color: "inherit"});
-        $(input).siblings(".error").text("");
+        inputRevisar.parent().css({color: "inherit"});
+        inputRevisar.siblings(".error").text("");
         return true;
     }
 }
 
+/**
+ * Este método se encarga de validar que el e-mail introducido sea válido
+ *      no esté vacío
+ *      tenga un formato válido
+ * 
+ * @param {type} input
+ *      es el input HTML que contiene el e-mail que se quiere validar
+ * @returns {Boolean}
+ *      true -> si el email es válido
+ *      false -> si el email es incorrecto
+ */
 function validarEmail(input) {
     var datos = input.val();
-    alert(datos);
-    if (!(/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)/.test(datos))) {
+    
+    if (!(/^(\w)([.]*[_]*[-]*\w)+@([a-z])+([.]*[a-z])*[.]([a-z]{2,3})$/.test(datos))) {
         input.parent().css({color: "red"});
         input.siblings(".error").text("No es un email correcto");
         return false;
+        
     } else {
         input.parent().css({color: "inherit"});
         input.siblings(".error").text("");
         return true;
     }
 }
-
-function validarNombre(input) {
-    if (campoVacio(input)) {
-        if (validarLongitud(input, "4", "20")) {
-            var datos = input.val();
-            if (!/^[A-Za-z]+([-_.]\w+)*/.test(datos)) {
-                alert("mal");
-                input.parent().css({color: "red"});
-                input.siblings(".error").text("Debe contener caracteres alfanumericos, -, _ o .");
-                return false;
-            } else {
-                alert("bien");
-                input.parent().css({color: "inherit"});
-                input.siblings(".error").text("");
-                return true;
-            }
-        } else {
-            return false;
-        }
-    } else {
-        return false;
-    }
-}
-
-
-function validarContrasenia(input) {
-    var datos = input.val();
-    if (campoVacio(input)) {
-        if (validarLongitud(input, "6", "10")) {
-            if (/\w/.text(datos)) {
-                alert("bien");
-                input.parent().css({color: "inherit"});
-                input.siblings(".error").text("");
-                return true;
-
-            } else {
-                alert("bien");
-                input.parent().css({color: "inherit"});
-                input.siblings(".error").text("");
-                return true;
-            }
-        } else {
-            return false;
-        }
-    } else {
-        return false;
-    }
-}
-

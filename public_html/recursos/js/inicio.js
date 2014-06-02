@@ -14,27 +14,17 @@ $(document).ready(function() {
     
     $("#formLogueo").submit(function(e) {
         e.preventDefault();        
-        if(validarNombre($("#usuarioLogueo"))){
+        if (validarUsuario($("#usuarioLogueo"))) {
             USUARIO = $("#usuarioLogueo").val();
-            alert("usuario correcto" + USUARIO);
-        }else{
+            alert("usuario correcto: " + USUARIO);
+        } else {
             alert("El usuario no es correcto");
         }
-        if(validarContrasenia($("#contraseniaLogueo"))){
-            CONTRASENIA = $("#contraseniaLogueo").val();
+        if (validarPassword($("#contraseniaLogueo"))) {
+            PASSWORD = $("#contraseniaLogueo").val();
             
         }
         
-//        if(validarLongitud($("#usuario"), 4, 10)){
-//        if(campoVacio($("#usuarioLogueo"))){
-//            if(validarLongitud($("#usuarioLogueo"), "4", "20")){
-//                alert("correto");                
-//            }else{
-//                alert("no es correcto");                
-//            }
-//        }else{
-//            alert("no es correcto");
-//        }
     });
 
 });

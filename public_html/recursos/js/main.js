@@ -7,6 +7,8 @@ var usuario = {id: 0, nombre: "", personaje: ""};
 var sala;
 var unirse = false;
 
+var USUARIO;
+var PASSWORD;
 
 var contenido = "";
 
