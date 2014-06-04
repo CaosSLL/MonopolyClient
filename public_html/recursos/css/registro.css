@@ -68,3 +68,12 @@ input[name=enviar]:hover {
     -webkit-transition: background-image 0.75s;
     background-image: url(../images/otras/hoja-lorien-marron.png);
 }
+.ui-tooltip {
+    border: none;
+    margin: 0px;
+}
+.ui-tooltip-content {
+    font-family: esdla;
+    font-size: 12px;
+    padding: 0px;
+}

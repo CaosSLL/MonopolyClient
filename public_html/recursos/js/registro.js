@@ -80,7 +80,7 @@ function validaciones() {
         $("#error-registro").text("");
         return true;
     } else {
-        $("#error-registro").text("Corrija los errores por favor");
+        $("#error-registro").text("Corrija los errores, por favor");
         return false;
     }
 }
