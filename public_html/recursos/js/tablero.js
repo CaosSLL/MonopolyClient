@@ -1,3 +1,4 @@
+var clikado = false;
 //function cargarEventos() {
 //    hacerTablero();
 ////    $( "#casilla1" ).mouseover(
@@ -8,7 +9,7 @@
 //    agrandarImagen();
 //
 //}
-$(document).ready(function(){
+$(document).ready(function() {
 
     var tablero = $("#tablero"); //Obtener el tablero como objeto JQuery
     var tabla;
@@ -65,65 +66,78 @@ $(document).ready(function(){
     tablero.html(tabla);
 
 
-    $(".casilla").mouseenter(function() {
+//    $(".casilla").mouseenter(function() {
+    $(".casilla").off().on("click", function() {
         //Cogemos el tamanio de la imagen inicial
         var alto = $(this).children().css("height");
         var ancho = $(this).children().css("width");
         //Sacamos top y left
         var topi = $(this).children().position().top;
         var lefti = $(this).children().position().left;
-        
+
         //Se calcula para que quede centrada
         var ancho2 = ancho.substring(0, 2);
-        var alto2 = alto.substring(0, 2);        
-        var tope = parseInt(topi) - parseInt(ancho2) / 3;        
-        var lefte = parseInt(lefti) - parseInt(alto2) / 3;        
-        
+        var alto2 = alto.substring(0, 2);
+        var tope = parseInt(topi) - parseInt(ancho2) / 3;
+        var lefte = parseInt(lefti) - parseInt(alto2) / 3;
+
         //Creamos la etiqueta imagen
-        var imagen = "<img id='imagenGrande2' src='" + $(this).children().attr("src") + "' style='height: "+ alto+"; width: "+ancho+" '> </img>";
-        
+        var imagen = "<img id='imagenGrande2' src='" + $(this).children().attr("src") + "' style='height: " + alto + "; width: " + ancho + " '> </img>";
+
         //Aniadimos la imagen al div común
         $("#imagenGrande").html(imagen).show();
-        
+
         //Colocamos la imagen en su sitio
         $("#imagenGrande").css({
-            top : tope,
-            left : lefte
+            top: tope,
+            left: lefte
         });
-        
+
         //Agrandamos la imagen para que sea visible
         $("#imagenGrande2").animate({
             width: "+=50",
             height: "+=50",
-            top : "-=5",
-            left : "-=5"
-        }
-        );
+            top: "-=5",
+            left: "-=5"
+        });
+        $("#imagenGrande2").off().on("click", function() {
+            $("#imagenGrande2").animate({
+                width: "-=50",
+                height: "-=50",
+                top: "+=5",
+                left: "+=5"
+            });
+            //Aniadimos la imagen al div común
+            $("#imagenGrande").hide();
+        });
+
+
     });
-    
-    $(".casilla").mouseleave(function() {   
-        
-        //Sacamos top y left
-//        var topi = $("#imagenGrande").position().top;
-//        var lefti = $("#imagenGrande").position().left;
+
+
+//    $(".casilla").mouseleave(function() {   
 //        
-////        Colocamos la imagen en su sitio
-//        $("#imagenGrande").css({
-//            top : tope,
-//            left : lefte
-//        });
-//        
-        //Agrandamos la imagen para que sea visible
-        $("#imagenGrande2").animate({
-            width: "-=50",
-            height: "-=50",
-            top : "+=5",
-            left : "+=5"
-        }
-        );
-        //Aniadimos la imagen al div común
-        $("#imagenGrande").hide();
-    });
+//        //Sacamos top y left
+////        var topi = $("#imagenGrande").position().top;
+////        var lefti = $("#imagenGrande").position().left;
+////        
+//////        Colocamos la imagen en su sitio
+////        $("#imagenGrande").css({
+////            top : tope,
+////            left : lefte
+////        });
+////        
+//        //Agrandamos la imagen para que sea visible
+//        $("#imagenGrande2").animate({
+//            width: "-=50",
+//            height: "-=50",
+//            top : "+=5",
+//            left : "+=5"
+//        }
+//        );
+//        //Aniadimos la imagen al div común
+//        $("#imagenGrande").hide();
+//    });
 
 
 });

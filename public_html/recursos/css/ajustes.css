@@ -1,11 +1,3 @@
-/* 
-    Document   : ajustes
-    Created on : 12-may-2014, 19:05:16
-    Author     : HP-Equipo
-    Description:
-        Purpose of the stylesheet follows.
-*/
-
 #contenido {
     /*padding-top: 50px;*/
     /*position: fixed;*/
@@ -21,6 +13,39 @@
     background-repeat: no-repeat;
     -webkit-background-repeat: cover;
     -moz-background-repeat: cover;
-    -o-background-repeat: cover;
-    
+    -o-background-repeat: cover;   
+}
+
+#ajustes {
+    font-family: esdla;
+    font-size: 18px;
+}
+
+.titulo {
+    font-family: tolkien;
+    font-size: 300%;
+    text-shadow: 2px 2px whitesmoke;  
+    text-align: center;
+}
+
+.div-ajustes{
+    border: 2px solid #DAA520;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 1);
+    background-color: #372b2b;
+    color: #F5F5F5;
+    text-shadow: 1px, 1px, black;
+    padding: 10px;
+    width: 25%;
+}
+#div-cambiarUsuario{
+    z-index: 100;
+    position: absolute;    
+    margin-left: 10%;
+}
+
+#div-cambiarContrasenia {
+    z-index: 100;
+    position: absolute;
+    margin-left: 60%;
 }
