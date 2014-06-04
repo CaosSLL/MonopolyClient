@@ -68,3 +68,28 @@
     width: 3.5em;
     z-index: 10000;
 }
+
+#juego {
+    float: left;
+}
+#informacion {
+    float: left;
+border: solid 1px white;
+margin-left: 5%;
+margin-top: 5px;
+width: 31%;
+height: 100%;
+}
+#fichas {}
+.ficha {}
+.cabecera {}
+.nombre {}
+.personaje {}
+.dinero {}
+.tarjetas{}
+.color {}
+#botones {
+    color: white;
+}
+.button {}
+.bote{}
