@@ -12,6 +12,8 @@ var clikado = false;
 $(document).ready(function() {
 
     var tablero = $("#tablero"); //Obtener el tablero como objeto JQuery
+    
+    
     var tabla;
     tabla = "<table> <tr> ";
     for (var i = 20; i <= 30; i++) {
@@ -64,8 +66,7 @@ $(document).ready(function() {
     tabla += "</tr> </table>";
 
     tablero.html(tabla);
-
-
+    
 //    $(".casilla").mouseenter(function() {
     $(".casilla").off().on("click", function() {
         //Cogemos el tamanio de la imagen inicial
@@ -114,6 +115,7 @@ $(document).ready(function() {
 
     });
 
+    cargarDatosJugadores();
 
 //    $(".casilla").mouseleave(function() {   
 //        
@@ -141,3 +143,14 @@ $(document).ready(function() {
 
 
 });
+
+function cargarDatosJugadores(){
+    
+    // Cargar fichas
+    for(var i = 0; i < listaUsuarios.length; i++){
+        console.log(listaUsuarios[i]);
+        $("#tablero").append("<div class='ficha' id='"+listaUsuarios[i].personajeNombre+"'><img src='recursos/images/fichas/"+listaUsuarios[i].personajeNombre+".png'></div>");
+        $(".ficha").css({ top: $("#casilla0").position().top,left: $("#casilla0").position().left });
+    }
+    
+}
