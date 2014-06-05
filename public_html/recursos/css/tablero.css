@@ -78,6 +78,18 @@
     width: 100%;
 }
 
+.dado {
+    position: absolute;
+top: 303px;
+left: 320px;
+width: 40px;
+height: 36px;
+background-color: #f2ea9d;
+border-radius: 5px;
+padding: 7px 0px 0px 7px;
+font-size: 16px;
+}
+
 #juego {
     float: left;
 }
@@ -90,7 +102,7 @@
     height: 100%;
 }
 #fichas {}
-.ficha {}
+.panel {}
 .cabecera {}
 .nombre {}
 .personaje {}
