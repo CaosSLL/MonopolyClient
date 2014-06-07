@@ -5,12 +5,8 @@ var modulo = "";
 
 var usuario = {id: 0, nombre: "", personaje: "", personajeNombre: ""};
 var sala;
-var unirse = false;
 var listaUsuarios = new Array();
 var turno = null;
-
-var USUARIO;
-var PASSWORD;
 
 var contenido = "";
 
@@ -41,17 +37,17 @@ $(document).ready(function() {
         e.preventDefault();
         if (modulo != $(this).attr("href")) {
             modulo = $(this).attr("href");
-            if (modulo.match("/")) {
-                modulo = modulo.split("/");
-                if (modulo[1] == "crear") {
-                    unirse = false;
-                } else {
-                    unirse = true;
-                }
-                cargarModulo(modulo[0]);
-            } else {
+//            if (modulo.match("/")) {
+//                modulo = modulo.split("/");
+//                if (modulo[1] == "crear") {
+//                    unirse = false;
+//                } else {
+//                    unirse = true;
+//                }
+//                cargarModulo(modulo[0]);
+//            } else {
                 cargarModulo(modulo);
-            }
+//            }
         }
     });
 

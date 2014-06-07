@@ -38,7 +38,6 @@ $(document).ready(function() {
                 data : $(this).serialize(),
                 success : function(datos){
                     if (datos.autenticado) {
-                        console.log("entra if");
                         $("#usuario").text(datos.nombre);
                         usuario.id = datos.id;
                         usuario.nombre = datos.nombre;

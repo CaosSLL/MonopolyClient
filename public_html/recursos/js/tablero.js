@@ -6,27 +6,38 @@ var tieneTurno = false;
 $(document).ready(function() {
 
     iniciarTablero();
-    iniciarDado();
+//    iniciarDado();
     iniciarFichas();
     cargarDatosJugadores();
 
 });
 
-socket.on("mensaje", function(datos) {
-    console.log("Alguien ha hecho click en la ficha");
+socket.on("movimiento_partida", function(datos) {
+    trace("Evento mover ficha -->");
     $(".dado").text(datos.avance);
     moverFicha(datos.avance);
     cambiarTurno();
+//    turno = datos.turno;
 });
 
 function iniciarDado() {
+    trace("Iniciar dado -->");
     var dado = $(".dado");
     dado.text("Tira!");
-    dado.on("click", tirar);
+}
+
+function iniciarFichas() {
+    trace("Iniciar Fichas -->");
+    var ficha = $(".ficha");
+    var casilla = $("#casilla0").position();
+    ficha.css({
+        top: (casilla.top + 10),
+        left: (casilla.left + 10),
+    });
 }
 
 function cargarDatosJugadores() {
-
+    trace("Cargar datos jugadores -->");
     // Cargar fichas
     for (var i = 0; i < listaUsuarios.length; i++) {
         console.log(listaUsuarios[i]);
@@ -48,14 +59,16 @@ function cargarDatosJugadores() {
 
 
 function tirar() {
+    trace("Tirar dados -->");
     var num = Math.floor(Math.random() * (6 - 1 + 1)) + 1
     $(".dado").text(num);
     moverFicha(num);
-    socket.emit("mensaje", {avance: num, turno: turno});
+    socket.emit("movimiento_partida", { sala: sala, avance: num, turno: turno});
     cambiarTurno();
 }
 
 function cambiarTurno() {
+    trace("Cambiar turno -->");
     if (turno >= listaUsuarios.length - 1) {
         turno = 0;
     } else {
@@ -75,17 +88,8 @@ function cambiarTurno() {
     console.log("turno: " + turno + " tiene turno? " + tieneTurno);
 }
 
-function iniciarFichas() {
-    var ficha = $(".ficha");
-    var casilla = $("#casilla0").position();
-    ficha.css({
-        top: (casilla.top + 10),
-        left: (casilla.left + 10),
-    });
-}
-
 function moverFicha(avance) {
-
+    trace("Mover ficha -->");
     var personaje = listaUsuarios[turno].personajeNombre;
     var ficha = $("#" + personaje);
     var casillaActual = posicionesCasilla[turno];
@@ -102,6 +106,8 @@ function moverFicha(avance) {
 }
 
 function iniciarTablero() {
+    trace("Iniciar tablero -->");
+    
     var tablero = $("#tablero"); //Obtener el tablero como objeto JQuery
 
     var tabla;
@@ -160,6 +166,7 @@ function iniciarTablero() {
 }
 
 function zoom() {
+    trace("zoom -->");
 
     //    $(".casilla").mouseenter(function() {
     $(".casilla").off().on("click", function() {
@@ -208,4 +215,12 @@ function zoom() {
 
 
     });
+}
+
+function trace(mensaje){
+    try{
+        console.log(mensaje);
+    }catch (e){
+        
+    }
 }
