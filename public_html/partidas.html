@@ -1,46 +1,48 @@
-<div class="crearPartida">
-    <h1>Creando Partida</h1>
+<div id="partidas">
+    <div class="crearPartida">
+        <h1>Crear una nueva partida:</h1>
+        <div id="partidaNueva" class="tipoPartida">
+            <div class="usuarios">
+                <form id="formularioCrearPartida">
+                    <div>Número de jugadores: <input type="number" name="numJugadores" id="numJugadores"></div>
 
-    <div class="usuarios">
-        <input type="text" id="tUsuario">
-        <div id="divUsuario"></div>
-        <form id="formularioCrearPartida">
-            <div class="configuracionPartida">
-                <ul>
-                    <li>Sonido</li>
-                    <li>etc...</li>
-                    <li>Número de jugadores: <input type="number" name="numJugadores" id="numJugadores"></li>
-                </ul>
+                    <label>Elige a tu personaje:
+                        <select name="personaje" id="personajes1"></select>
+                    </label><br>
+                    <input type="submit" name="bAceptar" value="" id="bCrearPartida" />
+                </form>
             </div>
 
-            <label>Elige a tu personaje:
-                <select name="personaje" id="personajes1"></select>
-            </label><br>
-            <input type="submit" name="bAceptar" value="Crear partida" id="bCrearPartida" >
-        </form>
+            <div class="sala">
+                <div class="confirmacion"></div>
+                <!--    <div class="chat">
+                        <input type="text" id="tEnviar"><br>
+                        <textarea id="tRecibido" readonly cols="30" rows="10"></textarea>
+                    </div>-->
+            </div>
+        </div>
     </div>
 
-    <div class="sala">
-        <div class="confirmacion"></div>
-        <!--    <div class="chat">
-                <input type="text" id="tEnviar"><br>
-                <textarea id="tRecibido" readonly cols="30" rows="10"></textarea>
-            </div>-->
-    </div>
-</div>
-<div class="unirsePartida">
-    <form id="formularioUnirsePartida">
-        <div class="configuracionPartida">
-            <label>
-                Lista de partidas en espera:
-                <select name="partidas" class="partidas">
-                </select>
-            </label>
-            <label>Elige a tu personaje:
-                <select name="personaje" id="personajes2"></select>
-            </label><br>
-            <input type="submit" name="bAceptar" value="Unirse a partida" id="bUnirsePartida">
+    <div class="unirsePartida">
+        <h1>Unirse a una partida:</h1>
+        <div id="partidaUnirse" class="tipoPartida">
+            <form id="formularioUnirsePartida">
+                <div class="configuracionPartida">
+                    <label>
+                        Lista de partidas en espera:<br/>
+                        <select name="partidas" class="partidas">
+                        </select>
+                    </label><br/>
+
+                    <label>Elige a tu personaje:
+                        <select name="personaje" id="personajes2"></select>
+                    </label><br>
+
+                    <input type="submit" name="bAceptar" value="" id="bUnirsePartida"/>
+                </div>
+            </form>
+
+            <div class="confirmacion"></div>
         </div>
-    </form>
-    <div class="confirmacion"></div>
+    </div>
 </div>

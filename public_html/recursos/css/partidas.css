@@ -1,39 +1,135 @@
-#opciones {
-
+#contenido {
+    background-image: url("../images/fondos/partidas.jpg");
 }
-
-#opciones ul {
-    list-style: none;
-}
-
 #partidas {
-    background: url("http://localhost/MonopolyClient/public_html/recursos/images/fondos/fondo1.jpg") no-repeat; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    padding: 40px;
-    height: 100%;
+    font-family: esdla;
+    font-size: 18px;
     color: white;
+    margin: 0% 5%;
+    top: 40px;
 }
-
-
-#listaUsuariosConectados ul {
-    list-style: none;
+#partidas h1 {
+    font-family: tolkien;
+    font-size: 40px;
+    color: white;
+    text-shadow: 2px 2px black;
+    margin: 5% 0% 2% 0%;
+    text-align: center;
 }
-
-.usuario {
-    width: 150px;
-}
-
-.usuario:hover {
-    cursor: pointer;
-}
-
-.usuario .ui-icon {
+.crearPartida {
     float: left;
 }
-
-.nombre_usuario {
-    
+#partidaNueva {
+/*    border: 2px solid #DAA520;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 1);
+    margin: 0% 15%;
+    padding: 2% 2% 0% 2%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #F5F5F5;
+    text-shadow: 1px 1px black;
+    width: 70%;*/
+}
+.unirsePartida {
+    float: right;
+}
+#partidaUnirse {
+/*    border: 2px solid #DAA520;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 1);
+    margin: 0% 15%;
+    padding: 2% 2% 0% 2%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #F5F5F5;
+    text-shadow: 1px 1px black;
+    width: 70%;*/
+}
+.tipoPartida {
+    border: 2px solid #DAA520;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 1);
+    margin-top: 6%;
+    padding: 4% 4% 4% 4%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #F5F5F5;
+    text-shadow: 1px 1px black;
+    width: 100%;    
+}
+#bCrearPartida {
+    margin-top: 6% !important;
+    border: medium none !important;
+    width: 150px;
+    height: 75px;
+    background-image: url("../images/botones/botonCrear.png");
+    transition: background-image 0.75s;
+    -webkit-transition: background-image 0.75s;
+}
+#bCrearPartida:hover {
+    cursor: pointer;
+    transition: background-image 0.75s;
+    -webkit-transition: background-image 0.75s;
+    background-image: url("../images/botones/botonCrear-hover.png");
+}
+#bUnirsePartida {
+    margin-top: 6% !important;
+    border: medium none !important;
+    width: 150px;
+    height: 75px;
+    background-image: url("../images/botones/botonUnirse.png");
+    transition: background-image 0.75s;
+    -webkit-transition: background-image 0.75s;
+}
+#bUnirsePartida:hover {
+    cursor: pointer;
+    transition: background-image 0.75s;
+    -webkit-transition: background-image 0.75s;
+    background-image: url("../images/botones/botonUnirse-hover.png");
+}
+#partidas input {
+    margin: 0% 0% 6% 2%;
+    font-family: esdla;
+    padding: 0% 3%;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #DAA520;
+    font-size: 16px;
+    background-color: rgba(246, 241, 221, 0);
+    color: whitesmoke;
+    text-shadow: 1px 1px black;
+}
+#partidas input:focus {
+    outline: none !important;
+}
+#partidas select:focus {
+    outline: none !important;
+    background: rgba(0, 0, 0,0.9);
+}
+#partidas select {
+    margin: 0% 0% 6% 2%;
+    background: rgba(218, 165, 32,0.2);
+    color: white;
+    text-shadow: 1px 1px black;
+    font-family: esdla;
+    font-size: 18px;
+    border: 1px solid #DAA520;
+    min-width: 105px;
+}
+#partidas select option:hover {
+    background: rgba(218, 165, 32,0.2);
+    color: white;
+    text-shadow: 1px 1px black;
+    font-family: esdla;
+    font-size: 18px;
+    border: 1px solid #DAA520;
+}
+#partida::selection {
+    background: rgba(0,0,0,1);
+}
+#partidas select[name=partidas] {
+    width: 90%;
+    margin-top: 2% !important;
+}
+input[type=number] {
+    width: 7%;
 }

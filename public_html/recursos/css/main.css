@@ -21,6 +21,7 @@ body {
 }
 
 #barraUusuarios {
+    font-family: esdla;
     position:fixed;
     z-index:10;
     /*position: fixed;*/

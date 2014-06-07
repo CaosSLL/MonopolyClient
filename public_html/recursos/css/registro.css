@@ -4,6 +4,7 @@
 #registro {
     font-family: esdla;
     font-size: 18px;
+    top: 40px;
 }
 .h1 {
     font-family: tolkien;
@@ -69,11 +70,9 @@ input[name=email] {
 }
 input[name=enviar] {
     border: medium none !important;
-    /*margin-left: 62% !important;*/
-    /*margin-top: 1% !important;*/
     width: 150px;
     height: 75px;
-    background-image: url(../images/otras/hoja-lorien-verde.png);
+    background-image: url("../images/botones/botonEnviar.png");
     transition: background-image 0.75s;
     -webkit-transition: background-image 0.75s;
 }
@@ -81,16 +80,7 @@ input[name=enviar]:hover {
     cursor: pointer;
     transition: background-image 0.75s;
     -webkit-transition: background-image 0.75s;
-    background-image: url(../images/otras/hoja-lorien-marron.png);
-}
-.ui-tooltip {
-    border: none;
-    margin: 0px;
-}
-.ui-tooltip-content {
-    font-family: esdla;
-    font-size: 12px;
-    padding: 0px;
+    background-image: url("../images/botones/botonEnviar-hover.png");
 }
 #error-registro {
     color: #DAA520;
