@@ -9,17 +9,19 @@
     font-family: tolkien;
     font-size: 40px;
     text-shadow: 2px 2px whitesmoke;
-    margin: 8% 0% 0% 55%;
+    margin: 5% 0% 2% 0%;
+    text-align: center;
 }
 #div-form-registro {
     border: 2px solid #DAA520;
     border-radius: 20px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 1);
-    margin: 0% 10% 0% 50%;
+    margin: 0% 15%;
     padding: 2% 2% 0% 2%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
     color: #F5F5F5;
     text-shadow: 1px 1px black;
+    width: 70%;
 }
 #formRegistro input {
     margin: 0% 0% 4% 2%;
@@ -38,24 +40,37 @@
     outline: none !important;
 }
 .labelFormRegistro {
-    
+    width: 50%;
+    margin-bottom: 4%;
+}
+#labNombre {
+    float: left;
+}
+#labPassword {
+    float: right; 
+}
+#labPassword2 {
+    float: right;
+}
+#labEmail {
+    float: left;
 }
 input[name=usuario] {
-    width: 50%;
+    width: 44%;
 }
 input[name=password] {
     width: 48%;    
 }
 input[name=password2] {
-    width: 45.5%;        
+    width: 46%;        
 }
 input[name=email] {
-    width: 49%;        
+    width: 42%;        
 }
 input[name=enviar] {
     border: medium none !important;
-    margin-left: 57% !important;
-    margin-top: 3% !important;
+    /*margin-left: 62% !important;*/
+    /*margin-top: 1% !important;*/
     width: 150px;
     height: 75px;
     background-image: url(../images/otras/hoja-lorien-verde.png);
@@ -76,4 +91,15 @@ input[name=enviar]:hover {
     font-family: esdla;
     font-size: 12px;
     padding: 0px;
+}
+#error-registro {
+    color: #DAA520;
+    text-shadow: 1px 1px black;
+}
+#span-submit {
+    text-align: right;
+}
+#formRegistro table td {
+    width: 1%;
+    padding: 2%
 }

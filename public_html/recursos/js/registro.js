@@ -18,12 +18,21 @@ $(document).ready(function() {
                 data: datosForm,
                 success: function(datos) {
                     if(datos.tipo === "error") {
-                        $("#error-registro").text(datos.error);
+                        $("#error-registro").text("");
+                        $("#error-registro").css({color: "#C0402A"});
+                        $("#error-registro").text(datos.error);                        
                     } else {
+                        $("#error-registro").text("");
+                        $("#error-registro").css({color: "inherit"});
                         $("#error-registro").text(datos.msg);
+                        usuario.id = datos.id;
+                        usuario.nombre = datos.nombre;
+                        modulo = "partidas";
+                        cargarModulo(modulo);
                     }
                 },
                 error: function() {
+                    $("#error-registro").text("");
                     $("#error-registro").text("Lo sentimos mucho.\r\nNo se ha podido establecer conexión con el servidor.");
                 }
             });
@@ -77,10 +86,8 @@ function validaciones() {
         contErrores++;
     
     if (contErrores === 0) {
-        $("#error-registro").text("");
         return true;
     } else {
-        $("#error-registro").text("Corrija los errores, por favor");
         return false;
     }
 }

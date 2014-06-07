@@ -3,29 +3,34 @@
     <br/>
     <div id="div-form-registro">
         <form id="formRegistro" name="formRegistro" method="post" action="">
-            <label class="labelFormRegistro">
+            <label class="labelFormRegistro" id="labNombre">
                 Nombre de usuario:
                 <input type="text" name="usuario" /><br/>
                 <span class="error"></span>
-            </label><br/>
-            <label class="labelFormRegistro">
+            </label>                                
+            <label class="labelFormRegistro" id="labPassword">
                 Elija la contraseña:
                 <input type="password" name="password" /><br/>
                 <span class="error"></span>
-            </label><br/>
-            <label class="labelFormRegistro">
-                Repita la contraseña:
-                <input type="password" name="password2" /><br/>
-                <span class="error"></span>
-            </label><br/>
-            <label class="labelFormRegistro">
+            </label>
+            <br/>
+            <label class="labelFormRegistro" id="labEmail">
                 Dirección de e-mail:
                 <input type="text" name="email" /><br/>
                 <span class="error"></span>
-            </label><br/>
-            <span id="error-registro"></span><br/>
-            <!--<input type="image" name="submit" src="recursos/images/otras/hoja-lorien-verde.png" />-->
-            <input type="submit" name="enviar" value=""/>
+            </label>
+            <label class="labelFormRegistro" id="labPassword2">
+                Repita la contraseña:
+                <input type="password" name="password2" /><br/>
+                <span class="error"></span>
+            </label>
+            <br/><br/>
+            <table>
+                <tr>
+                    <td><span id="error-registro"></span></td>
+                    <td id="span-submit"><input type="submit" name="enviar" value=""/></td>
+                </tr>
+            </table>
         </form>
     </div>
 </div>

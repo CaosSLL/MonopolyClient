@@ -16,13 +16,8 @@ function validarCampoVacio(input) {
     var datos = input.val();
 
     if (datos === null || datos.length === 0 || /^\s+$/.test(datos)) {
-        input.parent().css({color: "red"});
-//        input.siblings(".error").text("No puede estar vacio");
-        input.attr("title", "No puede estar vacio");
-        input.tooltip({
-            content: "No puede estar vacío"
-        });
-        input.tooltip("open");
+//        input.parent().css({color: "red"});
+        input.siblings(".error").text("No puede estar vacio");
         return false;
 
     } else {
@@ -49,7 +44,7 @@ function validarLongitud(input, longMin, longMax) {
     var datos = input.val();
 
     if (datos.length < longMin || datos.length > longMax) {
-        input.parent().css({color: "red"});
+//        input.parent().css({color: "red"});
         input.siblings(".error").text("Debe tener entre " + longMin + " y " + longMax + " caracteres");
         return false;
 
@@ -82,7 +77,7 @@ function validarUsuario(input) {
         return false;
         
     } else if (!/^(([a-zA-Z0-9\.\-\_])*)*$/.test(datos) || !/([a-zA-Z]+)/.test(datos)) {
-        input.parent().css({color: "red"});
+//        input.parent().css({color: "red"});
         input.siblings(".error").text("Debe contener caracteres alfanuméricos, '-', '_' o '.'");
         return false;
         
@@ -110,7 +105,7 @@ function validarPassword(input) {
         return false;
         
     } else if (!(/^([a-zA-Z0-9]*)*$/.test(datos))) {
-        input.parent().css({color: "red"});
+//        input.parent().css({color: "red"});
         input.siblings(".error").text("La contraseña sólo puede contener letras y números");
         return false;
         
@@ -137,7 +132,7 @@ function validarPassword2(inputOriginal, inputRevisar) {
     var revisar = $(inputRevisar).val();
     
     if (revisar != original) {
-        inputRevisar.parent().css({color: "red"});
+//        inputRevisar.parent().css({color: "red"});
         inputRevisar.siblings(".error").text("Las contraseñas no coinciden");
         return false;
         
@@ -163,7 +158,7 @@ function validarEmail(input) {
     var datos = input.val();
     
     if (!(/^(\w)([.]*[_]*[-]*\w)+@([a-z])+([.]*[a-z])*[.]([a-z]{2,3})$/.test(datos))) {
-        input.parent().css({color: "red"});
+//        input.parent().css({color: "red"});
         input.siblings(".error").text("No es un email correcto");
         return false;
         

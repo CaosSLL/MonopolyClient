@@ -103,3 +103,7 @@ body {
 .ir:active {
     color: lightgray;
 }
+.error {
+    color: #C0402A;
+    font-size: 16px;
+}
