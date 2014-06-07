@@ -46,7 +46,14 @@ $(document).ready(function() {
 //                }
 //                cargarModulo(modulo[0]);
 //            } else {
-                cargarModulo(modulo);
+            if (modulo == "ajustes") {
+                if (usuario.nombre !== "") {
+                    cargarModulo(modulo);
+                } else{
+                    alert("Tienes que loguearte");
+                }
+            }
+            cargarModulo(modulo);
 //            }
         }
     });
@@ -56,8 +63,8 @@ $(document).ready(function() {
             url: host + server + "usuario/logout",
             method: "post",
             dataType: "json",
-            success : function(datos){
-                if(!datos.autenticado){
+            success: function(datos) {
+                if (!datos.autenticado) {
                     $("#usuario").text("Logueatee!!");
                     usuario.id = "";
                     usuario.nombre = "";

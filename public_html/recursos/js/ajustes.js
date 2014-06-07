@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    if (logado()) {
+//    if (logado()) {
 
         $("#formCambiarUsuario").submit(function(e) {
             e.preventDefault();
@@ -11,19 +11,19 @@ $(document).ready(function() {
                 alert("mal");                
             }
         });
-    }
-    ;
+//    }
+//    ;
 });
 
-function logado() {
-    if (usuario["nombre"] === "") {
-        modulo = "inicio";
-        cargarModulo(modulo);
-        return false;
-    } else {
-        return true;
-    }
-}
+//function logado() {
+//    if (usuario["nombre"] === "") {
+//        modulo = "inicio";
+//        cargarModulo(modulo);
+//        return false;
+//    } else {
+//        return true;
+//    }
+//}
 
 function validaciones() {
     // Recogemos todos los inputs que vamos a validar y creamos un contador de errores
