@@ -3,9 +3,11 @@ var server = "MonopolyServer/web/app_dev.php/";
 var app = "MonopolyClient/public_html/";
 var modulo = "";
 
-var usuario = {id: 0, nombre: "", personaje: ""};
+var usuario = {id: 0, nombre: "", personaje: "", personajeNombre: ""};
 var sala;
 var unirse = false;
+var listaUsuarios = new Array();
+var turno = null;
 
 var USUARIO;
 var PASSWORD;

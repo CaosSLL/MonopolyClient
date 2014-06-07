@@ -30,15 +30,15 @@
 }
 
 .izquierda{
-/*    -webkit-transform: rotate(-90deg);
-	-moz-transform: rotate(-90deg);
-	rotation: 90deg;*/
+    /*    -webkit-transform: rotate(-90deg);
+            -moz-transform: rotate(-90deg);
+            rotation: 90deg;*/
 }
 
 .derecha {
-/*    -webkit-transform: rotate(90deg);
-	-moz-transform: rotate(90deg);
-	rotation: 90deg;*/
+    /*    -webkit-transform: rotate(90deg);
+            -moz-transform: rotate(90deg);
+            rotation: 90deg;*/
 }
 .casilla.lateral {
     height: 3.5em;
@@ -69,19 +69,40 @@
     z-index: 10000;
 }
 
+.ficha {
+    width: 38px;
+    position: absolute;
+    top: 0px;
+}
+.ficha img {
+    width: 100%;
+}
+
+.dado {
+    position: absolute;
+top: 303px;
+left: 320px;
+width: 40px;
+height: 36px;
+background-color: #f2ea9d;
+border-radius: 5px;
+padding: 7px 0px 0px 7px;
+font-size: 16px;
+}
+
 #juego {
     float: left;
 }
 #informacion {
     float: left;
-border: solid 1px white;
-margin-left: 5%;
-margin-top: 5px;
-width: 31%;
-height: 100%;
+    border: solid 1px white;
+    margin-left: 5%;
+    margin-top: 5px;
+    width: 31%;
+    height: 100%;
 }
 #fichas {}
-.ficha {}
+.panel {}
 .cabecera {}
 .nombre {}
 .personaje {}
