@@ -49,3 +49,35 @@
     position: absolute;
     margin-left: 60%;
 }
+
+#div-otrosAjustes {
+    z-index: 100;
+    position: absolute;
+    margin-top: 20%;
+    margin-left: 10%;
+}
+
+#div-opiniones {
+    z-index: 100;
+    position: absolute;
+    margin-top: 20%;
+    margin-left: 60%;
+}
+
+input[name=guardar] {
+    border: medium none !important;
+    margin-left: 57% !important;
+    margin-top: 3% !important;
+    width: 150px;
+    height: 75px;
+    background-image: url(../images/otras/hoja-lorien-verde.png);
+    transition: background-image 0.75s;
+    -webkit-transition: background-image 0.75s;
+}
+
+input[name=guardar]:hover {
+    cursor: pointer;
+    transition: background-image 0.75s;
+    -webkit-transition: background-image 0.75s;
+    background-image: url(../images/otras/hoja-lorien-marron.png);
+}
