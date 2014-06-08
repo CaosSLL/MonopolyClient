@@ -8,21 +8,28 @@
         <link type="text/css" rel="stylesheet" href="recursos/css/main.css" />
         <script type="text/javascript" src="recursos/js/libs/jquery-1.9.0/jquery.min.js"></script>
         <script type="text/javascript" src="recursos/js/libs/jqueryui-1.10.0/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="http://localhost:8080/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="http://localhost:8585/socket.io/socket.io.js"></script>
         <script type="text/javascript" src="recursos/js/main.js"></script>
         <script type="text/javascript" src="recursos/js/validaciones.js"></script>
     </head>
     <body>
         <div id="barraUusuarios">
             <ul class="items">
-                <li><span id="usuario">textooooooo</span></li>
-                <li><span class="ui-icon ui-icon-volume-off"></span></li>
-                <li><span class="banderitas"></span></li>
-                <li><span class="ui-icon ui-icon-power" id="logout"></span></li>
-                <li><a class="ir" href="ajustes"><span class="ui-icon ui-icon-wrench"></span></a></li>
-                <li><span><a class="ir" href="tablero">Ir al tablero</a></span></li>
-                <li><span><a class="ir" href="registro">Ir al registro</a></span></li>
-                <li><span><a class="ir" href="partidas">Crear partida</a></span></li>
+                <li><span id="usuario">Logueatee!</span></li>
+                <li><span id="separacion">||</span></li>
+                <li><span id="infoPartida"></span></li>
+                <div id="botonesAjustes">
+                    <li><span class="ui-icon ui-icon-stop" id="volumen"></span></li>
+                    <li><span class="ui-icon ui-icon-volume-off" id="bajarVolumen"></span></li>
+                    <li><span class="ui-icon ui-icon-volume-on" id="subirVolumen"></span></li>
+                    <li><span class="banderitas"></span></li>
+                    <li><span class="ui-icon ui-icon-power" id="logout"></span></li>
+                    <li><a class="ir" href="ajustes"><span class="ui-icon ui-icon-wrench"></span></a></li>
+                </div>
+                <!--                <li><span><a class="ir" href="tablero">Ir al tablero</a></span></li>
+                                <li><span><a class="ir" href="registro">Ir al registro</a></span></li>
+                                <li><span><a class="ir" href="partidas">Crear partida</a></span></li>-->
+                <audio id="audioBSO" src="recursos/musica/BSO_larga.mp3" autoplay="true" controls hidden="true"> Audio</audio>
             </ul>
 
         </div>
