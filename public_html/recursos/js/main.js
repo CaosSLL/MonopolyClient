@@ -3,14 +3,15 @@ var server = "MonopolyServer/web/app_dev.php/";
 var app = "MonopolyClient/public_html/";
 var modulo = "";
 
-var usuario = {id: 0, nombre: "", personaje: "", personajeNombre: ""};
+var usuario = {id: 0, nombre: "", personaje: "", personajeNombre: "", dinero: 1000, carcel: 0};
 var sala;
 var listaUsuarios = new Array();
 var turno = null;
+var idPartida = 0;
 
 var contenido = "";
 
-var socket = io.connect("http://localhost:8080");
+var socket = io.connect("http://localhost:8585");
 
 $(document).ready(function() {
 
@@ -20,18 +21,19 @@ $(document).ready(function() {
 
     cargarModulo(modulo);
 
-    $.ajax({
-        url: host + server + "usuario/autenticado",
-        method: "post",
-        dataType: "json",
-        success: function(datos) {
-            if (datos.autenticado) {
-                $("#usuario").text("Hola amo");
-            } else {
-                $("#usuario").text("Logueate");
-            }
-        }
-    });
+//    $.ajax({
+//        url: host + server + "usuario/autenticado",
+//        method: "post",
+//        dataType: "json",
+//        success: function(datos) {
+    if (usuario.nombre !== "") {
+        $("#usuario").text("Hola amo");
+    } else {
+        $("#usuario").text("Logueate");
+    }
+//        }
+//    });
+
 
     $(".ir").off().on("click", function(e) {
         e.preventDefault();
@@ -49,12 +51,12 @@ $(document).ready(function() {
             if (modulo == "ajustes") {
                 if (usuario.nombre !== "") {
                     cargarModulo(modulo);
-                } else{
+                } else {
                     alert("Tienes que loguearte");
                 }
+            } else {
+                cargarModulo(modulo);
             }
-            cargarModulo(modulo);
-//            }
         }
     });
 
@@ -75,6 +77,38 @@ $(document).ready(function() {
             }
         });
     });
+
+    $("#volumen").off().on("click", function(e) {
+        var oAudio = document.getElementById('audioBSO');
+        var jqAudio = $("#volumen");
+        if (oAudio.paused) {
+            oAudio.play();
+            $("#volumen").removeClass("ui-icon-play");
+            $("#volumen").addClass("ui-icon-stop");
+            console.log($("#volumen").attr("class"));
+        } else {
+            oAudio.pause();
+            $("#volumen").removeClass("ui-icon-stop");
+            $("#volumen").addClass("ui-icon-play");
+            console.log($("#volumen").attr("class"));
+        }
+
+    });
+
+    $("#bajarVolumen").off().on("click", function(e) {
+        var oAudio = document.getElementById('audioBSO');
+        if (oAudio.volume !== 0) {
+            oAudio.volume -= 0.1;
+        }
+    });
+
+    $("#subirVolumen").off().on("click", function(e) {
+        var oAudio = document.getElementById('audioBSO');
+        if (oAudio.volume !== 1) {
+            oAudio.volume += 0.1;
+        }
+    });
+
 
 });
 
