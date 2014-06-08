@@ -1,0 +1,56 @@
+<div id="ajustes">
+    <h1 class="titulo">Ajustes</h1>
+    <div id="div-cambiarUsuario" class="div-ajustes">
+        <form id="formCambiarUsuario" name="formCambiarUsuario" method="post" action="">
+            <label class="labelFormCambUsu">
+                Introduce el nuevo usuario: <br/>
+                <input type="text" name="nuevoUsuario"><br/>
+                Verifica la contraseña<br/>
+                <input type="password" name="nuevoUsuarioPass"><br/>                
+                <span class="error"></span>
+                <input class="botonesAjustes" type="submit" name="guardarUsuario" value="">
+            </label>
+
+        </form>
+    </div>
+    <div id="div-cambiarContrasenia" class="div-ajustes">
+        <form id="formCambiarContrasenia" name="formCambiarContrasenia" method="post" action="">
+            <label class="labelFormCambCon">
+                Nueva contraseña:
+                <input type="password" name="nuevaContrasenia"><br/>
+                Repite la contraseña:
+                <input type="password" name="nuevaContrasenia2"><br/>
+                Verifica la contraseña<br/>
+                <input type="password" name="nuevaContraseniaPass"><br/>   
+                <span class="error" id="errorUsuario"></span>
+                <input class="botonesAjustes" type="submit" name="guardarContrasenia" value="">
+            </label>
+        </form>
+    </div>
+    <div class="div-ajustes" id="div-otrosAjustes">
+        <form id="formOtrosAjustes" name="formOtrosAjustes" method="post" action="">
+            <label class="Otros">
+                <span id="ajustesAudio">Confugacion del audio</span><br/>
+                <!--Cambiar el idioma-->
+            </label>
+        </form>
+    </div>
+    <div class="div-ajustes" id="div-opiniones">
+        <form id="formOpiniones" name="formOpiniones" method="post" action="">
+            <label class="Otros">
+                Envia tú opinion <br/>
+                <textarea cols="45" rows="4" resize="false"></textarea>
+            </label>
+            <input class="botonesAjustes" type="submit" name="guardarOpinion" value="">
+        </form>
+    </div> 
+    <button id="irPartidas">Ir a partidas</button>
+    <button id="irTablero">Ir a tablero</button>
+    
+<!--    <div id="dialogo" title="Verificar Usuario">        
+        <form>
+            <label>Introduce la contraseña:</label>
+            <input type="password" name="verificarContra" id="passwordV">            
+        </form>
+    </div>-->
+</div>

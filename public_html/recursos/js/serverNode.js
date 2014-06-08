@@ -4,21 +4,6 @@ var fs = require("fs");
 var url = require("url");
 
 function handler(req, res) {
-//    if (url.parse(req.url).pathname === "/chat") {
-//        fs.readFile(__dirname + '/index.html', function(err, data) {
-//            if (err) {
-//                res.writeHead(500);
-//                return res.end('Error loading index.html');
-//            }
-//
-//            res.writeHead(200);
-//            res.end(data);
-//        });
-//    } else {
-//        res.writeHead(404);
-//        res.write("404 No encontrado");
-//        res.end();
-//    }
     res.writeHead(200);
     res.end();
 }
@@ -27,15 +12,7 @@ var usuarios = {};
 var sala = {};
 
 io.sockets.on('connection', function(socket) {
- 
-//    socket.username = "1";
-//    socket.join(socket.username);
-//    socket.username = "2";
-//    socket.join(socket.username);
-//    socket.username = "3";
-//    socket.join(socket.username);
-    
-    
+
     socket.on("nueva_sala", function(datos){
         socket.room = datos;
         socket.join(datos);
@@ -79,6 +56,10 @@ io.sockets.on('connection', function(socket) {
         socket.broadcast.to(datos.sala).emit("movimiento_partida", datos);
     });
     
+    socket.on("cambiar_turno", function(datos) {
+        socket.broadcast.to(datos.sala).emit("cambiar_turno", datos);
+    });
+    
     socket.on("cambio_bote", function(datos) {
         socket.broadcast.to(datos.sala).emit("cambio_bote", datos);
     });
@@ -87,7 +68,6 @@ io.sockets.on('connection', function(socket) {
         socket.broadcast.to(datos.sala).emit("informacion", datos);
     });
     
+    
+    
 });
-
-//io.sockets.in("sala1").emit("mensaje_sala", "Bienvenido a la sala 1!");
-//io.sockets.in("sala2").emit("mensaje_sala", "Bienvenido a la sala 2!");

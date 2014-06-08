@@ -11,18 +11,28 @@ $(document).ready(function() {
     iniciarFichas();
     cargarDatosJugadores();
     $("#botonComprar").off().on("click", function(e) {
-        comprar();
+        comprar(posicionesCasilla[turno]+1);
     });
     
     $("#paneles").accordion();
 
+    $("#botonTurno").off().on("click", function(){
+        
+        cambiarTurno();
+        socket.emit("cambiar_turno", { sala: sala });
+    });
+
+});
+
+socket.on("cambiar_turno", function(datos){
+    cambiarTurno();
 });
 
 socket.on("movimiento_partida", function(datos) {
     trace("Evento mover ficha -->");
     $(".dado").text(datos.avance);
     moverFicha(datos.avance);
-    cambiarTurno();
+//    cambiarTurno();
 //    turno = datos.turno;
 });
 
@@ -109,7 +119,10 @@ function tirar() {
     moverFicha(num);
     socket.emit("movimiento_partida", {sala: sala, avance: num, turno: turno});
     $("#botonComprar").removeAttr("disabled");
-    cambiarTurno();
+    $("#botonComprar").removeClass("disabled");
+    $(".dado").css({backgroundColor: "gray"});
+        $(".dado").unbind("click");
+//    cambiarTurno();
 }
 
 function cambiarTurno() {
@@ -283,6 +296,7 @@ function tienePosesiones() {
         success: function(datos) {
             if (!isNaN(datos.idJugador)) {
                 $("#botonHipotecar").removeAttr("disabled");
+                $("#botonHipotecar").removeClass("disabled");
             }
         },
         error: function(e) {
@@ -349,6 +363,7 @@ function comprobarPosesionCasilla(idCasilla) {
             if (isNaN(datos.idJugador.id)) {
                 if (usuario.dinero >= datos.idCasilla.precio) {
                     $("#botonComprar").removeAttr("disabled");
+                    $("#botonComprar").removeClass("disabled");
                 }
             } else if (datos.idJugador.id !== usuario.id) {
                 alert("te toca pagar");
@@ -362,7 +377,7 @@ function comprobarPosesionCasilla(idCasilla) {
     });
 }
 
-function comprar() {
+function comprar(idCasilla) {
     //Obtener casilla
     $.ajax({
         url: host + server + "casilla/" + idCasilla + "/show",

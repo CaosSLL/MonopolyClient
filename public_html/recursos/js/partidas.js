@@ -16,15 +16,16 @@ $(document).ready(function() {
         }
     });
 
-    $.ajax({
-        url: host + server + "partida/partidasEnEspera",
-        method: "post",
-        dataType: "json",
-        success: function(datos) {
-            $.each(datos, function(i, partida) {
-                $(".partidas").append("<option value=" + partida.token + ">" + partida.token + " creado el " + partida.fechaInicio.date + "</option>");
-            });
-        }
+    cargarPartidas();
+    
+//    $(".partidas").on("change", function(e){
+//        var token = $(this).val();
+//        cargarPersonajes(token);
+//    });
+
+    $("#bRefrescar").off().on("click", function(e){
+        e.preventDefault();
+        cargarPartidas();
     });
 
     $("#formularioCrearPartida").on("submit", function(e) {
@@ -68,6 +69,37 @@ $(document).ready(function() {
 
 });
 
+//function cargarPersonajes(token){
+//    $.ajax({
+//        url: host + server + "jugador/personajesDisponibles/"+token,
+//        method: "post",
+//        dataType: "json",
+//        success: function(datos){
+//            $.each(datos, function(i, personaje) {
+//                $("#personajes2").append("<option value=" + personaje.id + ">" + personaje.nombre + "</option>");
+//            });
+//        },
+//        error: function(e){
+//            console.log("Error con el servidor");
+//        }
+//    });
+//}
+
+function cargarPartidas(){
+    $.ajax({
+        url: host + server + "partida/partidasEnEspera",
+        method: "post",
+        dataType: "json",
+        success: function(datos) {
+            $(".partidas").html("");
+            $.each(datos, function(i, partida) {
+                $(".partidas").append("<option value=" + partida.token + ">" + partida.token + " creado el " + partida.fechaInicio.date + "</option>");
+            });
+//            $("#personajes2").html();
+        }
+    });
+}
+
 function empezarPartida() {
     $.ajax({
         url: host + server + "partida/empezar/" + idPartida,
@@ -76,7 +108,8 @@ function empezarPartida() {
         data: {usuarios: listaUsuariosAceptados},
         success: function(datos) {
             if (datos.id) {
-                alert("Ya se han unido " + numJugadores + " jugadores, la partida empezara en breve...");
+//                alert("Ya se han unido " + numJugadores + " jugadores, la partida empezara en breve...");
+                $("#informacion").text("Ya se han unido " + numJugadores + " jugadores, la partida empezara en breve...");
                 socket.emit("empezar_partida", {sala: sala, usuarios: listaUsuariosAceptados});
                 listaUsuarios = listaUsuariosAceptados;
                 turno = listaUsuarios[0];
@@ -104,7 +137,8 @@ socket.on("mensaje_sala", function(datos) {
 });
 
 socket.on("empezar_partida", function(datos) {
-    alert("La partida esta lista para empezar!");
+//    alert("La partida esta lista para empezar!");
+    $("#informacion").text("La partida esta lista para empezar!");
     listaUsuarios = datos.usuarios;
     turno = listaUsuarios[0];
     turno.pos = 0;
