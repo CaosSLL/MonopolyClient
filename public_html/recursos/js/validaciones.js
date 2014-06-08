@@ -144,7 +144,7 @@ function validarPassword2(inputOriginal, inputRevisar) {
 }
 
 /**
- * Este método se encarga de validar que el e-mail introducido sea válido
+ * Este método se encarga de validar que el e-mail introducido sea válido 
  *      no esté vacío
  *      tenga un formato válido
  * 
