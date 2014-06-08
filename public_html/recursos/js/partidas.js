@@ -4,31 +4,6 @@ var numJugadores = 0;
 
 $(document).ready(function() {
 
-//    if (unirse) {
-//        $(".crearPartida").hide();
-//        $(".unirsePartida").show();
-//    } else {
-//        $(".unirsePartida").hide();
-//        $(".crearPartida").show();
-//    }
-    
-//    $("#tUsuario").on("keydown", function(e) {
-//        if (e.keyCode == 13) {
-//            var texto = $("#tUsuario").val().split("-");
-//            usuario.id = texto[0];
-//            usuario.nombre = texto[1];
-//            $("#divUsuario").text(usuario.nombre);
-//        }
-//    });
-
-    $("#tEnviar").on("keydown", function(e) {
-        if (e.keyCode == 13) {
-            $("#tRecibido").append($(this).val() + "\n");
-            socket.emit("mensaje_sala", {sala: sala, usuario: usuario, mensaje: $(this).val()});
-            $("#tEnviar").val("");
-        }
-    });
-
     $.ajax({
         url: host + server + "personaje/",
         method: "post",
@@ -63,7 +38,6 @@ $(document).ready(function() {
         numJugadores = parseInt($("#numJugadores").val());
         sala = usuario.nombre + "-" + num;
 
-
         $.ajax({
             url: host + server + "partida/crear",
             method: "post",
@@ -84,7 +58,6 @@ $(document).ready(function() {
 
     $("#formularioUnirsePartida").on("submit", function(e) {
         e.preventDefault();
-//        sala = parseInt($(this).siblings(".sala").text());
         sala = $(".partidas").val();
         usuario.personaje = $("#personajes2").val();
         usuario.personajeNombre = $("#personajes2 option:selected").text()
@@ -103,7 +76,6 @@ function empezarPartida() {
         data: {usuarios: listaUsuariosAceptados},
         success: function(datos) {
             if (datos.id) {
-//                alert("Se ha creado con exito!");
                 alert("Ya se han unido " + numJugadores + " jugadores, la partida empezara en breve...");
                 socket.emit("empezar_partida", {sala: sala, usuarios: listaUsuariosAceptados});
                 listaUsuarios = listaUsuariosAceptados;
