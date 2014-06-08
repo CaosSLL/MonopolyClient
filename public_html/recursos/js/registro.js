@@ -1,5 +1,5 @@
 /**
- * Se cargan todos los eventos una vez que el documento HTML esté cargado por completo
+ * Se cargan todos los eventos una vez que el documento HTML esté cargado por completo 
  * 
  */
 $(document).ready(function() {
