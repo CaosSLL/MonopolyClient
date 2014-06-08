@@ -1,7 +1,6 @@
 var listaUsuariosAceptados = new Array();
 var datosPartida;
 var numJugadores = 0;
-var idPartida = 0;
 
 $(document).ready(function() {
 
