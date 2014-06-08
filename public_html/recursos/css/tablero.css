@@ -1,9 +1,14 @@
+#divtablero{
+    margin-top: 45px;
+}
+
 #contenido{
     background-color: black;
+    clear: both;
 }
 
 #tablero {
-    padding-left: 2%;      
+    padding-left: 2%;
 }
 
 #tablero table {
@@ -80,14 +85,14 @@
 
 .dado {
     position: absolute;
-top: 303px;
-left: 320px;
-width: 40px;
-height: 36px;
-background-color: #f2ea9d;
-border-radius: 5px;
-padding: 7px 0px 0px 7px;
-font-size: 16px;
+    top: 303px;
+    left: 320px;
+    width: 40px;
+    height: 36px;
+    background-color: #f2ea9d;
+    border-radius: 5px;
+    padding: 7px 0px 0px 7px;
+    font-size: 16px;
 }
 
 .dado:hover {
@@ -104,6 +109,8 @@ font-size: 16px;
     margin-top: 5px;
     width: 31%;
     height: 100%;
+    font-family: esdla; 
+    color: whitesmoke;
 }
 #fichas {}
 .panel {}
@@ -116,5 +123,12 @@ font-size: 16px;
 #botones {
     color: white;
 }
-.button {}
-.bote{}
+.button {
+    width: 84px;
+    text-align: center;
+    float: left;
+    margin: 3%;
+}
+.bote{
+    clear: both;
+}
