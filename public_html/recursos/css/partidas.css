@@ -6,7 +6,7 @@
     font-size: 18px;
     color: white;
     margin: 0% 5%;
-    top: 40px;
+    margin-top: 45px;
 }
 #partidas h1 {
     font-family: tolkien;
@@ -127,7 +127,7 @@
     background: rgba(0,0,0,1);
 }
 #partidas select[name=partidas] {
-    width: 90%;
+    width: 100%;
     margin-top: 2% !important;
 }
 input[type=number] {
