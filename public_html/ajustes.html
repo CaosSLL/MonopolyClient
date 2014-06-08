@@ -3,11 +3,12 @@
     <div id="div-cambiarUsuario" class="div-ajustes">
         <form id="formCambiarUsuario" name="formCambiarUsuario" method="post" action="">
             <label class="labelFormCambUsu">
-                Introduce el nuevo usuario:
+                Introduce el nuevo usuario: <br/>
                 <input type="text" name="nuevoUsuario"><br/>
-                <input type="submit" name="guardar" class="boton" value="">
+                <span class="error"></span>
+                <input type="submit" name="guardar" value="">
             </label>
-            
+
         </form>
     </div>
     <div id="div-cambiarContrasenia" class="div-ajustes">
@@ -17,14 +18,16 @@
                 <input type="text" name="nuevaContrasenia"><br/>
                 Repite la contraseña:
                 <input type="text" name="nuevaContrasenia2"><br/>
+                <span class="error"></span>
+                <input type="submit" name="guardar" value="">
             </label>
         </form>
     </div>
     <div class="div-ajustes" id="div-otrosAjustes">
         <form id="formOtrosAjustes" name="formOtrosAjustes" method="post" action="">
             <label class="Otros">
-                Quitar el sonido <br/>
-                Cambiar el idioma
+                <span id="ajustesAudio">Confugacion del audio</span><br/>
+                <!--Cambiar el idioma-->
             </label>
         </form>
     </div>
@@ -32,8 +35,10 @@
         <form id="formOpiniones" name="formOpiniones" method="post" action="">
             <label class="Otros">
                 Envia tú opinion <br/>
-                <textarea></textarea>
+                <textarea cols="45" rows="4" resize="false"></textarea>
             </label>
+            <input type="submit" name="guardar" value="">
         </form>
-    </div>    
+    </div> 
+    <button id="irPartidas">Ir a partidas</button>
 </div>
