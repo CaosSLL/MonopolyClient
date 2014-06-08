@@ -81,23 +81,23 @@
     margin-top: -6.5%;
 }
 
-input[name=guardar] {
+.botonesAjustes{
     border: medium none !important;
     margin-left: 45% !important;
     margin-top: 3% !important;
     width: 150px;
     height: 75px;
-    background-image: url(../images/otras/hoja-lorien-verde.png);
+    background-image: url(../images/botones/botonGuardar.png);
     transition: background-image 0.75s;
     -webkit-transition: background-image 0.75s;
     background-color: transparent;
 }
 
-input[name=guardar]:hover {
+.botonesAjustes:hover{
     cursor: pointer;
     transition: background-image 0.75s;
     -webkit-transition: background-image 0.75s;
-    background-image: url(../images/otras/hoja-lorien-marron.png);
+    background-image: url(../images/botones/botonGuardar-hover.png);
     background-color: transparent;
 }
 

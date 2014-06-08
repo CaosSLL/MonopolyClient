@@ -80,7 +80,7 @@ input[name=enviar]:hover {
     cursor: pointer;
     transition: background-image 0.75s;
     -webkit-transition: background-image 0.75s;
-    background-image: url(../images/otras/botonEnviar-hover.png);
+    background-image: url(../images/botones/botonEnviar-hover.png);
 }
 
 #irRegistro {
