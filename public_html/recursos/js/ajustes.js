@@ -1,44 +1,44 @@
 $(document).ready(function() {
 
-//    if (logado()) {
-
-        $("#formCambiarUsuario").submit(function(e) {
-            e.preventDefault();
-            var errores = 0;
-            if (validaciones()) {
-                alert("bien");
-            } else {
-                alert("mal");                
+    $("#formCambiarUsuario").submit(function(e) {
+        e.preventDefault();        
+        if (!validarUsuario($("input[name=nuevoUsuario]"))) {
+            $(".error").text("El usuario solo puede contener letras, números, -, _ y .");
+        } else {
+            $(".error").text("");
+            alert("llamada a ajax");
+        }
+    });
+    
+    $("#formCambiarContrasenia").submit(function(e) {
+        e.preventDefault();
+        var error= 0;
+        if(!validarPassword($("input[name=nuevaContrasenia]"))&& 
+                !validarPassword($("input[name=nuevaContrasenia2]"))){
+            error= 1;
+        }
+        if(error === 0){
+            if(validarPassword2($("input[name=nuevaContrasenia]"), $("input[name=nuevaContrasenia2]"))){
+                
             }
-        });
-//    }
-//    ;
+        }
+    }); 
+    
+    $("#ajustesAudio").off().on("click", function(e){
+       var oAudio = document.getElementById('audioBSO');
+       oAudio.removeAttribute("hidden");
+       var audioCSS = $("#audioBSO");
+       audioCSS.css({
+           zIndex: "1",
+           position: "absolute",
+           top: "461px",
+           marginLeft: "-11.5%"
+       });
+    });
+    
+    $("#irPartidas").off().on("click", function(e){
+        modulo = "partidas";
+        cargarModulo(modulo);
+    });
+
 });
-
-//function logado() {
-//    if (usuario["nombre"] === "") {
-//        modulo = "inicio";
-//        cargarModulo(modulo);
-//        return false;
-//    } else {
-//        return true;
-//    }
-//}
-
-function validaciones() {
-    // Recogemos todos los inputs que vamos a validar y creamos un contador de errores
-    var inputNuevoUsuario = $("input[name=nuevoUsuario]");
-    var contErrores = 0;
-
-    // Comprabamos si los campos son válidos
-    if (!validarUsuario(inputNuevoUsuario))
-        contErrores++;
-
-    if (contErrores === 0) {
-//        $("#error-registro").text("");
-        return true;
-    } else {
-//        $("#error-registro").text("Corrija los errores, por favor");
-        return false;
-    }
-}
