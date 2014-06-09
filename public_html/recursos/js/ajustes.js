@@ -23,7 +23,7 @@ $(document).ready(function() {
     $("#formCambiarUsuario").submit(function(e) {
         e.preventDefault();
         var nuevoUsuario = $("input[name=nuevoUsuario]");
-        var passVerificarion = $("input[nuevoUsuarioPass]");
+        var passVerificarion = $("input[name=nuevoUsuarioPass]");
         if (validarPassword(passVerificarion )) {
             if (validarUsuario(nuevoUsuario)) {
                 $.ajax({

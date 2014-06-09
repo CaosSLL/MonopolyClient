@@ -46,7 +46,7 @@ $(document).ready(function() {
             data: {token: sala},
             success: function(datos) {
                 idPartida = datos.id;
-                socket.emit("solicitud", {sala: sala, usuario: usuario});
+                socket.emit("solicitud", {sala: sala, usuario: usuario, idPartida: idPartida});
                 $(".confirmacion").append("Se ha creado una partida en la sala " + sala + " espera a que se unan los jugadores...");
                 $("#bCrearPartida").attr("disabled", true);
             },
@@ -111,7 +111,7 @@ function empezarPartida() {
             if (datos.id) {
 //                alert("Ya se han unido " + numJugadores + " jugadores, la partida empezara en breve...");
                 $("#informacion").text("Ya se han unido " + numJugadores + " jugadores, la partida empezara en breve...");
-                socket.emit("empezar_partida", {sala: sala, usuarios: listaUsuariosAceptados});
+                socket.emit("empezar_partida", {sala: sala, usuarios: listaUsuariosAceptados, idPartida: idPartida});
                 listaUsuarios = listaUsuariosAceptados;
                 turno = listaUsuarios[0];
                 turno.pos = 0;
@@ -148,6 +148,7 @@ socket.on("mensaje_sala", function(datos) {
 socket.on("empezar_partida", function(datos) {
 //    alert("La partida esta lista para empezar!");
     $("#informacion").text("La partida esta lista para empezar!");
+    idPartida = datos.idPartida;
     listaUsuarios = datos.usuarios;
     turno = listaUsuarios[0];
     turno.pos = 0;

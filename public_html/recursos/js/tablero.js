@@ -9,36 +9,95 @@ var bote = 0;
 
 /**************************************************/
 /* FUNCIONES QUE SE CARGARÁN AL INICIAR LA PÁGINA */
-/**************************************************/ 
+/**************************************************/
 $(document).ready(function() {
     // Iniciamos todos los componentes
     iniciarTablero();
 //    iniciarDado();
     iniciarFichas();
     cargarDatosJugadores();
-    
-     // Asociamos el método comprar() al boton de comprar
-    $("#botonComprar").off().on("click", function(e) {
-        comprar(posicionesCasilla[turno]+1);
+
+    //Dialog para las cartas casillas
+    $("#dialogo").dialog({
+        autoOpen: false,
+        height: 600,
+        width: 350,
+        modal: true,
+        buttons: {
+            "Aceptar": function() {
+                comprar(posicionesCasilla[turno] + 1);
+                $("#botonComprar").unbind("click");
+                $("#botonComprar").addClass("disabled");
+                $(this).dialog("close");
+            },
+            "Cancelar": function() {
+                $(this).dialog("close");
+            }
+        },
+        close: function() {
+        }
     });
-    
-     // Con jQueryui hacemos que los paneles de información de los jugadoes se muestren en forma de acordeón
+
+    $("#dialogoInfo").dialog({
+        autoOpen: false,
+        height: 600,
+        width: 350,
+        modal: true,
+        buttons: {
+            "Aceptar": function() {
+                comprar(posicionesCasilla[turno] + 1);
+                $("#botonComprar").unbind("click");
+                $("#botonComprar").addClass("disabled");
+                $(this).dialog("close");
+            },
+            "Cancelar": function() {
+                $(this).dialog("close");
+            }
+        },
+        close: function() {
+        }
+    });
+
+    $(".color li").off().on("click", function() {
+        var casilla = $(this).attr("id");
+        $("#imagenCartaCasillaInfo").attr("src", "recursos/images/carta-casilla/es/cartacasilla" + casilla + ".jpg");
+        $("#dialogo").dialog("open");
+    });
+
+    // Con jQueryui hacemos que los paneles de información de los jugadoes se muestren en forma de acordeón
     $("#paneles").accordion();
 
+    // Asociamos el mÃ©todo hipotecar() al botÃ³n de crear
+    $("#botonHipotecar").off().on("click", function(e) {
+        hipotecar();
+    });
+    
     // Asociamos el evento de cambiar turno al boton de pasar
-    $("#botonTurno").off().on("click", function(){        
+    $("#botonTurno").off().on("click", function() {
         cambiarTurno();
-        socket.emit("cambiar_turno", { sala: sala });
+        socket.emit("cambiar_turno", {sala: sala});
         deshabilitarBotones();
     });
     
+    // Hacemos que el div#clickBotonHipotecar sea un dialog
+    $("#clickBotonHipotecar").dialog({
+        autoOpen: false,
+        buttons: [{
+            text: "Aceptar",
+            click: function() {
+                $(this).dialog("close");
+            }
+        }],
+        modal: true
+    });
+
 });
 
 /***************************************************/
 /* FUNCIONES DEL SERVERNODE QUE ESTÁN A LA ESCUCHA */
 /***************************************************/
 // Función que está a la escucha de los cambios de turno
-socket.on("cambiar_turno", function(datos){
+socket.on("cambiar_turno", function(datos) {
     cambiarTurno();
 });
 
@@ -59,9 +118,10 @@ socket.on("cambio_bote", function(datos) {
 });
 
 // Función que está a la escucha de los cambios de dinero de los jugadores
-socket.on("cambioDinero", function(datos){
-   trace("-- CAMBIO EN EL DINERO --");
-   $("$cabeUsu" + datos.usuario.id + " .dinero").text(datos.usuario.dinero);
+socket.on("cambioDinero", function(datos) {
+    trace("-- CAMBIO EN EL DINERO --");
+    $("#cabeUsu" + turno + " .dinero").text(datos.usuario.dinero);
+    trace(datos.usuario.id + " " + turno);
 });
 
 // Función que está a la escucha de los cambios en el panel de información
@@ -85,6 +145,8 @@ function emitirInformacion(texto) {
     socket.emit("infoPartida", {sala: sala, texto: texto});
 }
 
+
+
 /**
  * Función que se encarga de iniciar el dado
  * 
@@ -105,7 +167,7 @@ function iniciarFichas() {
     var casilla = $("#casilla0").position();
     ficha.css({
         top: casilla.top,
-        left: casilla.left,
+        left: casilla.left
     });
 }
 
@@ -127,27 +189,29 @@ function cargarDatosJugadores() {
         if (i === 0) {
             jugadorCab = cabecera;
             jugadorPan = panel;
-            
+
         } else {
             jugadorCab = cabecera.clone();
             jugadorPan = panel.clone();
             $("#paneles").append(jugadorCab);
             $("#paneles").append(jugadorPan);
             jugadorCab.attr("id", "cabUsu" + i);
-            jugadorPan.attr("id", "panelUsu"+i);
+            jugadorPan.attr("id", "panelUsu" + i);
         }
-        
+
         jugadorCab.find(".nombre").text(listaUsuarios[i].nombre);
         jugadorCab.find(".personaje").text(listaUsuarios[i].personajeNombre);
         jugadorCab.find(".dinero").text(listaUsuarios[i].dinero);
-        jugadorPan.find(".tarjetas").text("Pruebas");
-        
+//        jugadorPan.find(".tarjetas").text("Pruebas");
+
     }
 
-    if (usuario.id == listaUsuarios[turno].id) {
+    if (usuario.id === listaUsuarios[turno].id) {
         tieneTurno = true;
         $(".dado").css({backgroundColor: "#f2ea9d"});
         $(".dado").bind("click", tirar);
+        $("#botonHipotecar").removeClass("disabled");
+        $("#botonHipotecar").bind("click");
     } else {
         tieneTurno = false;
         $(".dado").css({backgroundColor: "gray"});
@@ -171,7 +235,7 @@ function tirar() {
 //    $("#botonComprar").removeAttr("disabled");
 //    $("#botonComprar").removeClass("disabled");
     $("#botonTurno").removeClass("disabled");
-    comprobarTipoCasilla(posicionesCasilla[turno]+1);
+    comprobarTipoCasilla(posicionesCasilla[turno] + 1);
     $(".dado").css({backgroundColor: "gray"});
     $(".dado").unbind("click");
 //    cambiarTurno();
@@ -191,11 +255,12 @@ function cambiarTurno() {
         turno += 1;
     }
 
-    if (usuario.id == listaUsuarios[turno].id) {
+    if (usuario.id === listaUsuarios[turno].id) {
         if (usuario.carcel === 0) {
             tieneTurno = true;
             $(".dado").css({backgroundColor: "#f2ea9d"});
             $(".dado").bind("click", tirar);
+            $("#botonHipotecar").removeClass("disabled");
         } else {
             tieneTurno = false;
             usuario.carcel -= 1;
@@ -295,7 +360,7 @@ function iniciarTablero() {
     tabla += "</tr> </table>";
 
     tablero.html(tabla);
-    
+
     zoom();
 }
 
@@ -380,8 +445,15 @@ function tienePosesiones() {
         dataType: "json",
         success: function(datos) {
             if (!isNaN(datos.idJugador)) {
-                $("#botonHipotecar").removeAttr("disabled");
+                $("#botonComprar").bind("click", botonComprar);
+                $("#botonComprar").removeClass("disabled");
+                $("#botonHipotecar").bind("click", hipotecar);
                 $("#botonHipotecar").removeClass("disabled");
+            } else {
+                $("#botonComprar").unbind("click");
+                $("#botonComprar").addClass("disabled");
+                $("#botonHipotecar").unbind("click");
+                $("#botonHipotecar").addClass("disabled");
             }
         },
         error: function(e) {
@@ -458,9 +530,9 @@ function casillaTarjetas(datos) {
 function casillasImpuesto(datos) {
     // Modificamos el dinero en la variable usuario, en el panel del usuario y lo emitimos al serverNode
     usuario.dinero -= parseInt(datos.precio);
-    $("#cabeUsu" + usuario.id + " .dinero").text(usuario.dinero);
+    $("#cabeUsu" + turno + " .dinero").text(usuario.dinero);
     socket.emit("cambioDinero", {sala: sala, usuario: usuario});
-    
+
     bote += parseInt(datos.precio);
     $("#bote").text(bote);
     socket.emit("cambio_bote", {sala: sala, bote: bote});
@@ -478,7 +550,8 @@ function comprobarPosesionCasilla(datosCasilla) {
             console.log(datos);
             if (isNaN(datos.poseedor)) {
                 if (usuario.dinero >= datosCasilla.precio) {
-                    $("#botonComprar").removeAttr("disabled");
+//                    $("#botonComprar").removeAttr("disabled");
+                    $("#botonComprar").bind("click", botonComprar);
                     $("#botonComprar").removeClass("disabled");
                 }
             } else if (datos.idJugador.id !== usuario.id) {
@@ -494,7 +567,7 @@ function comprobarPosesionCasilla(datosCasilla) {
 }
 
 function comprar(idCasilla) {
-    console.log("idCasilla - " + idCasilla) 
+    console.log("idCasilla - " + idCasilla);
     //Obtener casilla
     $.ajax({
         url: host + server + "casilla/" + idCasilla + "/show",
@@ -510,6 +583,9 @@ function comprar(idCasilla) {
                     if (!isNaN(datosCrear.idPosesionCasilla)) {
                         //Restamos al jugador
                         usuario.dinero -= datosCasilla.precio;
+                        $("#cabeUsu" + turno + " .dinero").text(usuario.dinero);
+                        $("." + datosCasilla.color + " ul").append("<li id='" + datosCasilla.numero + "'>" + datosCasilla.nombre + "</li>");
+                        socket.emit("cambioDinero", {sala: sala, usuario: usuario});
                         var texto = "El usuario " + usuario.nombre + " ha comprado la casilla " + datosCasilla.nombre;
                         emitirInformacion(texto);
                         //Añadir carta a panel
@@ -530,6 +606,32 @@ function comprar(idCasilla) {
     });
 }
 
+function hipotecar() {
+    // Obtenemos todas las casillas que posee el usuario en esta partida
+    $.ajax({
+        url: host + server + "posesioncasilla/obtenerTodasPosesiones/" + idPartida + "/" + usuario.id,
+        method: "post",
+        dataType: "json",
+        success: function(datos) {
+            console.log("-- HIPOTECAR --");
+            if (datos.posesiones) {
+                console.log(datos.posesiones);
+                $("#clickBotonHipotecarContent").append("<p>No tienes tierras ni propiedades que hipotecar</p>");
+                $("#clickBotonHipotecar").dialog("open");
+                
+            } else {
+                $("#clickBotonHipotecarContent").append('<select id="selectHipotecar"></select>');
+                $.each(datos, function(index, datos) {
+                    $("#selectHipotecar").append('<option value="' + datos.idCasilla + '">');
+                });                
+            }
+        },
+        error: function(datos) {
+            console.log("-- ERROR EN HIPOTECAR --");
+        }
+    });
+}
+
 /**
  * Función que deshabilita todos los botones de acción para el jugador
  * 
@@ -540,4 +642,23 @@ function deshabilitarBotones() {
     $(".dado").unbind("click");
     // Deshabilitamos los botones
     $(".boton").addClass("disabled");
+    $(".boton").unbind("click");
+}
+
+
+function botonComprar() {
+    // Asociamos el método comprar() al boton de comprar
+    if (posicionesCasilla[turno] % 5 !== 0 || posicionesCasilla[turno] !== 12 || posicionesCasilla[turno] !== 28) {
+        $("#imagenCartaCasilla").attr("src", "recursos/images/carta-casilla/es/cartacasilla" + (posicionesCasilla[turno]) + ".jpg");
+        $("#dialogo").dialog("open");
+    } else {
+        comprar(posicionesCasilla[turno] + 1);
+        $("#botonComprar").unbind("click");
+        $("#botonComprar").addClass("disabled");
+    }
+}
+
+//funcion para el boton de hipotecar
+function hipotecar() {
+    return true;
 }

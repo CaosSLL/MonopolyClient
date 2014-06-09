@@ -1,5 +1,6 @@
 #divtablero{
-    margin-top: 45px;
+    margin-top: 52px;
+    margin-left: 2%;
 }
 
 #contenido{
@@ -131,4 +132,40 @@
 }
 .bote{
     clear: both;
+}
+
+#imagenCartaCasilla{
+    width: 100%;
+    height: 100%;
+}
+
+.marron ul{
+    list-style: url("../images/listas/marron.jpg") square;
+}
+.azulc ul{
+    list-style: url("../images/listas/marron.jpg") square;
+}
+.rosa ul{
+    list-style: url("../images/listas/marron.jpg") square;
+}
+.naranja ul{
+    list-style: url("../images/listas/marron.jpg") square;
+}
+.rojo ul{
+    list-style: url("../images/listas/marron.jpg") square;
+}
+.amarillo ul{
+    list-style: url("../images/listas/amarillo.jpg") square;
+}
+.verde ul{
+    list-style: url("../images/listas/marron.jpg") square;
+}
+.azulo ul{
+    list-style: url("../images/listas/marron.jpg") square;
+}
+.baston ul{
+    list-style: url("../images/listas/marron.jpg") square;
+}
+.caballo ul{
+    list-style: url("../images/listas/marron.jpg") square;
 }
