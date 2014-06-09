@@ -64,10 +64,12 @@ io.sockets.on('connection', function(socket) {
         socket.broadcast.to(datos.sala).emit("cambio_bote", datos);
     });
     
-    socket.on("informacion", function(datos) {
-        socket.broadcast.to(datos.sala).emit("informacion", datos);
+    socket.on("infoPartida", function(datos) {
+        socket.broadcast.to(datos.sala).emit("infoPartida", datos);
     });
     
-    
+    socket.on("cambioDinero", function(datos) {
+        socket.broadcast.to(datos.sala).emit("cambioDinero", datos);
+    });
     
 });

@@ -6,8 +6,6 @@ var posicionesCasilla = new Array();
 var turno = 0;
 var tieneTurno = false;
 var bote = 0;
-var topCasilla0 = 0;
-var leftCasilla0 = 0;
 
 /**************************************************/
 /* FUNCIONES QUE SE CARGARÁN AL INICIAR LA PÁGINA */
@@ -60,6 +58,12 @@ socket.on("cambio_bote", function(datos) {
     bote = datos.bote;
 });
 
+// Función que está a la escucha de los cambios de dinero de los jugadores
+socket.on("cambioDinero", function(datos){
+   trace("-- CAMBIO EN EL DINERO --");
+   $("$cabeUsu" + datos.usuario.id + " .dinero").text(datos.usuario.dinero);
+});
+
 // Función que está a la escucha de los cambios en el panel de información
 socket.on("infoPartida", function(datos) {
 //    trace("Evento cambiar bote-->");
@@ -100,8 +104,8 @@ function iniciarFichas() {
     var ficha = $(".ficha");
     var casilla = $("#casilla0").position();
     ficha.css({
-        top: topCasilla0,
-        left: leftCasilla0,
+        top: casilla.top,
+        left: casilla.left,
     });
 }
 
@@ -293,8 +297,6 @@ function iniciarTablero() {
     tablero.html(tabla);
     
     zoom();
-    topCasilla0 = $("#casilla0").position().top;
-    leftCasilla0 = $("#casilla0").position().left;
 }
 
 /**
@@ -409,13 +411,13 @@ function comprobarTipoCasilla(idCasilla) {
                     casillasEspecial(datos);
                     break;
                 case "tierra":
-                    comprobarPosesionCasilla(idCasilla);
+                    comprobarPosesionCasilla(datos);
                     break;
                 case "bastones":
-                    comprobarPosesionCasilla(idCasilla);
+                    comprobarPosesionCasilla(datos);
                     break;
                 case "caballos":
-                    comprobarPosesionCasilla(idCasilla);
+                    comprobarPosesionCasilla(datos);
                     break;
                 case "tarjetas":
                     casillaTarjetas(datos);
@@ -454,21 +456,28 @@ function casillaTarjetas(datos) {
 }
 
 function casillasImpuesto(datos) {
-    usuario.dinero -= paseInt(datos.precio);
-    bote += paseInt(datos.precio);
+    // Modificamos el dinero en la variable usuario, en el panel del usuario y lo emitimos al serverNode
+    usuario.dinero -= parseInt(datos.precio);
+    $("#cabeUsu" + usuario.id + " .dinero").text(usuario.dinero);
+    socket.emit("cambioDinero", {sala: sala, usuario: usuario});
+    
+    bote += parseInt(datos.precio);
     $("#bote").text(bote);
     socket.emit("cambio_bote", {sala: sala, bote: bote});
     emitirInformacion(usuario.nombre + " ha perdido " + datos.precio);
 }
 
-function comprobarPosesionCasilla(idCasilla) {
+function comprobarPosesionCasilla(datosCasilla) {
     $.ajax({
-        url: host + server + "posesioncasilla/comprobarPosesion/" + idCasilla + "/" + idPartida,
+        url: host + server + "posesioncasilla/comprobarPosesion/" + datosCasilla.id + "/" + idPartida,
         method: "post",
         dataType: "json",
         success: function(datos) {
-            if (isNaN(datos.idJugador.id)) {
-                if (usuario.dinero >= datos.idCasilla.precio) {
+            console.log("Datos del parametro: " + datosCasilla);
+            console.log("Datos de posesionCasilla:comprobarPosesion: ");
+            console.log(datos);
+            if (isNaN(datos.poseedor)) {
+                if (usuario.dinero >= datosCasilla.precio) {
                     $("#botonComprar").removeAttr("disabled");
                     $("#botonComprar").removeClass("disabled");
                 }
@@ -485,6 +494,7 @@ function comprobarPosesionCasilla(idCasilla) {
 }
 
 function comprar(idCasilla) {
+    console.log("idCasilla - " + idCasilla) 
     //Obtener casilla
     $.ajax({
         url: host + server + "casilla/" + idCasilla + "/show",
@@ -497,7 +507,7 @@ function comprar(idCasilla) {
                 method: "post",
                 dataType: "json",
                 success: function(datosCrear) {
-                    if (datosCrear.idPosesionCasilla !== 0) {
+                    if (!isNaN(datosCrear.idPosesionCasilla)) {
                         //Restamos al jugador
                         usuario.dinero -= datosCasilla.precio;
                         var texto = "El usuario " + usuario.nombre + " ha comprado la casilla " + datosCasilla.nombre;

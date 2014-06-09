@@ -1,4 +1,7 @@
 $(document).ready(function() {
+    
+    //Hacemos focus al nombre de usuario
+    $("#usuarioLogueo").focus();
 
     //Enlace para ir a registro
 

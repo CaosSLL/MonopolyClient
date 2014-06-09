@@ -3,6 +3,9 @@
  * 
  */
 $(document).ready(function() {
+    // Hacemos que al entrar en el formulario de registro se haga focus al nombre de usuario nuevo
+    $("input[name=usuario]").focus();
+    
     /*
      * Método que se encarga de gestionar el submit del formulario
      * 

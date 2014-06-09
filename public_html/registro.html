@@ -5,30 +5,30 @@
         <form id="formRegistro" name="formRegistro" method="post" action="">
             <label class="labelFormRegistro" id="labNombre">
                 Nombre de usuario:
-                <input type="text" name="usuario" /><br/>
+                <input type="text" name="usuario" tabindex="1"/><br/>
                 <span class="error"></span>
             </label>                                
             <label class="labelFormRegistro" id="labPassword">
                 Elija la contraseña:
-                <input type="password" name="password" /><br/>
+                <input type="password" name="password" tabindex="2"/><br/>
                 <span class="error"></span>
             </label>
             <br/>
             <label class="labelFormRegistro" id="labEmail">
                 Dirección de e-mail:
-                <input type="text" name="email" /><br/>
+                <input type="text" name="email" tabindex="4"/><br/>
                 <span class="error"></span>
             </label>
             <label class="labelFormRegistro" id="labPassword2">
                 Repita la contraseña:
-                <input type="password" name="password2" /><br/>
+                <input type="password" name="password2" tabindex="3"/><br/>
                 <span class="error"></span>
             </label>
             <br/><br/>
             <table>
                 <tr>
                     <td><span id="error-registro"></span></td>
-                    <td id="span-submit"><input type="submit" name="enviar" value=""/></td>
+                    <td id="span-submit"><input type="submit" name="enviar" value="" tabindex="5"/></td>
                 </tr>
             </table>
         </form>
