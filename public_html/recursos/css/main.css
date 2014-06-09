@@ -57,10 +57,10 @@ body {
 
 .boton {
     background-color: black;
-    color: gold;
+    color: #DAA520;
     border: solid 1px #333;
     border-radius: 5px;
-    padding: 12px;
+    padding: 8px;
     background: linear-gradient(bottom, #111, #444);
     background: -webkit-linear-gradient(bottom, #111, #444);
     background: -moz-linear-gradient(bottom, #111, #444);
@@ -68,17 +68,18 @@ body {
     background: -o-linear-gradient(bottom, #111, #444);
     box-shadow: 0px 0px 9px 6px #000;
     text-decoration: none;
-    font-size: 1.2em;
+    font-size: 18px;
+    font-family: esdla;
 }
 
-.boton .disabled {
-    color: gray;
-    background: #111;
+.disabled {
+    color: gray !important;
+    background: #111 !important;
 }
 
 .boton a {
     text-decoration: none;
-    color: gold;
+    color: #DAA520;
 }
 
 .boton:hover {

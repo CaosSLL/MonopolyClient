@@ -17,7 +17,7 @@ $(document).ready(function() {
     });
 
     cargarPartidas();
-    
+
 //    $(".partidas").on("change", function(e){
 //        var token = $(this).val();
 //        cargarPersonajes(token);
@@ -31,7 +31,7 @@ $(document).ready(function() {
     $("#formularioCrearPartida").on("submit", function(e) {
         e.preventDefault();
 
-        var num = Math.floor(Math.random() * (100000 - 1 + 1)) + 1
+        var num = Math.floor(Math.random() * (100000 - 1 + 1)) + 1;
         usuario.personaje = $("#personajes1").val();
         usuario.personajeNombre = $("#personajes1 option:selected").text();
         listaUsuariosAceptados.push(usuario);
@@ -61,7 +61,7 @@ $(document).ready(function() {
         e.preventDefault();
         sala = $(".partidas").val();
         usuario.personaje = $("#personajes2").val();
-        usuario.personajeNombre = $("#personajes2 option:selected").text()
+        usuario.personajeNombre = $("#personajes2 option:selected").text();
         socket.emit("confirmacion_solicitud", {sala: sala, usuario: usuario});
         $(".confirmacion").append("Espera a que se unan suficientes jugadores...");
         $("#bUnirsePartida").attr("disabled",true);
@@ -93,7 +93,8 @@ function cargarPartidas(){
         success: function(datos) {
             $(".partidas").html("");
             $.each(datos, function(i, partida) {
-                $(".partidas").append("<option value=" + partida.token + ">" + partida.token + " creado el " + partida.fechaInicio.date + "</option>");
+                var fechaFormateada = formatearFecha(partida.fechaInicio.date);
+                $(".partidas").append("<option value=" + partida.token + ">" + partida.token + " creado el " + fechaFormateada + "</option>");
             });
 //            $("#personajes2").html();
         }
@@ -122,6 +123,14 @@ function empezarPartida() {
             alert("erroooorrr!");
         }
     });
+}
+
+function formatearFecha(fecha) {
+    var partesFecha = fecha.split(" ");
+    partesFecha = partesFecha[0];
+    partesFecha = partesFecha.split("-");
+    var fechaFormateada = partesFecha[2] + "/" + partesFecha[1] + "/" + partesFecha[0];
+    return fechaFormateada;
 }
 
 socket.on("confirmacion_solicitud", function(datos) {

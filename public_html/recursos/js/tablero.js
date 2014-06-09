@@ -1,33 +1,50 @@
+/*************************************/
+/* DECLARACIÓN DE VARIABLES GLOBALES */
+/*************************************/
 var clikado = false;
 var posicionesCasilla = new Array();
 var turno = 0;
 var tieneTurno = false;
 var bote = 0;
+var topCasilla0 = 0;
+var leftCasilla0 = 0;
 
+/**************************************************/
+/* FUNCIONES QUE SE CARGARÁN AL INICIAR LA PÁGINA */
+/**************************************************/ 
 $(document).ready(function() {
-
+    // Iniciamos todos los componentes
     iniciarTablero();
 //    iniciarDado();
     iniciarFichas();
     cargarDatosJugadores();
+    
+     // Asociamos el método comprar() al boton de comprar
     $("#botonComprar").off().on("click", function(e) {
         comprar(posicionesCasilla[turno]+1);
     });
     
+     // Con jQueryui hacemos que los paneles de información de los jugadoes se muestren en forma de acordeón
     $("#paneles").accordion();
 
-    $("#botonTurno").off().on("click", function(){
-        
+    // Asociamos el evento de cambiar turno al boton de pasar
+    $("#botonTurno").off().on("click", function(){        
         cambiarTurno();
         socket.emit("cambiar_turno", { sala: sala });
+        deshabilitarBotones();
     });
-
+    
 });
 
+/***************************************************/
+/* FUNCIONES DEL SERVERNODE QUE ESTÁN A LA ESCUCHA */
+/***************************************************/
+// Función que está a la escucha de los cambios de turno
 socket.on("cambiar_turno", function(datos){
     cambiarTurno();
 });
 
+// Función que está a la escucha de los movimientos
 socket.on("movimiento_partida", function(datos) {
     trace("Evento mover ficha -->");
     $(".dado").text(datos.avance);
@@ -36,38 +53,62 @@ socket.on("movimiento_partida", function(datos) {
 //    turno = datos.turno;
 });
 
+// Función que está a la escucha de los cambios en el bote común
 socket.on("cambio_bote", function(datos) {
     trace("Evento cambiar bote-->");
     $("#bote").text(datos.bote);
     bote = datos.bote;
 });
 
+// Función que está a la escucha de los cambios en el panel de información
 socket.on("infoPartida", function(datos) {
 //    trace("Evento cambiar bote-->");
     $("#infoPartida").text(datos.texto);
 });
 
+/*********************/
+/* FUNCIONES LOCALES */
+/*********************/
+/**
+ * Función que se encarga de emitir un mensaje en el panel de información
+ * 
+ * @param {type} texto
+ *      Mensaje que se escribirá en el panel
+ *      
+ */
 function emitirInformacion(texto) {
     $("#infoPartida").text(texto);
     socket.emit("infoPartida", {sala: sala, texto: texto});
 }
 
+/**
+ * Función que se encarga de iniciar el dado
+ * 
+ */
 function iniciarDado() {
     trace("Iniciar dado -->");
     var dado = $(".dado");
     dado.text("Tira!");
 }
 
+/**
+ * Función que se encarga de iniciar las fichas
+ * 
+ */
 function iniciarFichas() {
     trace("Iniciar Fichas -->");
     var ficha = $(".ficha");
     var casilla = $("#casilla0").position();
     ficha.css({
-        top: (casilla.top + 10),
-        left: (casilla.left + 10),
+        top: topCasilla0,
+        left: leftCasilla0,
     });
 }
 
+/**
+ * Función que se encarga de cargar todos los datos de los jugadores en los paneles 
+ * 
+ */
 function cargarDatosJugadores() {
     trace("Cargar datos jugadores -->");
     var panel = $(".panel");
@@ -111,20 +152,33 @@ function cargarDatosJugadores() {
 
 }
 
-
+/**
+ * Función que calcula un número aleatorio del 1 al 6 para el dado,
+ * habilita el botón de pasar turno y comprueba la casilla en la que ha caído el jugador
+ * 
+ */
 function tirar() {
     trace("Tirar dados -->");
-    var num = Math.floor(Math.random() * (6 - 1 + 1)) + 1;
+    var num = Math.floor(Math.random() * 6) + 1;
+//    var num2 = Math.floor(Math.random() * 6) + 1;
     $(".dado").text(num);
     moverFicha(num);
     socket.emit("movimiento_partida", {sala: sala, avance: num, turno: turno});
-    $("#botonComprar").removeAttr("disabled");
-    $("#botonComprar").removeClass("disabled");
+//    $("#botonComprar").removeAttr("disabled");
+//    $("#botonComprar").removeClass("disabled");
+    $("#botonTurno").removeClass("disabled");
+    comprobarTipoCasilla(posicionesCasilla[turno]+1);
     $(".dado").css({backgroundColor: "gray"});
-        $(".dado").unbind("click");
+    $(".dado").unbind("click");
 //    cambiarTurno();
+    emitirInformacion(usuario.nombre + " ha sacado un " + num);
 }
 
+/**
+ * Función que gestiona el cambio de turno
+ * (teniendo en cuenta si el jugador está en la cárcel)
+ * 
+ */
 function cambiarTurno() {
     trace("Cambiar turno -->");
     if (turno >= listaUsuarios.length - 1) {
@@ -139,6 +193,7 @@ function cambiarTurno() {
             $(".dado").css({backgroundColor: "#f2ea9d"});
             $(".dado").bind("click", tirar);
         } else {
+            tieneTurno = false;
             usuario.carcel -= 1;
         }
     } else {
@@ -147,9 +202,18 @@ function cambiarTurno() {
         $(".dado").unbind("click");
     }
 
-    $("#infoPartida").text("El turno es de: " + listaUsuarios[turno].nombre);
+    emitirInformacion("El turno es de: " + listaUsuarios[turno].nombre);
 }
 
+/**
+ * Función que realiza y emite el movimiento de la ficha
+ * 
+ * @param {type} avance
+ *      número de casillas que desplazará la ficha
+ * @param {type} noCobrar
+ *      booleano que indca si al pasar por la casilla de salida el jugador debe o no cobrar
+ *      
+ */
 function moverFicha(avance, noCobrar) {
     trace("Mover ficha -->");
     var personaje = listaUsuarios[turno].personajeNombre;
@@ -164,9 +228,12 @@ function moverFicha(avance, noCobrar) {
         }, 200);
     }
     posicionesCasilla[turno] += avance;
-
 }
 
+/**
+ * Función que se encarga de dibujar el tablero
+ * 
+ */
 function iniciarTablero() {
     trace("Iniciar tablero -->");
 
@@ -224,10 +291,17 @@ function iniciarTablero() {
     tabla += "</tr> </table>";
 
     tablero.html(tabla);
-
+    
     zoom();
+    topCasilla0 = $("#casilla0").position().top;
+    leftCasilla0 = $("#casilla0").position().left;
 }
 
+/**
+ * Función que se encarga de hacer/deshacer la animación de zoom de una casilla 
+ * al hacer click en ella
+ * 
+ */
 function zoom() {
     trace("zoom -->");
 
@@ -280,6 +354,11 @@ function zoom() {
     });
 }
 
+/**
+ * Función para escribir en la consola
+ * @param {type} mensaje
+ * 
+ */
 function trace(mensaje) {
     try {
         console.log(mensaje);
@@ -288,6 +367,10 @@ function trace(mensaje) {
     }
 }
 
+/**
+ * Función que comprueba si una casilla tiene posesiones
+ * 
+ */
 function tienePosesiones() {
     $.ajax({
         url: host + server + "posesioncasilla/comprobar/" + usuario.id + "/" + idPartida,
@@ -305,25 +388,43 @@ function tienePosesiones() {
     });
 }
 
+/**
+ * Función que comprueba el tipo de casilla en la que ha caído el jugador.
+ * Llama a la función correspondiente según el tipo de la casilla 
+ * 
+ * @param {type} idCasilla
+ *      id de la casilla que se quiere comprobar
+ * 
+ */
 function comprobarTipoCasilla(idCasilla) {
+    console.log(idCasilla);
     $.ajax({
         url: host + server + "casilla/" + idCasilla + "/show",
         method: "post",
         dataType: "json",
         success: function(datos) {
+            console.log(datos);
             switch (datos.tipo) {
                 case "especial":
                     casillasEspecial(datos);
                     break;
-                case "tierra", "tarjetas", "bastones", "caballos":
+                case "tierra":
                     comprobarPosesionCasilla(idCasilla);
                     break;
+                case "bastones":
+                    comprobarPosesionCasilla(idCasilla);
+                    break;
+                case "caballos":
+                    comprobarPosesionCasilla(idCasilla);
+                    break;
+                case "tarjetas":
+                    casillaTarjetas(datos);
+                    break;
                 case "impuestos":
-                    casillasImpuestos(datos);
+                    casillasImpuesto(datos);
                     break;
-                default :
+                default:
                     alert("No hay tipo de casilla O.O");
-                    break;
             }
         },
         error: function(e) {
@@ -332,10 +433,11 @@ function comprobarTipoCasilla(idCasilla) {
     });
 }
 
+
 function casillasEspecial(datos) {
     switch (datos.numero) {
         case 20:
-            usuario.dinero += parseInt(bote);
+            usuario.dinero += bote;
             bote = 0;
             $("#bote").text(bote);
             socket.emit("cambio_bote", {sala: sala, bote: bote});
@@ -347,11 +449,16 @@ function casillasEspecial(datos) {
     }
 }
 
+function casillaTarjetas(datos) {
+    emitirInformacion(usuario.nombre + " ha caído en una tarjeta");
+}
+
 function casillasImpuesto(datos) {
     usuario.dinero -= paseInt(datos.precio);
     bote += paseInt(datos.precio);
     $("#bote").text(bote);
     socket.emit("cambio_bote", {sala: sala, bote: bote});
+    emitirInformacion(usuario.nombre + " ha perdido " + datos.precio);
 }
 
 function comprobarPosesionCasilla(idCasilla) {
@@ -411,4 +518,16 @@ function comprar(idCasilla) {
             console.log("error");
         }
     });
+}
+
+/**
+ * Función que deshabilita todos los botones de acción para el jugador
+ * 
+ */
+function deshabilitarBotones() {
+    // Deshabilitamos el dado
+    $(".dado").css({backgroundColor: "gray"});
+    $(".dado").unbind("click");
+    // Deshabilitamos los botones
+    $(".boton").addClass("disabled");
 }
