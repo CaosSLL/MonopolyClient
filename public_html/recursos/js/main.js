@@ -1,3 +1,4 @@
+//var host = "http://192.168.1.107/";
 var host = "http://localhost/";
 var server = "MonopolyServer/web/app_dev.php/";
 var app = "MonopolyClient/public_html/";
@@ -5,12 +6,20 @@ var modulo = "";
 
 var usuario = {id: 0, nombre: "", personaje: "", personajeNombre: "", dinero: 1000, carcel: 0};
 var sala;
+
+// Chema
+// Variables globales... antes estaban en tablero.js
 var listaUsuarios = new Array();
-var turno = null;
+var posesionesCasillas = new Array();
+var posicionesCasilla = new Array();
+var turno = 0;
 var idPartida = 0;
 
 var contenido = "";
 
+var reunirse = false;
+
+//var socket = io.connect("http://192.168.1.107:8585");
 var socket = io.connect("http://localhost:8585");
 
 $(document).ready(function() {
@@ -21,18 +30,37 @@ $(document).ready(function() {
 
     cargarModulo(modulo);
 
-//    $.ajax({
-//        url: host + server + "usuario/autenticado",
-//        method: "post",
-//        dataType: "json",
-//        success: function(datos) {
-    if (usuario.nombre !== "") {
-        $("#usuario").text("Hola amo");
-    } else {
-        $("#usuario").text("Logueate");
-    }
-//        }
-//    });
+    $.ajax({
+        url: host + server + "usuario/autenticado",
+        method: "post",
+        dataType: "json",
+        success: function(datos) {
+
+            // Chema
+            // Si el usuario esta logado que lleve a la pantalla de partidas directamente
+            if (datos.autenticado) {
+                $("#usuario").text(datos.nombre);
+                usuario.nombre = datos.nombre;
+                usuario.id = datos.id;
+                idPartida = datos.partida;
+
+                if (datos.estado == "jugando") {
+                    console.log("Usuario logeado con partida empezada --> usuario: " + usuario.nombre + " partida: " + idPartida);
+                    cargarDatosPartida();
+
+                } else {
+                    modulo = "partidas";
+                    cargarModulo(modulo);
+                }
+            }
+
+//            if (usuario.nombre !== "") {
+//                $("#usuario").text("Hola amo");
+//            } else {
+//                $("#usuario").text("Logueate");
+//            }
+        }
+    });
 
 
     $(".ir").off().on("click", function(e) {
@@ -112,6 +140,43 @@ $(document).ready(function() {
 
 });
 
+// Chema
+// Funcion para cargar la informacion de la partida actual
+function cargarDatosPartida() {
+    $.ajax({
+        url: host + server + "jugador/recuperarEstado/" + usuario.id + "/" + idPartida,
+        method: "post",
+        dataType: "json",
+        success: function(datos) {
+            console.log(datos);
+
+            for (var i = 0; i < datos[1].length; i++) {
+                var jug = datos[1][i];
+                var usu = jug.idUsuario;
+                var objUsuario = {id: usu.id, nombre: usu.nombre, dinero: jug.dinero, carcel: 0, personaje: jug.idPersonaje.id, personajeNombre: jug.idPersonaje.nombre};
+                listaUsuarios.push(objUsuario);
+                posicionesCasilla.push(datos[1][i].posicion);
+            }
+
+//            for(var i = 0; i < datos[2].length; i++) {
+//                posicionesCasilla.push(datos[1][i]);
+//            }
+
+            var part = datos[0]["idPartida"];
+            bote = part.boteComun;
+            sala = part.token;
+
+            socket.emit("volver_unirse", {sala: sala});
+
+            reunirse = true;
+
+            modulo = "tablero";
+            cargarModulo(modulo);
+
+        }
+    });
+}
+
 function cargarModulo(modulo) {
     console.log(modulo);
     contenido.slideUp("slow", function() {
@@ -126,6 +191,17 @@ function cargarModulo(modulo) {
     });
     contenido.slideDown("slow");
 }
+
+// Chema
+// Sirve para re-unirse en la sala
+socket.on("volver_unirse", function(datos) {
+    datos.turno = turno;
+    socket.emit("conf_volver_unirse", datos);
+});
+
+socket.on("conf_volver_unirse", function(datos){
+    turno = datos.turno;
+});
 
 //socket.on("solicitud", function(datos) {
 //    $(".mensaje").append("<p>" + datos.usuario.nombre + " ha creado una partida en la sala <span class='sala'>" + datos.sala + "</span>, deseas unirte?<input type='button' class='bSi' value='Si'></p>");

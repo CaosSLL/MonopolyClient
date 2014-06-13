@@ -110,3 +110,7 @@ body {
 #botonesAjustes{
     float: right;
 }
+
+#botonesAjustes li span:hover {
+    cursor: pointer;
+}

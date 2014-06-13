@@ -23,7 +23,7 @@ $(document).ready(function() {
 //        cargarPersonajes(token);
 //    });
 
-    $("#bRefrescar").off().on("click", function(e){
+    $("#bRefrescar").off().on("click", function(e) {
         e.preventDefault();
         cargarPartidas();
     });
@@ -64,7 +64,7 @@ $(document).ready(function() {
         usuario.personajeNombre = $("#personajes2 option:selected").text();
         socket.emit("confirmacion_solicitud", {sala: sala, usuario: usuario});
         $(".confirmacion").append("Espera a que se unan suficientes jugadores...");
-        $("#bUnirsePartida").attr("disabled",true);
+        $("#bUnirsePartida").attr("disabled", true);
     });
 
 });
@@ -85,7 +85,7 @@ $(document).ready(function() {
 //    });
 //}
 
-function cargarPartidas(){
+function cargarPartidas() {
     $.ajax({
         url: host + server + "partida/partidasEnEspera",
         method: "post",
@@ -111,10 +111,10 @@ function empezarPartida() {
             if (datos.id) {
 //                alert("Ya se han unido " + numJugadores + " jugadores, la partida empezara en breve...");
                 $("#informacion").text("Ya se han unido " + numJugadores + " jugadores, la partida empezara en breve...");
+                // Chema
+                // He añadido idPartida a los datos que se envian
                 socket.emit("empezar_partida", {sala: sala, usuarios: listaUsuariosAceptados, idPartida: idPartida});
                 listaUsuarios = listaUsuariosAceptados;
-                turno = listaUsuarios[0];
-                turno.pos = 0;
                 modulo = "tablero";
                 cargarModulo(modulo);
             }
@@ -150,8 +150,18 @@ socket.on("empezar_partida", function(datos) {
     $("#informacion").text("La partida esta lista para empezar!");
     idPartida = datos.idPartida;
     listaUsuarios = datos.usuarios;
-    turno = listaUsuarios[0];
-    turno.pos = 0;
-    modulo = "tablero";
-    cargarModulo(modulo);
+
+    // Chema
+    $.ajax({
+        url: host + server + "usuario/empezarPartidaSesion/" + idPartida,
+        method: "post",
+        dataType: "json",
+        success: function(datos) {
+            if (datos.id) {
+                modulo = "tablero";
+                cargarModulo(modulo);
+            }
+        }
+    });
+
 });

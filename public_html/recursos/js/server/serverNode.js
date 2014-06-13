@@ -72,4 +72,22 @@ io.sockets.on('connection', function(socket) {
         socket.broadcast.to(datos.sala).emit("cambioDinero", datos);
     });
     
+    socket.on("casillasCompradas", function(datos) {
+        socket.broadcast.to(datos.sala).emit("casillasCompradas", datos);
+    });
+    
+    
+    // Chema
+    socket.on("volver_unirse", function(datos){
+        socket.room = datos.sala;
+        socket.join(datos.sala);
+        socket.broadcast.to(datos.sala).emit("volver_unirse", datos);
+    });
+   
+    socket.on("conf_volver_unirse", function(datos){
+        socket.room = datos.sala;
+        socket.join(datos.sala);
+        socket.broadcast.to(datos.sala).emit("conf_volver_unirse", datos);
+    });
+    
 });
