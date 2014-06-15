@@ -96,6 +96,7 @@ $(document).ready(function() {
             success: function(datos) {
                 if (!datos.autenticado) {
                     $("#usuario").text("Logueatee!!");
+                    $("#infoPartida").text("");
                     usuario.id = "";
                     usuario.nombre = "";
                     usuario.personaje = "";

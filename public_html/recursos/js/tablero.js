@@ -50,7 +50,8 @@ $(document).ready(function() {
         }
     });
 
-    $("#botonComprar").bind("click", comprar);
+    //Olga.- comento que no este el evento del boton click desde el principio
+//    $("#botonComprar").bind("click", comprar);
 //    $("#botonComprar").removeClass("disabled");
 
     //Dialog para las cartas casillas
@@ -94,7 +95,8 @@ $(document).ready(function() {
         }
     });
 
-    $(".color li").off().on("click", function() {
+    $(".color li").off().on("click", function(e) {
+        alert("hola");
         var casilla = $(this).attr("id");
         $("#imagenCartaCasillaInfo").attr("src", "recursos/images/carta-casilla/es/cartacasilla" + casilla + ".jpg");
         $("#dialogo").dialog("open");
@@ -105,7 +107,7 @@ $(document).ready(function() {
         heightStyle: "content"
     });
 
-    // Asociamos el mÃ©todo hipotecar() al botÃ³n de crear
+    // Asociamos el método hipotecar() al botón de crear
     $("#botonHipotecar").off().on("click", function(e) {
         hipotecar();
     });
@@ -125,7 +127,7 @@ $(document).ready(function() {
                 if (datos.actualizado) {
                     cambiarTurno();
                     socket.emit("cambiar_turno", {sala: sala});
-                    deshabilitarBotones();
+                    deshabilitarBotones();                    
                 }
             }
         });
@@ -158,7 +160,7 @@ socket.on("cambiar_turno", function(datos) {
 socket.on("movimiento_partida", function(datos) {
     trace("Evento mover ficha -->");
     $(".dado").text(datos.avance);
-    moverFicha(datos.avance);
+    moverFicha(datos.avance, datos.cobrar);
 //    cambiarTurno();
 //    turno = datos.turno;
 });
@@ -184,6 +186,10 @@ socket.on("casillasCompradas", function(datos) {
     var numCas = datos.casillaComprada.numeroCasilla;
     $("#panelUsu" + turno + " ." + casillas[numCas].color + " ul").append("<li id='" + casillas[numCas].numero + "'>" + casillas[numCas].nombre + "</li>");
     listaUsuarios[turno].dinero = datos.usuario.dinero;
+
+    //OLGA
+    //Cuando reciba que otro jugador a comprado se añada a su array la casilla comprada con el jugador que la ha comprado.
+    posesionesCasillas.push(datos.casillaComprada);
 //    trace(datos.usuario.id + " " + turno);
 });
 
@@ -301,8 +307,8 @@ function tirar() {
     }
 //    var num2 = Math.floor(Math.random() * 6) + 1;
     $(".dado").text(num);
-    moverFicha(num);
-    socket.emit("movimiento_partida", {sala: sala, avance: num, turno: turno});
+    moverFicha(num, true);
+    socket.emit("movimiento_partida", {sala: sala, avance: num, cobrar: true, turno: turno});
 //    $("#botonComprar").removeAttr("disabled");
 //    $("#botonComprar").removeClass("disabled");
     $("#botonTurno").removeClass("disabled");
@@ -344,6 +350,7 @@ function cambiarTurno() {
         tieneTurno = false;
         $(".dado").css({backgroundColor: "gray"});
         $(".dado").unbind("click");
+        deshabilitarBotones();
     }
 
     emitirInformacion("El turno es de: " + listaUsuarios[turno].nombre);
@@ -365,13 +372,28 @@ function moverFicha(avance, noCobrar) {
     var casillaActual = posicionesCasilla[turno];
     for (var i = (casillaActual + 1); i <= (casillaActual + avance); i++) {
         i > (40 - 1) ? c = i - 40 : c = i;
+        //OLGA
+        if (c === 0) {
+            trace("Pasa por la salida");
+            listaUsuarios[turno].dinero += 200;
+            usuario.dinero = listaUsuarios[turno].dinero;
+//            usuario.dinero += 200;
+            $("#cabeUsu" + turno + " .dinero").text(usuario.dinero);
+            socket.emit("cambioDinero", {sala: sala, usuario: usuario});
+        }
+        //FIN OLGA
         var posicion = $("#casilla" + c).position();
         ficha.animate({
             top: posicion.top + 10,
             left: posicion.left + 10
         }, 200);
     }
-    posicionesCasilla[turno] += avance;
+    //OLGA
+    if ((posicionesCasilla[turno] + avance) >= 40) {
+        posicionesCasilla[turno] = (posicionesCasilla[turno] + avance) - 40;
+    } else {
+        posicionesCasilla[turno] += avance;
+    }
 }
 
 /**
@@ -435,34 +457,34 @@ function iniciarTablero() {
     tabla += "</tr> </table>";
 
     tablero.html(tabla);
-    
+
     // Chema 
     // Oculta el velo de carga y coloca las fichas en su posicion.
-    setTimeout(function(){
+    setTimeout(function() {
         colocarFichas();
         $("#informacion").css({
             height: $("#tablero").height()
         });
         $(".velo").fadeOut();
-    },3000);
+    }, 3000);
 
     zoom();
 }
 
 // Chema
 // Funcion para colocar las fichas en su posición
-function colocarFichas(){
+function colocarFichas() {
     trace("Colocación de fichas");
-    
+
     var fichas = $(".ficha");
-    $.each(fichas, function(i,e){
-        var casilla = $("#casilla"+posicionesCasilla[i]).position();
-       $(this).css({
-           top: casilla.top,
-           left: casilla.left
-       }); 
+    $.each(fichas, function(i, e) {
+        var casilla = $("#casilla" + posicionesCasilla[i]).position();
+        $(this).css({
+            top: casilla.top,
+            left: casilla.left
+        });
     });
-    
+
 }
 
 /**
@@ -627,7 +649,8 @@ function casillasEspecial(datos) {
             break;
         case 30:
             usuario.carcel = 3;
-            moverFicha(20);
+            moverFicha(20, false);
+            socket.emit("movimiento_partida", {sala: sala, avance: num, cobrar: false, turno: turno});
             break;
     }
 }
@@ -637,11 +660,13 @@ function casillaTarjetas(datos) {
 }
 
 function casillasImpuesto(datos) {
+    trace("Funcion casillasImpuestos");
     // Modificamos el dinero en la variable usuario, en el panel del usuario y lo emitimos al serverNode
-    usuario.dinero -= parseInt(datos.precio);
-    // Chema
+    // Chema y OLGA (que no reste de ambos si no que iguale)
     listaUsuarios[turno].dinero -= parseInt(datos.precio);
-    
+    usuario.dinero = listaUsuarios[turno].dinero;
+    trace("Dinero usuario" + usuario.dinero);
+
     $("#cabeUsu" + turno + " .dinero").text(usuario.dinero);
 //    trace(usuario);
     socket.emit("cambioDinero", {sala: sala, usuario: listaUsuarios[turno]});
@@ -652,31 +677,33 @@ function casillasImpuesto(datos) {
     emitirInformacion(usuario.nombre + " ha perdido " + datos.precio);
 }
 
+/**
+ * OLGA
+ * Funcion que comprueba si la casilla es de alguien, en ell caso de serlo tendrá que pagar, en el caso de no serlo podrá comprarla.
+ * @param {Casilla} datosCasilla  Casilla en la que esta.
+ * @returns {undefined}
+ */
+
 function comprobarPosesionCasilla(datosCasilla) {
-//    $.ajax({
-//        url: host + server + "posesioncasilla/comprobarPosesion/" + datosCasilla.id + "/" + idPartida,
-//        method: "post",
-//        dataType: "json",
-//        success: function(datos) {
-//            console.log("Datos del parametro: " + datosCasilla);
-//            console.log("Datos de posesionCasilla:comprobarPosesion: ");
-//            console.log(datos);
-//            if (isNaN(datos.poseedor)) {
-//                if (usuario.dinero >= datosCasilla.precio) {
-////                    $("#botonComprar").removeAttr("disabled");
-//                    $("#botonComprar").bind("click", botonComprar);
-//                    $("#botonComprar").removeClass("disabled");
-//                }
-//            } else if (datos.idJugador.id !== usuario.id) {
-//                alert("te toca pagar");
-//            } else {
-//                alert("es tuya");
-//            }
-//        },
-//        error: function(e) {
-//            console.log("error");
-//        }
-//    });
+    //OLGA
+    //Para comprobar vamos a buscar en el array de posesionesCasillas la casilla.
+    trace("PosesionesCasillas");
+    if (posesionesCasillas.length > 0) {
+        for (var i = 0; i < posesionesCasillas.length; i++) {
+            if (posesionesCasillas[i].idCasilla === datosCasilla.id) {
+                trace("Tiene dueño");
+            } else {
+                trace("No tiene dueño puede comprar");
+                $("#botonComprar").bind("click", botonComprar);
+                $("#botonComprar").removeClass("disabled");
+            }
+        }
+    } else {
+        trace("No tiene dueño puede comprar");
+        $("#botonComprar").bind("click", botonComprar);
+        $("#botonComprar").removeClass("disabled");
+
+    }
 }
 
 function comprar() {
@@ -691,12 +718,12 @@ function comprar() {
         success: function(datosCrear) {
             if (!isNaN(datosCrear.idPosesionCasilla)) {
                 console.log("Comprar " + casilla.nombre);
+
+                // Chema y OLGA(cambio el orden y que no reste en ambos si no que iguale)
                 //Restamos al jugador
-                usuario.dinero -= casilla.precio;
-                
-                // Chema
                 listaUsuarios[turno].dinero -= casilla.precio;
-                
+                usuario.dinero = listaUsuarios[turno].dinero;
+
                 $("#cabeUsu" + turno + " .dinero").text(usuario.dinero);
                 socket.emit("cambioDinero", {sala: sala, usuario: usuario});
 
@@ -724,28 +751,54 @@ function comprar() {
 }
 
 function hipotecar() {
-// Obtenemos todas las casillas que posee el usuario en esta partida
-    $.ajax({
-        url: host + server + "posesioncasilla/obtenerTodasPosesiones/" + idPartida + "/" + usuario.id,
-        method: "post",
-        dataType: "json",
-        success: function(datos) {
-            console.log("-- HIPOTECAR --");
-            if (datos.posesiones) {
-                console.log(datos.posesiones);
-                $("#clickBotonHipotecarContent").append("<p>No tienes tierras ni propiedades que hipotecar</p>");
-                $("#clickBotonHipotecar").dialog("open");
-            } else {
-                $("#clickBotonHipotecarContent").append('<select id="selectHipotecar"></select>');
-                $.each(datos, function(index, datos) {
-                    $("#selectHipotecar").append('<option value="' + datos.idCasilla + '">');
-                });
+    //OLGA
+    //Lo primero recorrer el array de posesionesCasillas y sacar las posesiones del jugador.
+    var posesiones = new Array();
+    if(posesionesCasillas.length !== 0){
+        for(var i = 0; i < posesionesCasillas.length; i++){
+            if(posesionesCasillas[i].idUsuario === usuario.id){
+                posesiones.push(posesionesCasillas[i]);
             }
-        },
-        error: function(datos) {
-            console.log("-- ERROR EN HIPOTECAR --");
         }
-    });
+    //Una vez que se tengan las posesiones, se comprueba si tiene alguna el jugador, y si no se pone mensaje de que no tiene
+        if (posesiones.length !== 0) {
+            alert("tiene posesiones");
+            var posesio = "";
+            for(var j = 0; j < posesiones.length; j++){
+                posesio += posesiones[j].numero + " ";
+            }
+            alert(posesio);
+        } else {
+            alert("No tienes posesiones");
+        }
+    }else{
+        alert("NO hay ninguna casilla comprada");
+    }
+    
+    
+// Obtenemos todas las casillas que posee el usuario en esta partida
+// 
+//    $.ajax({
+//        url: host + server + "posesioncasilla/obtenerTodasPosesiones/" + idPartida + "/" + usuario.id,
+//        method: "post",
+//        dataType: "json",
+//        success: function(datos) {
+//            console.log("-- HIPOTECAR --");
+//            if (datos.posesiones) {
+//                console.log(datos.posesiones);
+//                $("#clickBotonHipotecarContent").append("<p>No tienes tierras ni propiedades que hipotecar</p>");
+//                $("#clickBotonHipotecar").dialog("open");
+//            } else {
+//                $("#clickBotonHipotecarContent").append('<select id="selectHipotecar"></select>');
+//                $.each(datos, function(index, datos) {
+//                    $("#selectHipotecar").append('<option value="' + datos.idCasilla + '">');
+//                });
+//            }
+//        },
+//        error: function(datos) {
+//            console.log("-- ERROR EN HIPOTECAR --");
+//        }
+//    });
 }
 
 /**
@@ -753,9 +806,10 @@ function hipotecar() {
  * 
  */
 function deshabilitarBotones() {
-// Deshabilitamos el dado
+// Deshabilitamos el dado\
+//OLGA deshabilito todos los botones
     $(".dado").css({backgroundColor: "gray"});
-//    $(".dado").unbind("click");
+    $(".dado").unbind("click");
     // Deshabilitamos los botones
     $(".boton").addClass("disabled");
 //    $(".boton").unbind("click");
@@ -764,7 +818,9 @@ function deshabilitarBotones() {
 
 function botonComprar() {
 // Asociamos el método comprar() al boton de comprar
-    if (posicionesCasilla[turno] % 5 !== 0 || posicionesCasilla[turno] !== 12 || posicionesCasilla[turno] !== 28) {
+//Si no es ningun caballo ni bastón que salga la imagen de la carta casilla y si no que compre directamente. 
+//OLGA
+    if (posicionesCasilla[turno] % 5 !== 0 && posicionesCasilla[turno] !== 12 && posicionesCasilla[turno] !== 28) {
         $("#imagenCartaCasilla").attr("src", "recursos/images/carta-casilla/es/cartacasilla" + (posicionesCasilla[turno]) + ".jpg");
         $("#dialogo").dialog("open");
     } else {
@@ -774,7 +830,8 @@ function botonComprar() {
     }
 }
 
+//OLGA ya existe arriba
 //funcion para el boton de hipotecar
-function hipotecar() {
-    return true;
-}
+//function hipotecar() {
+//    return true;
+//}
