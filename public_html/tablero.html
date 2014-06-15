@@ -52,6 +52,7 @@
         <div id="botones">
             <input type="button" class="boton button" id="botonComprar"  value="Comprar">
             <input type="button" class="boton button disabled" id="botonHipotecar"  value="Hipotecar">
+            <input type="button" class="boton button disabled" id="botonDesHipotecar"  value="Deshipotecar">
             <input type="button" class="boton button disabled" id="botonEdificar"  value="Edificar">
             <input type="button" class="boton button disabled" id="botonTurno"  value="Pasar">
             <div class="bote"><b>Bote:</b> <span id="bote">0</span> G</div>
@@ -68,6 +69,20 @@
         </div>
     </div>
     <div id="clickBotonHipotecar" class="dialogHipotecar" title="¿Qué tierra o propiedad quieres hipotecar?">
-        <div id="clickBotonHipotecarContent" class="dialogHipotecarContent"></div>
+        <div id="clickBotonHipotecarContent" class="dialogHipotecarContent">
+            <label>Elige tu propiedad:
+                <select name="propiedad" id="propiedad1"></select>
+            </label><br>
+            <img id="imagenCartaCasillaHipotecar" src="">
+        </div>
     </div>
+    <div id="clickBotonDesHipotecar" class="dialogDesHipotecar" title="¿Qué tierra o propiedad quieres deshipotecar?">
+        <div id="clickBotonDesHipotecarContent" class="dialogDesHipotecarContent">
+            <label>Elige tu propiedad:
+                <select name="propiedad" id="propiedad2"></select>
+            </label><br>
+            <img id="imagenCartaCasillaDesHipotecar" src="">
+        </div>
+    </div>
+
 </div>

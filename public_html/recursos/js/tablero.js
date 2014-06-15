@@ -75,16 +75,18 @@ $(document).ready(function() {
         }
     });
 
+    //OLGA, le cambio el tamaño para que se ajuste bien la imagen
     $("#dialogoInfo").dialog({
         autoOpen: false,
-        height: 600,
-        width: 350,
+        height: 670,
+        width: 400,
         modal: true,
         buttons: {
             "Aceptar": function() {
-                comprar(posicionesCasilla[turno] + 1);
-                $("#botonComprar").unbind("click");
-                $("#botonComprar").addClass("disabled");
+                //OLGA, como solo es de información no hace nada
+//                comprar(posicionesCasilla[turno] + 1);
+//                $("#botonComprar").unbind("click");
+//                $("#botonComprar").addClass("disabled");
                 $(this).dialog("close");
             },
             "Cancelar": function() {
@@ -95,11 +97,11 @@ $(document).ready(function() {
         }
     });
 
-    $(".color li").off().on("click", function(e) {
-        alert("hola");
-        var casilla = $(this).attr("id");
+    //OLGA, que funcione el link para ver la información de la propiedad al clicar en ella
+    $(".color").off().on("click", function(e) {
+        var casilla = e.target.id;
         $("#imagenCartaCasillaInfo").attr("src", "recursos/images/carta-casilla/es/cartacasilla" + casilla + ".jpg");
-        $("#dialogo").dialog("open");
+        $("#dialogoInfo").dialog("open");
     });
 
     // Con jQueryui hacemos que los paneles de información de los jugadoes se muestren en forma de acordeón
@@ -107,9 +109,22 @@ $(document).ready(function() {
         heightStyle: "content"
     });
 
-    // Asociamos el método hipotecar() al botón de crear
+    //OLGA
+    // Asociamos el método botonHipotecar() al botón de hipotecar
     $("#botonHipotecar").off().on("click", function(e) {
-        hipotecar();
+        botonHipotecar();
+    });
+
+    //OLGA
+    // Asociamos el método botonDesHipotecar() al botón de deshipotecar
+    $("#botonDesHipotecar").off().on("click", function(e) {
+        botonDesHipotecar();
+    });
+
+    //OLGA, que al cambiar la propiedad seleccionada en el dialog de hipotecar se cambie la imagen
+    $('select#propiedad1').off().on('change', function() {
+        var valor = $(this).val();
+        $("#imagenCartaCasillaHipotecar").attr("src", "recursos/images/carta-casilla/es/cartacasilla" + valor + ".jpg");
     });
 
     // Asociamos el evento de cambiar turno al boton de pasar
@@ -127,23 +142,53 @@ $(document).ready(function() {
                 if (datos.actualizado) {
                     cambiarTurno();
                     socket.emit("cambiar_turno", {sala: sala});
-                    deshabilitarBotones();                    
+                    deshabilitarBotones();
                 }
             }
         });
 
     });
 
+    //OLGA
     // Hacemos que el div#clickBotonHipotecar sea un dialog
     $("#clickBotonHipotecar").dialog({
         autoOpen: false,
-        buttons: [{
-                text: "Aceptar",
-                click: function() {
-                    $(this).dialog("close");
-                }
-            }],
-        modal: true
+        height: 700,
+        width: 400,
+        modal: true,
+        buttons: {
+            "Aceptar": function() {
+                var casilla = $("#propiedad1 option:selected").val();
+                hipotecar(casilla);
+                $(this).dialog("close");
+            },
+            "Cancelar": function() {
+                $(this).dialog("close");
+            }
+        },
+        close: function() {
+        }
+    });
+
+    //OLGA
+    // Hacemos que el div#clickBotonDesHipotecar sea un dialog
+    $("#clickBotonDesHipotecar").dialog({
+        autoOpen: false,
+        height: 700,
+        width: 400,
+        modal: true,
+        buttons: {
+            "Aceptar": function() {
+                var casilla = $("#propiedad2 option:selected").val();
+                desHipotecar(casilla);
+                $(this).dialog("close");
+            },
+            "Cancelar": function() {
+                $(this).dialog("close");
+            }
+        },
+        close: function() {
+        }
     });
 
 });
@@ -175,8 +220,9 @@ socket.on("cambio_bote", function(datos) {
 // Función que está a la escucha de los cambios de dinero de los jugadores
 socket.on("cambioDinero", function(datos) {
     trace("-- CAMBIO EN EL DINERO --");
-    $("#cabeUsu" + turno + " .dinero").text(datos.usuario.dinero);
-    listaUsuarios[turno].dinero = datos.usuario.dinero;
+    //OLGA, cambio para que se le pase el turno y asi poder modificar lo de los otros jugadores
+    $("#cabeUsu" + datos.turno + " .dinero").text(datos.usuario.dinero);
+    listaUsuarios[datos.turno].dinero = datos.usuario.dinero;
 //    trace(datos.usuario.id + " " + turno);
 });
 
@@ -284,6 +330,8 @@ function cargarDatosJugadores() {
         $(".dado").bind("click", tirar);
         $("#botonHipotecar").removeClass("disabled");
         $("#botonHipotecar").bind("click");
+        $("#botonDesHipotecar").removeClass("disabled");
+        $("#botonDesHipotecar").bind("click");
     } else {
         tieneTurno = false;
         $(".dado").css({backgroundColor: "gray"});
@@ -338,6 +386,7 @@ function cambiarTurno() {
             $(".dado").css({backgroundColor: "#f2ea9d"});
             $(".dado").bind("click", tirar);
             $("#botonHipotecar").removeClass("disabled");
+            $("#botonDesHipotecar").removeClass("disabled");
 
 //            $("#botonComprar").bind("click", comprar);
 //            $("#botonComprar").removeClass("disabled");
@@ -379,7 +428,8 @@ function moverFicha(avance, noCobrar) {
             usuario.dinero = listaUsuarios[turno].dinero;
 //            usuario.dinero += 200;
             $("#cabeUsu" + turno + " .dinero").text(usuario.dinero);
-            socket.emit("cambioDinero", {sala: sala, usuario: usuario});
+            //OLGA añado el campo turno
+            socket.emit("cambioDinero", {sala: sala, usuario: usuario, turno: turno});
         }
         //FIN OLGA
         var posicion = $("#casilla" + c).position();
@@ -669,7 +719,8 @@ function casillasImpuesto(datos) {
 
     $("#cabeUsu" + turno + " .dinero").text(usuario.dinero);
 //    trace(usuario);
-    socket.emit("cambioDinero", {sala: sala, usuario: listaUsuarios[turno]});
+//OLGA añado campo turno
+    socket.emit("cambioDinero", {sala: sala, usuario: listaUsuarios[turno], turno: turno});
 
     bote += parseInt(datos.precio);
     $("#bote").text(bote);
@@ -688,21 +739,27 @@ function comprobarPosesionCasilla(datosCasilla) {
     //OLGA
     //Para comprobar vamos a buscar en el array de posesionesCasillas la casilla.
     trace("PosesionesCasillas");
+    var dueno = false;
+    var casillaDueno = "";
     if (posesionesCasillas.length > 0) {
         for (var i = 0; i < posesionesCasillas.length; i++) {
             if (posesionesCasillas[i].idCasilla === datosCasilla.id) {
                 trace("Tiene dueño");
-            } else {
-                trace("No tiene dueño puede comprar");
-                $("#botonComprar").bind("click", botonComprar);
-                $("#botonComprar").removeClass("disabled");
+                if (posesionesCasillas[i].idUsuario != usuario.id) {
+                    trace("no es tuya");
+                    dueno = true;
+                    casillaDueno = posesionesCasillas[i];
+                }
             }
         }
-    } else {
+    }
+    if (!dueno) {
         trace("No tiene dueño puede comprar");
         $("#botonComprar").bind("click", botonComprar);
         $("#botonComprar").removeClass("disabled");
-
+    } else {
+        //Le toca pagar el alquiler
+        pagarAlquiler(datosCasilla, casillaDueno);
     }
 }
 
@@ -710,97 +767,121 @@ function comprar() {
     //Obtener casilla
     var casilla = casillas[posicionesCasilla[turno]];
 
-    //Modificamos bd, añadimos registro de PosesionCasilla y Jugador
-    $.ajax({
-        url: host + server + "posesioncasilla/comprar/" + casilla.id + "/" + usuario.id + "/" + idPartida + "/" + listaUsuarios[turno].dinero,
-        method: "post",
-        dataType: "json",
-        success: function(datosCrear) {
-            if (!isNaN(datosCrear.idPosesionCasilla)) {
-                console.log("Comprar " + casilla.nombre);
+    //OLGA, antes de comprar, comprobar que el usuario tiene dinero
+    if (listaUsuarios[turno].dinero >= casilla.precio) {
 
-                // Chema y OLGA(cambio el orden y que no reste en ambos si no que iguale)
-                //Restamos al jugador
-                listaUsuarios[turno].dinero -= casilla.precio;
-                usuario.dinero = listaUsuarios[turno].dinero;
+        //Modificamos bd, añadimos registro de PosesionCasilla y Jugador
+        $.ajax({
+            url: host + server + "posesioncasilla/comprar/" + casilla.id + "/" + usuario.id + "/" + idPartida + "/" + listaUsuarios[turno].dinero,
+            method: "post",
+            dataType: "json",
+            success: function(datosCrear) {
+                if (!isNaN(datosCrear.idPosesionCasilla)) {
+                    console.log("Comprar " + casilla.nombre);
 
-                $("#cabeUsu" + turno + " .dinero").text(usuario.dinero);
-                socket.emit("cambioDinero", {sala: sala, usuario: usuario});
+                    // Chema y OLGA(cambio el orden y que no reste en ambos si no que iguale)
+                    //Restamos al jugador
+                    listaUsuarios[turno].dinero -= casilla.precio;
+                    usuario.dinero = listaUsuarios[turno].dinero;
 
-                //Modificamos el array de posesionesCasillas
-                var casillaComprada = {idCasilla: casilla.id, numeroCasilla: casilla.numero, idUsuario: usuario.id};
-                posesionesCasillas.push(casillaComprada);
+                    $("#cabeUsu" + turno + " .dinero").text(usuario.dinero);
+                    //OLGA, añado campo turno
+                    socket.emit("cambioDinero", {sala: sala, usuario: usuario, turno: turno});
 
-                //Añadir carta a panel
-                $("#panelUsu" + turno + " ." + casilla.color + " ul").append("<li id='" + casilla.numero + "'>" + casilla.nombre + "</li>");
-                socket.emit("casillasCompradas", {sala: sala, usuario: usuario, casillaComprada: casillaComprada});
+                    //Modificamos el array de posesionesCasillas
+                    //OLGA, añado campo para saber si esta hipotecada
+                    var casillaComprada = {idCasilla: casilla.id, numeroCasilla: casilla.numero, idUsuario: usuario.id, hipotecada: false};
+                    posesionesCasillas.push(casillaComprada);
 
-                var texto = "El usuario " + usuario.nombre + " ha comprado la casilla " + casilla.nombre;
-                emitirInformacion(texto);
-            } else {
-                alert("No se ha podido realizar la compra");
-                var texto = "El usuario " + usuario.nombre + " no ha podido comprar la casilla " + casilla.nombre;
-                emitirInformacion(texto);
+                    //Añadir carta a panel
+                    $("#panelUsu" + turno + " ." + casilla.color + " ul").append("<li id='" + casilla.numero + "'>" + casilla.nombre + "</li>");
+                    socket.emit("casillasCompradas", {sala: sala, usuario: usuario, casillaComprada: casillaComprada});
+
+                    var texto = "El usuario " + usuario.nombre + " ha comprado la casilla " + casilla.nombre;
+                    emitirInformacion(texto);
+                } else {
+                    alert("No se ha podido realizar la compra");
+                    var texto = "El usuario " + usuario.nombre + " no ha podido comprar la casilla " + casilla.nombre;
+                    emitirInformacion(texto);
+                }
+            },
+            error: function(e) {
+                console.log("error");
             }
-        },
-        error: function(e) {
-            console.log("error");
-        }
-    });
+        });
+    } else {
+        alert("Lo siento pero no tienes dinero para comprar");
+    }
 
 }
 
-function hipotecar() {
-    //OLGA
+//OLGA
+//Funcion para cuando se le de al boton hipotecar compruebe si tiene posesiones y si tiene que muestre el dialog, si no un mensaje.
+function botonHipotecar() {
+
     //Lo primero recorrer el array de posesionesCasillas y sacar las posesiones del jugador.
     var posesiones = new Array();
-    if(posesionesCasillas.length !== 0){
-        for(var i = 0; i < posesionesCasillas.length; i++){
-            if(posesionesCasillas[i].idUsuario === usuario.id){
-                posesiones.push(posesionesCasillas[i]);
+    if (posesionesCasillas.length !== 0) {
+        for (var i = 0; i < posesionesCasillas.length; i++) {
+            if (posesionesCasillas[i].idUsuario === usuario.id) {
+                if (!posesionesCasillas[i].hipotecada) {
+                    posesiones.push(posesionesCasillas[i]);
+                }
             }
         }
-    //Una vez que se tengan las posesiones, se comprueba si tiene alguna el jugador, y si no se pone mensaje de que no tiene
+        //Una vez que se tengan las posesiones, se comprueba si tiene alguna el jugador, y si no se pone mensaje de que no tiene
         if (posesiones.length !== 0) {
-            alert("tiene posesiones");
             var posesio = "";
-            for(var j = 0; j < posesiones.length; j++){
-                posesio += posesiones[j].numero + " ";
+            for (var j = 0; j < posesiones.length; j++) {
+                trace("posesiones" + posesiones[j].idCasilla);
+                $("#propiedad1").append("<option value=" + posesiones[j].numeroCasilla + ">" + casillas[posesiones[j].numeroCasilla].nombre + "</option>");
+                if (j === 0)
+                    $("#imagenCartaCasillaHipotecar").attr("src", "recursos/images/carta-casilla/es/cartacasilla" + (posesiones[j].numeroCasilla) + ".jpg");
+                posesio += posesiones[j].numeroCasilla + " ";
             }
+            $("#clickBotonHipotecar").dialog("open");
             alert(posesio);
         } else {
             alert("No tienes posesiones");
         }
-    }else{
+    } else {
         alert("NO hay ninguna casilla comprada");
     }
-    
-    
-// Obtenemos todas las casillas que posee el usuario en esta partida
-// 
-//    $.ajax({
-//        url: host + server + "posesioncasilla/obtenerTodasPosesiones/" + idPartida + "/" + usuario.id,
-//        method: "post",
-//        dataType: "json",
-//        success: function(datos) {
-//            console.log("-- HIPOTECAR --");
-//            if (datos.posesiones) {
-//                console.log(datos.posesiones);
-//                $("#clickBotonHipotecarContent").append("<p>No tienes tierras ni propiedades que hipotecar</p>");
-//                $("#clickBotonHipotecar").dialog("open");
-//            } else {
-//                $("#clickBotonHipotecarContent").append('<select id="selectHipotecar"></select>');
-//                $.each(datos, function(index, datos) {
-//                    $("#selectHipotecar").append('<option value="' + datos.idCasilla + '">');
-//                });
-//            }
-//        },
-//        error: function(datos) {
-//            console.log("-- ERROR EN HIPOTECAR --");
-//        }
-//    });
 }
 
+
+//OLGA
+//Funcion para se le de al boton deshipotecar compruebe si tiene posesiones hipotecadas y si tiene que muestre el dialog, si no un mensaje.
+function botonDesHipotecar() {
+    //Lo primero recorrer el array de posesionesCasillas y sacar las posesiones del jugador.
+    var posesiones = new Array();
+    if (posesionesCasillas.length !== 0) {
+        for (var i = 0; i < posesionesCasillas.length; i++) {
+            if (posesionesCasillas[i].idUsuario === usuario.id) {
+                if (posesionesCasillas[i].hipotecada) {
+                    posesiones.push(posesionesCasillas[i]);
+                }
+            }
+        }
+        //Una vez que se tengan las posesiones, se comprueba si tiene alguna el jugador, y si no se pone mensaje de que no tiene
+        if (posesiones.length !== 0) {
+            var posesio = "";
+            for (var j = 0; j < posesiones.length; j++) {
+                trace("posesiones" + posesiones[j].idCasilla);
+                $("#propiedad2").append("<option value=" + posesiones[j].numeroCasilla + ">" + casillas[posesiones[j].numeroCasilla].nombre + "</option>");
+                if (j === 0)
+                    $("#imagenCartaCasillaDesHipotecar").attr("src", "recursos/images/carta-casilla/es/cartacasilla" + (posesiones[j].numeroCasilla) + ".jpg");
+                posesio += posesiones[j].numeroCasilla + " ";
+            }
+            $("#clickBotonDesHipotecar").dialog("open");
+            alert(posesio);
+        } else {
+            alert("No tienes posesiones");
+        }
+    } else {
+        alert("NO hay ninguna casilla comprada");
+    }
+}
 /**
  * Función que deshabilita todos los botones de acción para el jugador
  * 
@@ -830,8 +911,94 @@ function botonComprar() {
     }
 }
 
-//OLGA ya existe arriba
-//funcion para el boton de hipotecar
-//function hipotecar() {
-//    return true;
-//}
+//OLGA
+//funcion para el hipotecar cuando se ha aceptado en el dialog
+function hipotecar(casilla) {
+    //Recogemos la propiedad que es y sus valores de la carta:
+//    var idc = parseInt(casilla) + 1;
+    var aHipotecar = casillas[casilla];
+
+    //Una vez aceptado se pone en la lista en gris y le da el dinero al jugador.
+    $("li#" + casilla).css({
+        color: "#d5cece"
+    });
+
+    listaUsuarios[turno].dinero += aHipotecar.precioHipoteca;
+    usuario.dinero = listaUsuarios[turno].dinero;
+    //Hay que modificar el array de posesionesCasillas para indicar que ya esta hipotecada
+    for (var i = 0; i < posesionesCasillas.length; i++) {
+        if (posesionesCasillas[i].numeroCasilla == casilla) {
+            posesionesCasillas[i].hipotecada = true;
+        }
+    }
+
+    trace("dinero" + usuario.dinero);
+
+    $("#cabeUsu" + turno + " .dinero").text(usuario.dinero);
+    socket.emit("cambioDinero", {sala: sala, usuario: usuario, turno: turno});
+
+    var texto = "El usuario " + usuario.nombre + " ha hipotecado la casilla " + aHipotecar.nombre;
+    emitirInformacion(texto);
+}
+
+//OLGA
+//funcion para deshipotecar la propiedad
+function desHipotecar(casilla) {
+    //Recogemos la propiedad que es y sus valores de la carta:
+//    var idc = parseInt(casilla) + 1;
+    var aHipotecar = casillas[casilla];
+
+    //Una vez aceptado se pone en la lista en gris y le da el dinero al jugador.
+    $("li#" + casilla).css({
+        color: "#dd9a61"
+    });
+
+    //Calculamos el dinero para deshipotecar, lo de hipotecar más 10% de intereses:
+    trace("Precio hipoteca" + (parseInt(aHipotecar.precioHipoteca) * 0.10));
+    var deshipote = parseInt(aHipotecar.precioHipoteca) + (parseInt(aHipotecar.precioHipoteca) * 0.10);
+    alert(deshipote);
+    //Hay que modificar el array de posesionesCasillas para indicar que ya esta hipotecada
+    for (var i = 0; i < posesionesCasillas.length; i++) {
+        if (posesionesCasillas[i].numeroCasilla == casilla) {
+            posesionesCasillas[i].hipotecada = false;
+        }
+    }
+    listaUsuarios[turno].dinero -= deshipote;
+    usuario.dinero = listaUsuarios[turno].dinero;
+
+    $("#cabeUsu" + turno + " .dinero").text(usuario.dinero);
+    socket.emit("cambioDinero", {sala: sala, usuario: usuario, turno: turno});
+
+    var texto = "El usuario " + usuario.nombre + " ha deshipotecado la casilla " + aHipotecar.nombre;
+    emitirInformacion(texto);
+}
+
+//OLGA
+//funcion para pagar al otro jugador al caer en su casilla
+function pagarAlquiler(datosCasilla, casillaDueno) {
+
+    //Buscamos en el array la casilla, para sacar los datos
+    //Tenemos los datos de la casilla y de la posesion
+
+    listaUsuarios[turno].dinero -= datosCasilla.precioAlquiler;
+    usuario.dinero = listaUsuarios[turno].dinero;
+
+    $("#cabeUsu" + turno + " .dinero").text(usuario.dinero);
+    socket.emit("cambioDinero", {sala: sala, usuario: usuario, turno: turno});
+
+    //Buscamos el usuario al que hay que pagar
+    var usuarioPa = "";
+    for (var j = 0; j < listaUsuarios.length; j++) {
+        if (listaUsuarios[j].id == casillaDueno.idUsuario) {
+            trace("Recojo usuario");
+            usuarioPa = listaUsuarios[j];
+            usuarioPa.dinero += datosCasilla.precioAlquiler;
+            $("#cabeUsu" + j + " .dinero").text(usuarioPa.dinero);
+            socket.emit("cambioDinero", {sala: sala, usuario: usuarioPa, turno: j});
+            emitirInformacion("El usuario " + usuario.nombre + " le ha pagado un alquiler de "+ datosCasilla.precioAlquiler + " a " + usuarioPa.nombre);
+        } else {
+            trace("No existe ese usuario");
+        }
+    }    
+    
+}
