@@ -372,8 +372,8 @@ var dados = 0;
 function tirar() {
     trace("Tirar dados -->");
     if (pos == 0) {
-//        num = Math.floor(Math.random() * 6) + 1;
-        num = 7;
+        num = Math.floor(Math.random() * 6) + 1;
+//        num = 7;
     } else {
         num = pos;
     }
