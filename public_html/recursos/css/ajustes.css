@@ -6,7 +6,7 @@
     font-family: esdla;
     font-size: 18px;
     overflow: hidden;
-    margin-top: 45px;
+    margin-top: 30px;
 }
 
 .titulo {
@@ -46,7 +46,7 @@
     margin-left: 3%;
     width: 21%;
     min-width: 298px;
-    top: 185px;
+    top: 150px;
     position: absolute;
 }
 
@@ -56,7 +56,7 @@
     margin-left: 30%;
     width: 30%;
     min-width: 351px;
-    top: 185px;
+    top: 150px;
     position: absolute;
 }
 
@@ -67,7 +67,7 @@
     width: 21%;
     min-width: 298px;
     margin-left: 3%;
-    margin-top: 20%;
+    margin-top: 24%;
     height: 63px;
 }
 
@@ -108,4 +108,11 @@
 .error{
     color:red;
     font-size: 12px;
+}
+
+.botonesA {
+    margin-top: -78px;
+    position: relative;
+    bottom: 44px;
+    margin-left: 58px;
 }

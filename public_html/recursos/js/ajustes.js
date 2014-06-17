@@ -98,19 +98,23 @@ $(document).ready(function() {
         audioCSS.css({
             zIndex: "1",
             position: "absolute",
-            top: "461px",
-            marginLeft: "-11.5%"
+            top: "500px",
+            marginLeft: "-4%"
         });
     });
 
     $("#irPartidas").off().on("click", function(e) {
         modulo = "partidas";
+        var oAudio = document.getElementById('audioBSO');
+        oAudio.getAttribute("hidden");
         cargarModulo(modulo);
     });
 
     $("#irTablero").off().on("click", function(e) {
         modulo = "tablero";
-        cargarModulo(modulo);
+        var oAudio = document.getElementById('audioBSO');
+        oAudio.getAttribute("hidden");
+        cargarModulo(modulo);        
     });
 
 });

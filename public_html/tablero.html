@@ -3,13 +3,14 @@
         <div id="imagenGrande"></div>
         <div id="tablero">
         </div>
-        <div class="dado">Tira!</div>
+        <div class="dado">0</div>
     </div>
     <div id="informacion">
         <div id="paneles">   
             <h1 id="cabeUsu0" class="cabecera">
                 <b><span class="nombre"></span></b>
                 (<span class="personaje"></span>) 
+                <span style='float:right'> G</span>                
                 <span class="dinero" style='float:right'></span>
             </h1>
             <div id="panelUsu0" class="panel">
@@ -50,11 +51,12 @@
             </div>
         </div>
         <div id="botones">
-            <input type="button" class="boton button" id="botonComprar"  value="Comprar">
+            <input type="button" class="boton button disabled" id="botonComprar"  value="Comprar">
             <input type="button" class="boton button disabled" id="botonHipotecar"  value="Hipotecar">
             <input type="button" class="boton button disabled" id="botonDesHipotecar"  value="Deshipotecar">
-            <input type="button" class="boton button disabled" id="botonEdificar"  value="Edificar">
+            <!--<input type="button" class="boton button disabled" id="botonEdificar"  value="Edificar">-->
             <input type="button" class="boton button disabled" id="botonTurno"  value="Pasar">
+            <input type="button" class="boton" id="botonFin"  value="Abandonar">
             <div class="bote"><b>Bote:</b> <span id="bote">0</span> G</div>
         </div>
     </div>
@@ -86,6 +88,19 @@
     </div>
     <div id="mostrarTarjeta" title="Tarjeta">        
         <div id="mostrarTarjetaContent">
+        </div>
+    </div>
+    <div id="finPartida" title="Fiiiinnnn">        
+        <div id="mostrarGanador">
+            <p>El usuario <span id="usuarioFinaliza"></span> ha finalizado la partida</p>
+            <p>El usuario <span class="usuarioGanador"></span> ha ganado la partida</p>
+            <p>¡¡Enhorabuena <span class="usuarioGanador"></span> !!</p>
+        </div>
+    </div>
+    
+    <div id="dialogoTexto" title="Información">
+        <div id="datos">
+            
         </div>
     </div>
 

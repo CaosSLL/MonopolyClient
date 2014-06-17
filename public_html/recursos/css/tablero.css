@@ -87,13 +87,16 @@
 .dado {
     position: absolute;
     top: 303px;
-    left: 320px;
+    left: 343px;
     width: 40px;
     height: 36px;
-    background-color: #f2ea9d;
+    /* background-color: #f2ea9d; */
     border-radius: 5px;
     padding: 7px 0px 0px 7px;
-    font-size: 16px;
+    font-size: 95px;
+    font-family: esdla;
+    color: #DAA520;
+    text-shadow: 3px 5px 8px rgb(116, 105, 72);
 }
 
 .dado:hover {
@@ -105,7 +108,7 @@
 }
 #informacion {
     float: left;
-    border: solid 1px white;
+    /*border: solid 1px white;*/
     margin-left: 5%;
     margin-top: 5px;
     width: 31%;
@@ -115,7 +118,7 @@
 }
 #fichas {}
 .panel {
-    height: 123px;
+    height: 180px;
 }
 .cabecera {}
 .nombre {}
@@ -126,8 +129,8 @@
 #botones {
     color: white;
     position: absolute;
-bottom: 0px;
-width: 31%;
+    bottom: 0px;
+    width: 31%;
 }
 .button {
     width: 135px;
@@ -137,6 +140,8 @@ width: 31%;
 }
 .bote{
     clear: both;
+    margin: 5%;
+    font-size: 30px;
 }
 
 #imagenCartaCasilla{
@@ -176,4 +181,15 @@ width: 31%;
 }
 .no-close .ui-dialog-titlebar-close {
     display: none 
+}
+
+div#paneles {
+    font-family: esdla;
+}
+
+#botonFin{
+    width: 135px;
+    text-align: center;
+    float: left;
+    margin: 5%;
 }
