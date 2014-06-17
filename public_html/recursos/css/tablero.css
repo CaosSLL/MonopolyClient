@@ -130,10 +130,10 @@ bottom: 0px;
 width: 31%;
 }
 .button {
-    width: 102px;
+    width: 135px;
     text-align: center;
     float: left;
-    margin: 2%;
+    margin: 5%;
 }
 .bote{
     clear: both;
@@ -173,4 +173,7 @@ width: 31%;
 }
 .caballo ul{
     list-style: url("../images/listas/caballo.jpg") square;
+}
+.no-close .ui-dialog-titlebar-close {
+    display: none 
 }

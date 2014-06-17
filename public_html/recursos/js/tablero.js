@@ -7,6 +7,8 @@ var clikado = false;
 var tieneTurno = false;
 var bote = 0;
 var casillas = new Array();
+var eventos = new Array(); // Aída -> array para guardar las tarjetas de eventos
+var pruebas = new Array(); // Aída -> array para guardar las tarjetas de pruebas
 
 
 /**************************************************/
@@ -190,6 +192,25 @@ $(document).ready(function() {
         close: function() {
         }
     });
+    
+    // AÍDA
+    // Función que se conecta con el server para obtener todas las tarjetas y clasificarlas como pruebas y eventos
+    $.ajax({
+        url: host + server + "tarjeta",
+        method: "post",
+        dataType: "json",
+        success: function(datos) {
+            $.each(datos, function(indice, tarjeta) {
+                if(tarjeta.respuestas === null) {
+                    eventos.push(tarjeta);
+                } else {
+                    pruebas.push(tarjeta);                    
+                }
+            });
+            trace(eventos);
+            trace(pruebas);
+        }
+    });
 
 });
 
@@ -349,7 +370,8 @@ var pos = 0;
 function tirar() {
     trace("Tirar dados -->");
     if (pos == 0) {
-        num = Math.floor(Math.random() * 6) + 1;
+//        num = Math.floor(Math.random() * 6) + 1;
+        num = 7;
     } else {
         num = pos;
     }
@@ -705,8 +727,139 @@ function casillasEspecial(datos) {
     }
 }
 
+// Aída 
 function casillaTarjetas(datos) {
-    emitirInformacion(usuario.nombre + " ha caído en una tarjeta");
+    trace(" --- TARJETA ---");
+    // Creamos una variable que guarda la información que se emitirá a todos los jugadores
+    var info = usuario.nombre + " ha caído en una tarjeta de ";
+    var respuestas = new Array();
+    var correcta = "";
+    // Vaciamos el contenido del dialog
+    $("#mostrarTarjetaContent").empty();
+    // Comprobamos el tipo de tarjeta sobre la que ha caído
+    if(datos.numero === 2 || datos.numero === 17 || datos.numero === 33) {        
+        info += "evento";
+        // Elegimos un nº aleatorio para las tarjetas de eventos
+        var num = Math.floor((Math.random() * eventos.length));        
+        var evento = eventos[num];
+        trace("Número aleatorio: " + num);
+        trace("Evento: " + evento);
+        // Añadimos el texto del evento al contenido del dailog
+        $("#mostrarTarjetaContent").append(evento.texto);
+        // Configuramos el dialog
+        $("#mostrarTarjeta").dialog({
+            autoOpen: false,
+            modal: true,
+            dialogClass: "no-close",
+            width: 400,
+            buttons: {
+                "Aceptar": function() {
+                    if(evento.beneficio !== null) {
+                        // Se le añade el beneficio al jugador
+                        trace("Dinero user antes: " + usuario.dinero);
+                        trace("Beneficio: " + evento.beneficio);
+                        usuario.dinero += evento.beneficio;
+                        trace("Dinero user después: " + usuario.dinero);
+                        listaUsuarios[turno].dinero += evento.beneficio;
+                        // Se modifica la información del panel                        
+                        $("#cabeUsu" + turno + " .dinero").text(usuario.dinero);
+                        // Se emite al resto de jugadores la información
+                        socket.emit("cambioDinero", {sala: sala, usuario: listaUsuarios[turno], turno: turno});
+
+                    } else {
+                        // Se le resta la penalización al jugador
+                        trace("Dinero user antes: " + usuario.dinero);
+                        trace("Penalización: " + evento.penalizacion);
+                        usuario.dinero -= evento.penalizacion;
+                        listaUsuarios[turno].dinero -= evento.penalizacion;
+                        // Se modifica la información del panel                        
+                        $("#cabeUsu" + turno + " .dinero").text(usuario.dinero);
+                        socket.emit("cambioDinero", {sala: sala, usuario: listaUsuarios[turno], turno: turno});
+                        // Se añade al bote el dinero que pierde el jugador
+                        bote += parseInt(evento.penalizacion);
+                        // Se modifica la información en el panel 
+                        $("#bote").text(bote);
+                        // Se emite la información al resto de jugadores
+                        socket.emit("cambio_bote", {sala: sala, bote: bote});
+                    }
+                    $(this).dialog("close");
+                }
+            }
+        });
+        
+    } else {
+        info += "prueba";  
+        // Elegimos un nº aleatorio para las tarjetas de prueba
+        var num = Math.floor((Math.random() * pruebas.length));
+        var prueba = pruebas[num];
+        trace("Número aleatorio: " + num);
+        trace("Prueba: " + prueba);
+        // Almacenamos en un array las posibles respuestas y en una variable la correcta
+        respuestas = prueba.respuestas.split("/");
+        correcta = respuestas[0];
+        trace("Respuestas: " + respuestas);
+        trace("Correcta: " + correcta);
+        // Añadimos la pregunta y las respuestas al contenido del dailog
+        $("#mostrarTarjetaContent").append("<p>" + prueba.texto + "</p><br/>");
+        respuestas.sort(function() {
+            return Math.random() - 0.5;
+        });
+        $.each(respuestas, function(i, respuesta) {
+            $("#mostrarTarjetaContent").append("<input type='radio' name='respuestas' " +
+                    "value='" + respuesta + "'>" + respuesta + "<br/>");                    
+        });     
+        // Configuramos el dialog
+        $("#mostrarTarjeta").dialog({
+            autoOpen: false,
+            modal: true,
+            dialogClass: "no-close",
+            width: 400,
+            buttons: {
+                "Aceptar": function() {
+                    trace("Correcta: " + correcta);
+                    var respuestaUser = $("input[name=respuestas]:checked").val();
+                    if(respuestaUser === correcta) {
+                        trace("Respuesta correcta: " + respuestaUser);
+                        // Se le añade el beneficio al jugador
+                        trace("Dinero user antes: " + usuario.dinero);
+                        trace("Beneficio: " + prueba.beneficio);
+                        usuario.dinero += prueba.beneficio;
+                        trace("Dinero user después: " + usuario.dinero);
+                        listaUsuarios[turno].dinero += prueba.beneficio;
+                        // Se modifica la información del panel                        
+                        $("#cabeUsu" + turno + " .dinero").text(usuario.dinero);
+                        // Se emite al resto de jugadores la información
+                        socket.emit("cambioDinero", {sala: sala, usuario: listaUsuarios[turno], turno: turno});
+                        emitirInformacion(usuario.nombre + " ha pasado la prueba");
+                        
+                    } else {
+                        trace("Respuesta incorrecta: " + respuestaUser);
+                        // Se le resta la penalización al jugador
+                        trace("Dinero user antes: " + usuario.dinero);
+                        trace("Penalización: " + prueba.penalizacion);
+                        usuario.dinero -= prueba.penalizacion;
+                        listaUsuarios[turno].dinero -= prueba.penalizacion;
+                        // Se modifica la información del panel                        
+                        $("#cabeUsu" + turno + " .dinero").text(usuario.dinero);
+                        socket.emit("cambioDinero", {sala: sala, usuario: listaUsuarios[turno], turno: turno});
+                        // Se añade al bote el dinero que pierde el jugador
+                        bote += parseInt(prueba.penalizacion);
+                        // Se modifica la información en el panel 
+                        $("#bote").text(bote);
+                        // Se emite la información al resto de jugadores
+                        socket.emit("cambio_bote", {sala: sala, bote: bote});
+                        
+                        emitirInformacion(usuario.nombre + " ha fracasado en la prueba");
+                    }
+                    setTimeout($(this).dialog("close"), 3000);
+                }
+            }
+        });       
+    }
+    
+    emitirInformacion(info);
+    trace(info);
+    $("#mostrarTarjeta").dialog("open");
 }
 
 function casillasImpuesto(datos) {
