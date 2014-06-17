@@ -341,6 +341,8 @@ function cargarDatosJugadores() {
 }
 
 var pos = 0;
+//OLGA variable global para guardar el número sacado en los dados.
+var dados = 0;
 /**
  * Función que calcula un número aleatorio del 1 al 6 para el dado,
  * habilita el botón de pasar turno y comprueba la casilla en la que ha caído el jugador
@@ -354,6 +356,10 @@ function tirar() {
         num = pos;
     }
 //    var num2 = Math.floor(Math.random() * 6) + 1;
+    //OLGA
+    dados = num;
+//    dador = num + num2;
+
     $(".dado").text(num);
     moverFicha(num, true);
     socket.emit("movimiento_partida", {sala: sala, avance: num, cobrar: true, turno: turno});
@@ -366,6 +372,22 @@ function tirar() {
 //    cambiarTurno();
     emitirInformacion(usuario.nombre + " ha sacado un " + num);
 }
+
+//OLGA
+//funcion para tirar los dados en el caso de caer de tener que pagar si caes en un baston
+//function tirarDados() {
+//    trace("Tirar dados -->");
+//    if (pos == 0) {
+//        num = Math.floor(Math.random() * 6) + 1;
+//    } else {
+//        num = pos;
+//    }
+////    var num2 = Math.floor(Math.random() * 6) + 1;
+//    $(".dado").text(num);
+//    $(".dado").css({backgroundColor: "gray"});
+//    $(".dado").unbind("click");
+//    return num;
+//}
 
 /**
  * Función que gestiona el cambio de turno
@@ -424,9 +446,9 @@ function moverFicha(avance, noCobrar) {
         //OLGA
         if (c === 0) {
             trace("Pasa por la salida");
-            listaUsuarios[turno].dinero += 200;
-            usuario.dinero = listaUsuarios[turno].dinero;
-//            usuario.dinero += 200;
+//            listaUsuarios[turno].dinero += 200;
+//            usuario.dinero = listaUsuarios[turno].dinero;
+            usuario.dinero += 200;
             $("#cabeUsu" + turno + " .dinero").text(usuario.dinero);
             //OLGA añado el campo turno
             socket.emit("cambioDinero", {sala: sala, usuario: usuario, turno: turno});
@@ -758,7 +780,7 @@ function comprobarPosesionCasilla(datosCasilla) {
         $("#botonComprar").bind("click", botonComprar);
         $("#botonComprar").removeClass("disabled");
     } else {
-        //Le toca pagar el alquiler
+        //Le toca pagar el alquiler        
         pagarAlquiler(datosCasilla, casillaDueno);
     }
 }
@@ -901,13 +923,14 @@ function botonComprar() {
 // Asociamos el método comprar() al boton de comprar
 //Si no es ningun caballo ni bastón que salga la imagen de la carta casilla y si no que compre directamente. 
 //OLGA
-    if (posicionesCasilla[turno] % 5 !== 0 && posicionesCasilla[turno] !== 12 && posicionesCasilla[turno] !== 28) {
+    if (posicionesCasilla[turno] % 5 !== 0 ){
+//            && posicionesCasilla[turno] !== 12 && posicionesCasilla[turno] !== 28) {
         $("#imagenCartaCasilla").attr("src", "recursos/images/carta-casilla/es/cartacasilla" + (posicionesCasilla[turno]) + ".jpg");
         $("#dialogo").dialog("open");
     } else {
         comprar(posicionesCasilla[turno] + 1);
-//        $("#botonComprar").unbind("click");
-//        $("#botonComprar").addClass("disabled");
+        $("#botonComprar").unbind("click");
+        $("#botonComprar").addClass("disabled");
     }
 }
 
@@ -980,7 +1003,71 @@ function pagarAlquiler(datosCasilla, casillaDueno) {
     //Buscamos en el array la casilla, para sacar los datos
     //Tenemos los datos de la casilla y de la posesion
 
-    listaUsuarios[turno].dinero -= datosCasilla.precioAlquiler;
+    var aPagar = 0;
+    trace("tipo " + datosCasilla.tipo);
+    //Comprobamos que tipo de casilla es:
+    if (datosCasilla.tipo == "caballos") {
+        //Comprobamos si tiene más caballos
+        var cont = 0;
+        for (var i = 0; i < posesionesCasillas.length; i++) {
+            //Comprobamos que sea del mismo jugador
+            if (posesionesCasillas[i].idUsuario == casillaDueno.idUsuario) {
+                //Comprobamos que sea caballo                 
+                trace("Tiene más posesiones");
+                trace(posesionesCasillas[i].idCasilla);
+                if (posesionesCasillas[i].idCasilla == 6 || posesionesCasillas[i].idCasilla == 11 ||
+                        posesionesCasillas[i].idCasilla == 16 || posesionesCasillas[i].idCasilla == 21) {
+                    trace("tiene mas caballos");
+                    cont += 1;
+                }
+            }
+        }
+        //En cont recogemos los caballos que tenga y por cada caballo sera
+        if (cont >= 1) {
+            aPagar = datosCasilla.precioAlquiler * cont;
+            trace("Pagara " + aPagar);
+        }
+
+    } else if (datosCasilla.tipo == "bastones") {
+        //Comprobamos si tiene el otro bastón
+        var cont = 0;
+        for (var i = 0; i < posesionesCasillas.length; i++) {
+            //Comprobamos que sea del mismo jugador
+            if (posesionesCasillas[i].idUsuario == casillaDueno.idUsuario) {
+                //Comprobamos que sea caballo                 
+                trace("Tiene más posesiones");
+                trace(posesionesCasillas[i].idCasilla);
+                if (posesionesCasillas[i].idCasilla == 13 || posesionesCasillas[i].idCasilla == 29) {
+                    trace("tiene los bastones");
+                    cont += 1;
+                }
+            }
+        }
+        //Tiramos los dados para sacar un numero:
+//        var dados;
+//                = tirarDados();
+        //Ponemos los dados en color de activo
+//        $(".dado").css({backgroundColor: "#f2ea9d"});
+////        dados = $(".dado").bind("click", tirarDados);
+//        setTimeout(function() {
+//            dados = tirarDados;
+//
+//        }, 1000);
+        aPagar = 5 * dados * cont;
+        trace("Pagara " + aPagar);
+
+    } else if (datosCasilla.tipo == "tierra") {
+        //Comprobar si la casilla tiene casas
+        aPagar = datosCasilla.precioAlquiler;
+    }
+
+    //Comprobamos si tiene dinero para pagar
+    //FALTA POR PROBAR
+    while (usuario.dinero <= aPagar) {
+        botonHipotecar();
+    }
+    listaUsuarios[turno].dinero -= aPagar;
+//    listaUsuarios[turno].dinero -= datosCasilla.precioAlquiler;
     usuario.dinero = listaUsuarios[turno].dinero;
 
     $("#cabeUsu" + turno + " .dinero").text(usuario.dinero);
@@ -992,13 +1079,17 @@ function pagarAlquiler(datosCasilla, casillaDueno) {
         if (listaUsuarios[j].id == casillaDueno.idUsuario) {
             trace("Recojo usuario");
             usuarioPa = listaUsuarios[j];
-            usuarioPa.dinero += datosCasilla.precioAlquiler;
+            usuarioPa.dinero += aPagar;
+//            usuarioPa.dinero += datosCasilla.precioAlquiler;
             $("#cabeUsu" + j + " .dinero").text(usuarioPa.dinero);
             socket.emit("cambioDinero", {sala: sala, usuario: usuarioPa, turno: j});
-            emitirInformacion("El usuario " + usuario.nombre + " le ha pagado un alquiler de "+ datosCasilla.precioAlquiler + " a " + usuarioPa.nombre);
         } else {
             trace("No existe ese usuario");
         }
-    }    
-    
+    }
+    var texto = "El usuario " + usuario.nombre + " le ha pagado un alquiler de " + datosCasilla.precioAlquiler + " a " + usuarioPa.nombre; 
+    emitirInformacion(texto);
+
+
+
 }
